@@ -1,0 +1,1228 @@
+.disabled-selection {
+	color: #ccc;
+}
+
+a,
+a:visited,
+a:link,
+a:active {
+	text-decoration: none;
+	color: black;
+}
+
+a:hover {
+	color: #ff2727;
+}
+
+.col-30 {
+	width: 30%;
+	float: left;
+}
+
+/*--------------------------------------tipografias--------------------------------------*/
+@charset "utf-8";
+
+/*font especial*/
+@font-face {
+	font-family: 'museosans300'; 
+	src: url('../fonts/museosans300.eot');
+	src: url('../fonts/museosans300.eot?#iefix') format('embedded-opentype'),
+		/*para qeu funcione el ie*/
+         url('../fonts/museosans300.woff') format('woff'),
+		url('../fonts/museosans300.ttf') format('truetype'),
+		url('../fonts/museosans300.svg#museosans300') format('svg');
+	src: url('../fonts/MuseoSans-300.otf') format("opentype");
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'museosans300italic'; /*nombre*/
+	src: url('../fonts/museosans300italic.eot');
+	src: url('../fonts/museosans300italic.eot?#iefix')
+		format('embedded-opentype'), /*para qeu funcione el ie*/
+         url('../fonts/museosans300italic.woff') format('woff'),
+		url('../fonts/museosans300italic.ttf') format('truetype'),
+		url('../fonts/museosans300italic.svg#museosans300italic')
+		format('svg');
+	src: url('../fonts/MuseoSans-300Italic.otf') format("opentype");
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'museosans500'; /*nombre*/
+	src: url('../fonts/museosans_500.eot');
+	src: url('../fonts/museosans_500.eot?#iefix')
+		format('embedded-opentype'), /*para qeu funcione el ie*/
+         url('../fonts/museosans_500.woff') format('woff'),
+		url('../fonts/museosans_500.ttf') format('truetype'),
+		url('../fonts/museosans_500.svg#museosans500') format('svg');
+	src: url('../fonts/MuseoSans_500.otf') format("opentype");
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'museosans500italic'; /*nombre*/
+	src: url('../fonts/museosans_500_italic.eot');
+	src: url('../fonts/museosans_500_italic.eot?#iefix')
+		format('embedded-opentype'), /*para qeu funcione el ie*/
+         url('../fonts/museosans_500_italic.woff') format('woff'),
+		url('../fonts/museosans_500_italic.ttf') format('truetype'),
+		url('../fonts/museosans_500_italic.svg#museosans500italic')
+		format('svg');
+	src: url('../fonts/MuseoSans_500_Italic.otf') format("opentype");
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'museosans700'; /*nombre*/
+	src: url('../fonts/museosans_700.eot');
+	src: url('../fonts/museosans_700.eot?#iefix')
+		format('embedded-opentype'), /*para qeu funcione el ie*/
+         url('../fonts/museosans_700.woff') format('woff'),
+		url('../fonts/museosans_700.ttf') format('truetype'),
+		url('../fonts/museosans_700.svg#museosans700') format('svg');
+	src: url('../fonts/MuseoSans_700.otf') format("opentype");
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'museosans700italic'; /*nombre*/
+	src: url('../fonts/museosans700italic.eot');
+	src: url('../fonts/museosans700italic.eot?#iefix')
+		format('embedded-opentype'), /*para qeu funcione el ie*/
+         url('../fonts/museosans700italic.woff') format('woff'),
+		url('../fonts/museosans700italic.ttf') format('truetype'),
+		url('../fonts/museosans700italic.svg#museosans700italic')
+		format('svg');
+	src: url('../fonts/MuseoSans-700Italic.otf') format("opentype");
+	font-weight: normal;
+	font-style: normal;
+}
+
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+
+.contenedor {
+	z-index: -1;
+	width: 90%;
+	box-shadow: 0px 0px 14px #e7e6e6;
+	border-radius: 10px;
+	height: 1700px;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	font-size: 13px;
+	letter-spacing: 1px;
+	line-height: 17px;
+	margin: 0 auto;
+	margin-top: 15px;
+}
+
+/*--------------------------------------top--------------------------------------*/
+.top {
+	display: table;
+	clear: both;
+	width: 100%;
+	position: relative;
+}
+
+#logo {
+	float: left;
+}
+
+#buscador {
+	float: right;
+	padding-right: 15px;
+	padding-top: 14px;
+}
+
+#search {
+	
+}
+
+#search input[type="text"] {
+	background: url(../images/search-white.png) no-repeat 10px 6px #fcfcfc;
+	border: 1px solid #ffffff;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	color: #bebebe;
+	width: 150px;
+	padding: 6px 15px 6px 35px;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 5px;
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) inset;
+	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) inset;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) inset;
+	-webkit-transition: all 0.7s ease 0s;
+	-moz-transition: all 0.7s ease 0s;
+	-o-transition: all 0.7s ease 0s;
+	transition: all 0.7s ease 0s;
+}
+
+#search input[type="text"]:focus {
+	width: 200px;
+}
+
+/*--------------------------------------menu--------------------------------------*/
+.menu {
+	background-color: #ff2727;
+	width: 100%;
+	margin-bottom: 2%;
+}
+
+#button-menu {
+	margin-left: 2%;
+	margin-right: 2%;
+}
+
+#button-menu .item-menu {
+	padding-top: 5px;
+	padding-bottom: 6px;
+	margin: 0px;
+	display: inline-block;
+	margin-left: -4px;
+}
+
+#button-menu .item-menu a {
+	color: #FFFFFF;
+    font-family: "museosans500",sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 7px;
+    text-decoration: none;
+}
+
+#button-menu .item-menu a:hover,
+#button-menu .item-menu a.activo {
+	background-color: #343333;
+}
+
+#ImgFin {
+	margin-right: -52px;
+	margin-top: -28px;
+	position: relative;
+	float: right;
+}
+
+/*--------------------------------------secciones--------------------------------------*/
+.ranking,
+.ranking-centrado,
+.ranking-centrado-total {
+	background-color: #FFFFFF;
+	border: 1px solid #D5D5D5;
+	border-radius: 10px;
+	color: #343333;
+	float: right;
+	font-size: 12px;
+	font-weight: bold;
+	min-height: 300px;
+	margin-right: 20px;
+	margin-top: 2%;
+	width: 64%;
+}
+
+.ranking-centrado,
+.ranking-centrado-total {
+	float: none;
+	margin: 0 auto;
+}
+
+.ranking-centrado-total {
+	width: 96%;
+}
+
+.ranking-centrado-total .datatable td {
+	overflow: hidden;
+}
+
+h1 {
+	background-color: #343333;
+	color: #FFFFFF;
+	font-size: 12px;
+	margin-top: 15px;
+	padding-bottom: 6px;
+	padding-left: 2%;
+	padding-top: 7px;
+	font-family: "museosans500", sans-serif;
+}
+
+h2 {
+	color: #343333;
+	font-size: 12px;
+	padding-left: 4%;
+}
+
+.izq img {
+	float: left;
+	margin-left: -4px;
+	padding-top: 13px;
+}
+
+.der img {
+	float: right;
+	margin-right: -4px;
+	margin-top: -40px;
+}
+
+#busca,
+#busca-ancho-pag {
+	background-color: #F2F2F2;
+	border: 1px solid #d5d5d5;
+	border-radius: 10px;
+	float: left;
+	margin-left: 20px;
+	width: 30%;
+	margin-top: 2%;
+}
+
+#busca-ancho-pag {
+	float: none;
+	width: 96%;
+	margin-bottom: 20px;
+}
+
+#busca-ancho-pag .campo {
+	width: 32%;
+	margin-right: 1%;
+	float:left;
+}
+
+.separador {
+	float:none;
+	clear: both;
+	height: 1px;
+	line-height: 1px;
+}
+
+#buscaBot {
+	background-color: #FFFFFF;
+    border-radius: 0 0 10px 10px;
+    float: left;
+    height: 38px;
+    margin-left: 0;
+    margin-top: 5px;
+    padding-top: 11px;
+    text-align: center;
+    width: 100%;
+}
+
+#buscaBot a,
+#buscaBot a:visited,
+#buscaBot a:link,
+#buscaBot a:active {
+	color: white;
+}
+
+#buscaBot img {
+	float: right;
+	margin-right: 10px;
+	margin-top: 6px;
+}
+
+.select {
+	position: absolute;
+	width: 158px;
+	height: 21px;
+	padding: 0 24px 0 8px;
+	color: #fff;
+	font: 12px/21px arial, sans-serif;
+	overflow: hidden;
+}
+
+#calendario {
+	background-color: #FFFFFF;
+	border: 1px solid #D5D5D5;
+	border-radius: 10px;
+	float: left;
+	min-height: 300px;
+	margin-left: 20px;
+	margin-top: 2%;
+	width: 30%;
+}
+
+#estadisticas {
+	background-color: #FFFFFF;
+	border: 1px solid #d5d5d5;
+	border-radius: 10px;
+	float: right;
+	height: 300px;
+	margin-right: 20px;
+	width: 64%;
+	margin-top: 2%;
+}
+
+#botonera {
+	float: left;
+	margin-left: 20px;
+	width: 30%;
+	margin-top: 2%;
+}
+
+#botonera img {
+	float: right;
+	margin-right: 10px;
+	margin-top: 6px;
+}
+
+.pie {
+	background-color: #343333;
+	color: #FFF;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	font-size: 11px;
+	padding-bottom: 20px;
+	padding-top: 20px;
+	padding-left: 40%;
+}
+
+/*--------------------------------------calendario--------------------------------------*/
+.contenedor_calendario  ul li {
+	font-family: Tahoma, Arial;
+	font-size: 12px;
+	list-style-type: none;
+	background-color: #ededed;
+	padding: 7px;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin-right: 1px;
+	margin-bottom: 1px;
+	float: left;
+	color: #999999;
+	width: 20px;
+	display: inline;
+	text-align: center;
+}
+
+.contenedor_calendario a {
+	color: #333333
+}
+
+.contenedor_calendario  ul li.dia {
+	background-color: #666666;
+	color: #CCC;
+	font-size: 10px;
+}
+
+.contenedor_calendario  ul li.mes {
+	background-color: #666666;
+	color: #CCC;
+	font-size: 10px;
+	width: 266px;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+.contenedor_calendario {
+	width: 330px;
+}
+
+/*--------------------------------------renglones--------------------------------------*/
+.Grid {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.Grid table {
+	width: 100%;
+}
+
+.Grid table {
+	width: 100%;
+}
+
+.Grid table thead tr th {
+	background: none repeat scroll 0 0 #6E6C6C;
+    color: #FFFFFF;
+    font-weight: bold;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 2px;
+    padding-right: 2px;
+    border: 0px;
+}
+
+.Grid table thead tr th a {
+	color: #F7F6F3;
+}
+
+.Grid table tbody tr td,
+.Grid table tfoot tr td {
+	color: #333333;
+	padding: 2px 10px 2px 12px;
+	text-align: left;
+}
+
+.Grid table tbody tr td.right,
+.Grid table tfoot tr td.right {
+	text-align: right;
+}
+
+.Grid table tbody tr.odd td {
+	background: #F7F6F3;
+}
+
+.ranking-home .Grid table tbody tr td.right {
+	padding-right: 40px;
+}
+
+/*--------------------------------------SELECT--------------------------------------*/
+.container {
+	margin: 50px auto;
+	width: 500px;
+	text-align: center;
+}
+
+.container .dropdown {
+	margin: 0 20px;
+	vertical-align: top;
+}
+
+.dropdown,
+.dropdown-no-img {
+	-moz-border-bottom-colors: none;
+	-moz-border-left-colors: none;
+	-moz-border-right-colors: none;
+	-moz-border-top-colors: none;
+	background: linear-gradient(to bottom, rgba(0, 0, 0, 0),
+		rgba(0, 0, 0, 0.06)) repeat scroll 0 0 #F2F2F2;
+	border-color: #FFFFFF #F7F7F7 #F5F5F5;
+	border-image: none;
+	border-radius: 3px;
+	border-style: solid;
+	border-width: 1px;
+	display: inline-block;
+	height: 28px;
+	margin-left: 4%;
+	overflow: hidden;
+	position: relative;
+	width: 70%;
+	margin-top: -5px;
+}
+
+.dropdown:before,
+.dropdown:after {
+	content: '';
+	position: absolute;
+	z-index: 2;
+	top: 9px;
+	right: 10px;
+	width: 0;
+	height: 0;
+	border: 4px dashed;
+	border-color: #888 transparent;
+	pointer-events: none;
+}
+
+.dropdown:before {
+	border-bottom-style: solid;
+	border-top: none;
+}
+
+.dropdown:after {
+	margin-top: 7px;
+	border-top-style: solid;
+	border-bottom: none;
+}
+
+.dropdown-select {
+	position: relative;
+	width: 130%;
+	margin: 0;
+	padding: 6px 8px 6px 10px;
+	height: 28px;
+	line-height: 14px;
+	font-size: 12px;
+	color: #62717a;
+	text-shadow: 0 1px white;
+	/* Fallback for IE 8 */
+	background: #f2f2f2;
+	/* "transparent" doesn't work with Opera */
+	background: rgba(0, 0, 0, 0) !important;
+	border: 0;
+	border-radius: 0;
+	-webkit-appearance: none;
+}
+
+input.dropdown-select {
+	padding-top: 0px;
+}
+
+.dropdown-select:focus {
+	z-index: 3;
+	width: 100%;
+	color: #394349;
+	outline: 2px solid #49aff2;
+	outline: 2px solid -webkit-focus-ring-color;
+	outline-offset: -2px;
+}
+
+.dropdown-select option {
+	margin: 3px;
+	padding: 6px 8px;
+	text-shadow: none;
+	background: #f2f2f2;
+	border-radius: 3px;
+	cursor: pointer;
+}
+
+/* Fix for IE 8 putting the arrows behind the select element. */
+.lt-ie9 .dropdown {
+	z-index: 1;
+}
+
+.lt-ie9 .dropdown-select {
+	z-index: -1;
+}
+
+.lt-ie9 .dropdown-select:focus {
+	z-index: 3;
+}
+
+.dropdown-dark {
+	background: #444;
+	border-color: #111 #0a0a0a black;
+	background-image: -webkit-linear-gradient(top, transparent, rgba(0, 0, 0, 0.4));
+	background-image: -moz-linear-gradient(top, transparent, rgba(0, 0, 0, 0.4));
+	background-image: -o-linear-gradient(top, transparent, rgba(0, 0, 0, 0.4));
+	background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.4));
+	-webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.1), 0 1px 1px
+		rgba(0, 0, 0, 0.2);
+	box-shadow: inset 0 1px rgba(255, 255, 255, 0.1), 0 1px 1px
+		rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-dark:before {
+	border-bottom-color: #aaa;
+}
+
+.dropdown-dark:after {
+	border-top-color: #aaa;
+}
+
+.dropdown-dark .dropdown-select {
+	color: #aaa;
+	text-shadow: 0 1px black;
+	/* Fallback for IE 8 */
+	background: #444;
+}
+
+.dropdown-dark .dropdown-select:focus {
+	color: #ccc;
+}
+
+.dropdown-dark .dropdown-select>option {
+	background: #444;
+	text-shadow: 0 1px rgba(0, 0, 0, 0.4);
+}
+
+/*--------------------------------------BOTONES--------------------------------------*/
+.classname,
+input[type="submit"],
+input[type="button"],
+button[type="button"],
+button[type="submit"] {
+	background-color: #0F9;
+	background-color: #fe1a00;
+	-webkit-border-top-left-radius: 21px;
+	-moz-border-radius-topleft: 21px;
+	border-top-left-radius: 21px;
+	-webkit-border-top-right-radius: 21px;
+	-moz-border-radius-topright: 21px;
+	border-top-right-radius: 21px;
+	-webkit-border-bottom-right-radius: 21px;
+	-moz-border-radius-bottomright: 21px;
+	border-bottom-right-radius: 21px;
+	-webkit-border-bottom-left-radius: 21px;
+	-moz-border-radius-bottomleft: 21px;
+	border-bottom-left-radius: 21px;
+	text-indent: 0;
+	display: inline-block;
+	color: #ffffff;
+	font-weight: bold;
+	font-style: normal;
+	height: 32px;
+	line-height: 32px;
+	width: 90%;
+	font-family: "museosans500", sans-serif;
+	font-size: 11px;
+	text-align: center;
+	margin-bottom: 10px;
+	text-decoration: none;
+}
+
+#crear .classname,
+#crear input[type="submit"],
+#crear input[type="button"],
+#crear button[type="button"],
+#crear button[type="submit"],
+.acciones .classname,
+.acciones input[type="submit"],
+.acciones input[type="button"],
+.acciones button[type="button"],
+.acciones button[type="submit"],
+#busca-ancho-pag .classname,
+#busca-ancho-pag input[type="submit"],
+#busca-ancho-pag input[type="button"],
+#busca-ancho-pag button[type="button"],
+#busca-ancho-pag button[type="submit"] {
+	width: 20%;
+}
+
+#loginsearch .classname,
+#loginsearch input[type="submit"],
+#loginsearch input[type="button"],
+#loginsearch button[type="button"],
+#loginsearch button[type="submit"]{
+	width: 40%;
+}
+
+.classname:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover,
+button[type="button"]:hover,
+button[type="submit"]:hover {
+	background-color: #343333;
+}
+
+.classname:active,
+input[type="submit"]:active,
+input[type="button"]:active,
+button[type="button"]:active,
+button[type="submit"]:active {
+	position: relative;
+	top: 1px;
+}
+
+.ranking-home .datatable tr th {
+	display: none;
+}
+
+.ranking td a {
+	text-decoration: none;
+	color: #333333;
+}
+
+.ranking td a:hover {
+	text-decoration: underline;
+}
+
+input[type="submit"],
+button[type="button"],
+button[type="submit"],
+input[type="button"] {
+	text-transform: uppercase;
+	border: 0px;
+	background-image: url(../images/flecha.png);
+	background-repeat: no-repeat;
+	background-position: 98% center;
+}
+
+input[type="submit"]:hover,
+button[type="button"]:hover,
+button[type="submit"]:hover,
+input[type="button"]:hover {
+	cursor: pointer;
+}
+
+.estadoTareas td {
+	overflow: hidden;
+}
+
+.estadoTareas td.fecha,
+.estadoTareas td.estado,
+.estadoTareas td.prioridad {
+	width: 8%;
+}
+
+.estadoTareas td.autor,
+.estadoTareas td.asunto,
+.estadoTareas td.fuente,
+.estadoTareas td.comentario {
+	width: 15%;
+}
+
+.estadoTareas td.descripcion {
+	width: 16%;
+}
+
+#rankingInt {
+   background-color: #FFFFFF;
+    border: 1px solid #D5D5D5;
+    border-radius: 10px;
+    color: #343333;
+    float: right;
+    font-size: 12px;
+    font-weight: bold;
+    margin-right: 20px;
+    margin-top: 2%;
+    width: 64%;
+    height: 35%;
+}
+
+a.modificar-link {
+	background-image: url(../images/modificar.png);
+	background-repeat: no-repeat;
+	padding-left: 15px;
+	padding-right: 10px;
+	height: 16px;
+	line-height: 16px;
+}
+
+a.eliminar-link {
+	background-image: url(../images/eliminar.png);
+	background-repeat: no-repeat;
+	padding-left: 15px;
+	padding-right: 10px;
+	height: 16px;
+	line-height: 16px;
+}
+
+a.duplicar-link {
+	background-image: url(../images/duplicar.png);
+	background-repeat: no-repeat;
+	padding-left: 15px;
+	padding-right: 10px;
+	height: 16px;
+	line-height: 16px;
+}
+
+a.ver-mas-link {
+	background-image: url(../images/sumar.png);
+	background-repeat: no-repeat;
+	padding-left: 15px;
+	padding-right: 10px;
+	height: 16px;
+	line-height: 16px;
+}
+
+a.ver-menos-link {
+	background-image: url(../images/verMenos.png);
+	background-repeat: no-repeat;
+	padding-left: 15px;
+	padding-right: 10px;
+	height: 16px;
+	line-height: 16px;
+}
+
+a.ver-info-link {
+	background-image: url(../images/verInfo.png);
+	background-repeat: no-repeat;
+	padding-left: 15px;
+	padding-right: 10px;
+	height: 16px;
+	line-height: 16px;
+}
+
+a.probar-envio-link {
+	background-image: url(../images/probarEnvio.png);
+	background-repeat: no-repeat;
+	padding-left: 15px;
+	padding-right: 10px;
+	height: 16px;
+	line-height: 16px;
+}
+
+a.enviar-link {
+	background-image: url(../images/enviar.png);
+	background-repeat: no-repeat;
+	padding-left: 15px;
+	padding-right: 10px;
+	height: 16px;
+	line-height: 16px;
+}
+
+a.mail-link {
+	background-image: url(../images/mail.png);
+	background-repeat: no-repeat;
+	padding-left: 15px;
+	padding-right: 10px;
+	height: 16px;
+	line-height: 16px;
+}
+
+a.reporte-link {
+	padding-right: 10px;
+}
+
+a.ver-usuarios-link {
+	background-image: url(../images/usuario.png);
+	background-repeat: no-repeat;
+	padding-left: 15px;
+	padding-right: 10px;
+	height: 16px;
+	line-height: 16px;
+}
+
+#buscaBot1 {
+    background-color: #FFFFFF;
+    border-top: 1px solid #D5D5D5;
+
+    border-radius: 0 0 10px 10px;
+    float: left;
+    margin-top: 5px;
+    padding-top: 11px;
+    text-align: center;
+    width: 100%;
+}
+
+#crear{
+    height: 20px;
+    text-align: right;
+    width: 97%;
+}
+
+.ranking, .ranking-centrado, 
+.ranking-centrado-total a:link {
+    color:#F00;
+    text-decoration:none;
+
+}
+
+.ranking, .ranking-centrado, 
+.ranking-centrado-total a:visited {
+    color:#000;
+    text-decoration:none;
+}
+
+
+#adminInt {
+    background-color: #FFFFFF;
+    border: 1px solid #D5D5D5;
+    border-radius: 10px;
+    color: #343333;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 0 auto;
+    margin-top: 2%;
+    width: 75%;
+}
+
+
+#adminInt form,
+#puntajesForm table {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.admin-menu {
+    float: left;
+    width: 30%;
+}
+
+
+.admin-menu a,
+.admin-menu a:link,
+.admin-menu a:visited,
+.admin-menu a:active {
+    color: #666666;
+    text-decoration: none;
+}
+
+.admin-menu a:hover {
+    color: #FF0000;
+    text-decoration: none;
+}
+
+#adminInt form .acciones,
+#adminInt .Grid .acciones {
+    border-top: 1px solid #D5D5D5;
+    margin-top: 30px;
+    padding-top: 11px;
+    text-align: center;
+    width: 100%;
+}
+
+#adminInt form .campo,
+#adminInt .Grid .campo,
+#puntajesForm table {
+    padding-bottom: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.Grid tr.sacm td,
+.Grid tr.subtotal td.titulo-sacm:first-child  {
+	color: #ff422f;
+}
+
+.Grid tr.otros td {
+	color: #888;
+}
+
+.Grid tr.sacm td {
+    border-top:thin solid #efeeee;
+}
+
+.Grid tr.subtotal td {
+    border-bottom:thin solid #efeeee;
+    background-color: #efeeee;
+}
+
+.Grid tr.total td {
+    background-color: #ccc;
+}
+
+.Grid tr.sacm td:first-child {
+	color: #333333;
+}
+
+.Grid tr.sacm td.nivel1 {
+	display: none;
+}
+
+.Grid table tbody tr.sacm td.nivel2 {
+	font-size: 10px;
+	color: gray;
+	padding-left: 5px;
+	background-color: #eee;
+} 
+
+.Grid table tbody tr.sacm td.nivel3 {
+	color: gray;
+	padding-left: 5px;
+	font-weight: normal;
+}
+
+.referencias {
+	margin-left: 20px;
+	margin-right: 20px;
+	margin-top: 15px;
+	height: 25px;
+}
+
+.referencias h4 {
+	text-transform: uppercase;
+	font-family: "museosans500",sans-serif;
+	margin-bottom: 0px;
+	margin-top: 0px;
+	float: left;
+	padding-right: 15px;
+}
+
+.referencias .referenciaSacm {
+	width: 20px;
+	height: 15px;
+	background-color: #ff422f;
+	float: left;
+}
+
+.referencias .referenciaOtros {
+	width: 20px;
+	height: 15px;
+	background-color: #888;
+	float: left;
+}
+
+.referencias .texto {
+	float: left;
+	padding-left: 10px;
+	padding-right: 40px;
+	font-size: 12px;
+}
+
+.divider {
+	float:none;
+	clear: both;
+	width: 100%;
+	height: 1px;
+	line-height: 1px;
+}
+
+.recomendaciones {
+	margin-top: 50px;
+	padding-left: 20px;
+}
+
+.msg {
+    font-weight: bold;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-top: 10px;
+    width: 75%;
+    background-color: #F2F2F2;
+    -webkit-border-top-left-radius: 21px;
+    -moz-border-radius-topleft: 21px;
+    border-top-left-radius: 21px;
+    -webkit-border-top-right-radius: 21px;
+    -moz-border-radius-topright: 21px;
+    border-top-right-radius: 21px;
+    -webkit-border-bottom-right-radius: 21px;
+    -moz-border-radius-bottomright: 21px;
+    border-bottom-right-radius: 21px;
+    -webkit-border-bottom-left-radius: 21px;
+    -moz-border-radius-bottomleft: 21px;
+    border-bottom-left-radius: 21px;
+}
+
+
+#main-msg {
+	background: none;
+	margin: 0 auto;
+    width: 60%;
+}
+
+#crear_reporte {
+	margin: 0 auto;
+	width: 60%;
+}
+
+#crear_reporte #busca {
+	float: none;
+	width: 100%;
+	padding-bottom: 54px;
+}
+
+#week_selection,
+#month_selection {
+	width: 93%;
+	border: 1px solid white;
+	border-radius: 10px;
+	margin-left: 3%;
+	padding-bottom: 5px;
+	height: 70px;
+}
+
+#month_week_selection {
+	width: 100%;
+}
+
+#week_selection.disabled-selection,
+#month_selection.disabled-selection {
+	display: none;
+}
+
+.period_of_time_selection {
+	width: 100%;
+	height: 40px;
+	position: relative;
+}
+
+.period_of_time_selection h2 {
+	width: 50%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+} 
+
+.period_of_time_selection .select_buttons {
+	position: absolute;
+	right: 30px;
+	top: 4px;
+	text-align: center;
+}
+
+.period_of_time_selection .select_buttons div {
+	background: #777;
+}
+
+.period_of_time_selection .select_button {
+	width: 150px;
+	color: white;
+	text-transform: uppercase;
+	padding: 4px 10px 4px 10px;
+	float: left;
+	margin-right: 2px;
+}
+
+.period_of_time_selection .select_buttons div.disabled-selection {
+	background: #ddd;
+}
+
+.period_of_time_selection .select_buttons div.disabled-selection:hover {
+	cursor: pointer;
+}
+
+.col-33 {
+	width: 33%;
+	float: left;
+}
+
+#crear_reporte #buscaBot input {
+	width: 50%;
+}
+
+#archivar_reporte {
+	background-color: #f2f2f2;
+    border-radius: 10px;
+    width: 60%;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+#archivar_reporte .msg {
+	background: none;
+	margin: 0px;
+	padding: 10px 0px 20px 0px;
+	width: 100%;
+	font-size: 15px;
+}
+
+#archivar_reporte input {
+	width: 30%;
+}
+
+#adminInt .error {
+	color: red;
+	font-weight: normal;
+}
+
+.campo-no-editable {
+	color: #999;
+	border-bottom: 1px solid #ccc;
+	font-weight: normal;
+	font-size: 14px;
+	margin-left: 30px;
+    margin-right: 30px;
+    padding-top: 10px;
+}
+
+.editar-track h3,
+.editar-track h5 {
+	color: #666;
+	margin-left: 30px;
+    margin-right: 30px;
+}
+
+#crear_reporte #adminInt {
+	width: 100%;
+}
+
+#crear_reporte #busca {
+	margin-left: 0px;
+}
+
+
+table.dataTable thead th:last-child div.DataTables_sort_wrapper span,
+#crear_reporte table.datatable-weekly thead th:nth-child(5) div.DataTables_sort_wrapper span,
+#crear_reporte table.datatable-weekly thead th:nth-child(6) div.DataTables_sort_wrapper span,
+#crear_reporte table.datatable-monthly thead th:nth-child(7) div.DataTables_sort_wrapper span,
+#crear_reporte table.datatable-monthly thead th:nth-child(8) div.DataTables_sort_wrapper span {
+	display: none;
+}
+
+#logo img {
+	width: 250px;
+	height: auto;
+}
+
+.email .dropdown, 
+.email .dropdown-no-img {
+	margin-top: 0px;
+	width: 35%;
+}
+
+.email .campo:last-child label {
+	display: inline-block;
+    padding-top: 15px;
+    vertical-align: top;
+}

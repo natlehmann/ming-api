@@ -1,0 +1,24 @@
+@media screen and (max-width:1025px) {
+	
+	#crear .classname,
+	#crear input[type="submit"],
+	#crear input[type="button"],
+	#crear button[type="button"],
+	#crear button[type="submit"],
+	.acciones .classname,
+	.acciones input[type="submit"],
+	.acciones input[type="button"],
+	.acciones button[type="button"],
+	.acciones button[type="submit"],
+	#busca-ancho-pag .classname,
+	#busca-ancho-pag input[type="submit"],
+	#busca-ancho-pag input[type="button"],
+	#busca-ancho-pag button[type="button"],
+	#busca-ancho-pag button[type="submit"] {
+		width: 30%;
+	}
+	
+	.user {
+		margin-bottom: 5px;
+	}
+}

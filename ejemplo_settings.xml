@@ -1,0 +1,34 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                      http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<base.url>http://localhost:8080/reportes-dinamicos</base.url>
+				<tomcat.home>/usr/local/tomcat</tomcat.home>
+				
+				<db.host>localhost</db.host>
+				<db.schema>reportesDinamicos</db.schema>
+				<db.user></db.user>
+				<db.password></db.password>
+				
+				<smtp.hostname></smtp.hostname>
+				<smtp.username></smtp.username>
+				<smtp.password></smtp.password>
+				<smtp.port>25</smtp.port>
+				<smtp.socket.factory></smtp.socket.factory>
+				<mail.debug>false</mail.debug>
+				<mail.from>mmingrone@bmat.com</mail.from>
+				
+			</properties>
+		</profile>
+	</profiles>
+
+</settings>

@@ -1,0 +1,180 @@
+#mingrone .ui-datepicker {
+	border-radius: 0px;
+	width: auto;
+	border: 0px;
+	margin: 0 auto;
+}
+
+#calendario #calendar,
+#mingrone .contenedor_calendario {
+	margin: 0 auto;
+    width: 95%;
+}
+
+#mingrone .ui-datepicker .ui-widget-header {
+	background-image: none;
+	background-color: #666666;
+    color: #CCCCCC;
+    font-size: 12px;
+    font-weight: bold;
+    border: 1px solid #fff;
+    border-radius: 0px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+#mingrone .ui-datepicker th {
+	background-color: #666666;
+    color: #CCCCCC;
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: normal;
+    border: 1px solid #fff;
+}
+
+#mingrone .ui-datepicker .ui-widget-header .ui-icon {
+	background-image: url("estadisticas/images/ui-icons_ffffff_256x240.png")
+}
+
+#mingrone .ui-datepicker .ui-state-default, 
+#mingrone .ui-datepicker .ui-widget-content .ui-state-default {
+	background-image: none;
+	background-color: #EDEDED;
+    color: #999999;
+    font-size: 12px;
+    padding-bottom: 7px;
+    padding-top: 7px;
+    text-align: center;
+    border: 0px;
+}
+
+#mingrone .ui-datepicker td.destacada a.ui-state-default {
+	background-image: none;
+	color: #333333;
+	text-decoration: underline;
+}
+
+#mingrone .ui-datepicker .ui-datepicker-prev, 
+#mingrone .ui-datepicker .ui-datepicker-next {
+	padding-top: 4px;
+	padding-bottom: 2px;
+}
+
+#mingrone .dataTables_info {
+	max-width: 40%;
+}
+
+#mingrone .dataTables_paginate {
+	max-width: 55%;
+}
+
+#mingrone .ranking .dataTables_wrapper .fg-toolbar:first-child {
+	border-radius: 0px;
+}
+
+.Grid table.dataTable thead th {
+	cursor: default;
+}
+
+.ranking-no-sort table.dataTable thead th div.DataTables_sort_wrapper {
+	padding-right: 0px;
+}
+
+.Grid .dataTables_wrapper .ui-widget-header {
+	background: none;
+	border: 0px;
+    font-size: 10px;
+    font-weight: normal;
+    padding-left: 2%;
+    padding-top: 22px;
+    color: #343333;
+}
+
+.Grid .dataTables_length select {
+	-moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.06)) repeat scroll 0 0 #F2F2F2;
+    border-color: #FFFFFF #F7F7F7 #F5F5F5;
+    border-image: none;
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px;
+    height: 28px;
+    overflow: hidden;
+    width: 85px;
+	font-weight:normal;
+    color: #62717A;
+    font-size: 12px;
+    line-height: 14px;
+    padding: 6px 8px 6px 10px;
+    padding-left: 6px;
+    text-shadow: 0 1px #FFFFFF;
+    letter-spacing: 1px;
+}
+
+.Grid .dataTables_filter input {
+	background: url("../images/search-white.png") no-repeat scroll 10px 6px #FCFCFC;
+    border: 1px solid #FFFFFF;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) inset;
+    color: #BEBEBE;
+    font-family: "Lucida Sans Unicode","Lucida Grande",sans-serif;
+    font-size: 12px;
+    padding: 5px 15px 6px 35px;
+    transition: all 0.7s ease 0s;
+    width: 150px;
+}
+
+.Grid .dataTables_paginate .ui-button {
+	background-color: #EEEEEE;
+    background-image: -moz-linear-gradient(center top , #F7F7F7, #EEEEEE);
+    border: 0 solid #DDDDDD;
+    border-radius: 3px;
+    color: #585858 !important;
+    margin-right: 3px !important;
+    padding: 3px 9px;
+    text-decoration: none;
+}
+
+.Grid .paging_full_numbers .ui-button:hover {
+	color: #ff3c2d !important;
+}
+
+.Grid .dataTables_paginate span a.ui-state-disabled,
+.Grid .dataTables_paginate span a.ui-state-disabled:hover {
+	background: none !important;
+	color: #585858 !important;
+	opacity: 1;
+}
+
+#mingrone table.dataTable tr.odd td.sorting_1 {
+    background-color: #FFBAB2;
+}
+
+#mingrone table.dataTable tr.odd td.sorting_2 {
+    background-color: #FFD1CC;
+}
+
+#mingrone table.dataTable tr.odd td.sorting_3 {
+    background-color: #E0E2FF;
+}
+
+#mingrone table.dataTable tr.even td.sorting_1 {
+    background-color: #FFD1CC;
+}
+
+#mingrone .ui-tooltip ul {
+	padding-left: 18px;
+	padding-right:10px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+
+#mingrone input[type='text'].ui-autocomplete-loading {
+    background: url("../images/spinner.gif");
+    background-repeat: no-repeat;
+    background-position: right;
+}
