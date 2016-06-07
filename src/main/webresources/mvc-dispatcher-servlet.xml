@@ -64,6 +64,19 @@
 		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 	         <property name="basename" value="classpath:messages"/>
 	         <property name="defaultEncoding" value="UTF-8"/>
+	         <property name="fallbackToSystemLocale" value="false"/>
+	</bean>
+	
+	<mvc:interceptors>
+        <bean
+            class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+            <beans:property name="paramName" value="locale" />
+        </bean>
+    </mvc:interceptors>
+    
+    <bean id="localeResolver"
+		class="ar.com.marcelomingrone.vericast.reports.filters.UserLocaleResolver">
+		<property name="defaultLocale" value="es" />
 	</bean>
 
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
