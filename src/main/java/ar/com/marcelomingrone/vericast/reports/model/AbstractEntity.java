@@ -28,8 +28,10 @@ public class AbstractEntity implements Serializable, Listable {
 	
 	protected static transient SimpleDateFormat datetimeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 	
+	@Transient
+	@JsonIgnore
 	@Resource(name = "messageSource")
-	private MessageSource messageSource;
+	private transient MessageSource messageSource;
 	
 	@Id
 	@GeneratedValue

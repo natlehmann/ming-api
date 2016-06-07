@@ -1,7 +1,9 @@
 create table User(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	username varchar(255),
-	password varchar(255)
+	username varchar(255) NOT NULL,
+	password varchar(255) NOT NULL,
+	language varchar(2),
+	apiKey varchar(255)
 )  ENGINE=InnoDB;
 
 CREATE UNIQUE INDEX UK_user_username ON User(username);
