@@ -59,9 +59,9 @@
            		<div id="button-menu"> 
            		
 	           		<div class="item-menu">
-	           			<a href='<c:url value="/report/filters"/>' 
-	           				class='<%= itemMenuSeleccionado.equals("report") ? "activo" : "" %>'>
-	           				<spring:message code="menu.report"/>
+	           			<a href='<c:url value="/report/byChannel/filters"/>' 
+	           				class='<%= itemMenuSeleccionado.equals("reportByChannel") ? "activo" : "" %>'>
+	           				<spring:message code="menu.report.by.channel"/>
 	           			</a>
 	           		</div>
            		

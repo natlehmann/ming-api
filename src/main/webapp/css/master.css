@@ -506,6 +506,10 @@ h2 {
 	margin-top: -5px;
 }
 
+#reportByChannelForm .dropdown {
+	width: 100%;
+}
+
 .dropdown:before,
 .dropdown:after {
 	content: '';
@@ -1225,4 +1229,14 @@ table.dataTable thead th:last-child div.DataTables_sort_wrapper span,
 	display: inline-block;
     padding-top: 15px;
     vertical-align: top;
+}
+
+.inline {
+	display: inline-block;
+	margin-left: 20px;
+    margin-right: 20px;
+}
+
+.width-40 {
+	width: 40%;
 }

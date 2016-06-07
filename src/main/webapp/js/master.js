@@ -5,6 +5,10 @@ $(function() {
 		modal : true,
 		autoOpen : false
 	});
+	
+	$(".datepicker").datepicker({
+		dateFormat: 'dd/mm/yy'
+	});
 });
 
 function ir(url) {
