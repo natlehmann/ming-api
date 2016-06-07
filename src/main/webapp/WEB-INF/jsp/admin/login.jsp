@@ -3,13 +3,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 
 <jsp:include page="/WEB-INF/jsp/includes/header.jsp" />
 
 <div id="login">
 
 	<div class="izq"><img src='<c:url value="/images/h1Izq.jpg"/>' width="14" height="34" /></div>
-	<h1>LOGIN WITH USERNAME AND PASSWORD</h1>
+	<h1><spring:message code="login.msg"/></h1>
 	<div class="der"><img src='<c:url value="/images/h1Der.jpg"/>' width="31" height="34" /></div>
 	
 	<c:if test="${msg != null}">
@@ -20,12 +21,12 @@
 	
         
 		<div class="user">
-			username
+			<spring:message code="username"/>
 			<input name="j_username" type="text" size="40" placeholder="" />
 		</div>
 
 		<div class="user">
-			password
+			<spring:message code="password"/>
 			<input name="j_password" type="password" size="40" placeholder="" />
 		</div>
 

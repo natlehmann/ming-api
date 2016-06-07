@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Reportes Vericast</title>
+		<title><spring:message code="vericast.reports"/></title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		
@@ -46,8 +47,8 @@
             	
             	<sec:authorize access="isAuthenticated()">
 		            <div id="logout">
-		            	<strong>Usuario:</strong>  <sec:authentication property="principal.username" /> / 
-		            	<a href='<c:url value="/logout"/>'>Salir</a>
+		            	<strong><spring:message code="user"/></strong>  <sec:authentication property="principal.username" /> / 
+		            	<a href='<c:url value="/logout"/>'><spring:message code="logout"/></a>
 		            </div>
 		       </sec:authorize>
         	</div>
@@ -60,7 +61,7 @@
 	           		<div class="item-menu">
 	           			<a href='<c:url value="/report/filters"/>' 
 	           				class='<%= itemMenuSeleccionado.equals("report") ? "activo" : "" %>'>
-	           				GENERAR REPORTE
+	           				<spring:message code="menu.report"/>
 	           			</a>
 	           		</div>
            		
