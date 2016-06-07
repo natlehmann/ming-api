@@ -35,7 +35,7 @@
 	<mvc:resources location="/images/" mapping="/images/**"/>
 	<mvc:resources location="/fonts/" mapping="/fonts/**"/>
 
-	<context:component-scan base-package="ar.com.marcelomingrone.vericast.reports.controllers" />
+	<context:component-scan base-package="ar.com.marcelomingrone.vericast.reports" />
 	
 	<context:property-placeholder location="classpath:configuracion.properties"/>
 
