@@ -1,33 +1,25 @@
 package ar.com.marcelomingrone.vericast.reports.controllers;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import antlr.Utils;
 import ar.com.marcelomingrone.vericast.reports.model.TimePeriod;
 
 @Controller
@@ -38,6 +30,9 @@ public class ReportByChannelController {
 	
 	public static final String EXPORT_ACTION = "Generar reporte";
 	public static final String SAVE_ACTION = "Archivar reporte";
+	
+	@Autowired
+	private MessageSource messageSource;
 	
 	@InitBinder
 	private void dateBinder(WebDataBinder binder) {
@@ -57,37 +52,37 @@ public class ReportByChannelController {
 		return new ModelAndView("report/byChannel/filters", model);
 	}
 	
-	/*
 	@RequestMapping("/create")
-	public ModelAndView createReport(@RequestParam("country") Long countryId, 
-			@RequestParam("year") Integer year,
-			@RequestParam(value="weekFrom", required=false, defaultValue="") Integer weekFrom,
-			@RequestParam(value="weekTo", required=false, defaultValue="") Integer weekTo,
-			@RequestParam(value="month", required=false, defaultValue="") Integer month,
-			@RequestParam("right") Long rightId,
-			@RequestParam(value="source", required=false, defaultValue="") Long sourceId,
-			@RequestParam("action") String action,
-			ModelMap model, HttpSession session) {
+	public ModelAndView createReport(@RequestParam("timePeriod") String timePeriod, 
+			@RequestParam("endDate") Date endDate, ModelMap model, HttpSession session, Locale locale) {
+		
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-		setConversationParameters(model, year, countryId, weekFrom, weekTo, rightId, sourceId, month);
-		
-		if (!validFilters(model, weekFrom, weekTo, month)) {
-			return initReportFilters(model);
-		}
-		
-		if (action.equals(EXPORT_ACTION)) {
-			return getExcel(countryId, year, weekFrom, weekTo, 
-					month, rightId, sourceId, model, session);
-		}
-		
-		if (action.equals(SAVE_ACTION)) {
-			return saveReport(model, session);
-		}
+//		setConversationParameters(model, timePeriod, endDate);
+//		
+//		if (!validFilters(model, weekFrom, weekTo, month)) {
+//			return initReportFilters(model);
+//		}
+//		
+//		if (action.equals(EXPORT_ACTION)) {
+//			return getExcel(countryId, year, weekFrom, weekTo, 
+//					month, rightId, sourceId, model, session);
+//		}
+//		
+//		if (action.equals(SAVE_ACTION)) {
+//			return saveReport(model, session);
+//		}
 		
 		return null;
 	}
 
 
+	/*
 	private ModelAndView saveReport(ModelMap model, HttpSession session) {
 		
 		SummaryReport report = (SummaryReport) session.getAttribute(
@@ -243,34 +238,23 @@ public class ReportByChannelController {
 		return initReportFilters(model);
 	}
 	
+	*/
+	
 	
 	@ResponseBody
 	@RequestMapping("/exists")
-	public String checkIfReportExists(@RequestParam("country") Long countryId, 
-			@RequestParam("year") Integer year,
-			@RequestParam(value="weekFrom", required=false, defaultValue="") Integer weekFrom,
-			@RequestParam(value="weekTo", required=false, defaultValue="") Integer weekTo,
-			@RequestParam(value="month", required=false, defaultValue="") Integer month,
-			@RequestParam("right") Long rightId,
-			@RequestParam(value="source", required=false, defaultValue="") Long sourceId,
-			@RequestParam("action") String action,
-			ModelMap model, HttpSession session) {
+	public String checkIfReportExists(@RequestParam("timePeriod") String timePeriod, 
+			@RequestParam("endDate") Date endDate, ModelMap model, HttpSession session, Locale locale) {
 		
-		SummaryReport report = service.getExistingReport(
-				countryId, year, weekFrom, weekTo, month, rightId, sourceId);
+		//TODO: IMPLEMENTAR!!
+//		return messageSource.getMessage("report.byChannel.exists", null, locale);
 		
-		if (report == null) {
-			return "";
-			
-		} else {
-			return "Ya existe un reporte correspondiente al mismo período (ID: " + report.getId() 
-					+ "). ¿Está seguro que desea reemplazarlo?";
-		}
+		return "";
 		
 	}
 	
 	
-	
+	/*
 	@Transactional
 	@RequestMapping(value="/csv")
 	public ModelAndView getWeeklyCsvReport(@RequestParam("id") Long id, ModelMap model) {

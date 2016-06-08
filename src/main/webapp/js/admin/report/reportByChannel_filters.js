@@ -9,28 +9,35 @@ $(document).ready(function() {
 	
 } );
 
-/*
-function checkReportExistence(element) {
+function checkExistence(element) {
 	
-	$("#action").val( $(element).val() );
-	
-	$.get( $("#check_existence_url").val(), $("#form").serialize(), function(data) {
+	$.get( $("#check_existence_url").val(), $("#reportByChannelForm").serialize(), function(data) {
 		if (data != "") {
 			
 			$("#dialog-report-exists .message").html(data);
 			$("#dialog-report-exists").dialog("open");
 			
 		} else {
-			saveReport();
+			buildReport();
 		}
 	});
 }
 
-function saveReport() {
-	$("#form").attr("action", $("#form_action").val() );
-	$("#form").submit();
+function buildReport() {
+	
+	$('#dialog-report-exists').dialog('close');
+	
+	$("#reportByChannelForm").hide();
+	$("#msg-report-in-progress").show();
+	$("#downloaded").hide();
+	
+	$.get( $("#form_action").val(), $("#reportByChannelForm").serialize(), function() {
+		$("#progress-msg").hide();
+		$("#downloaded").show();
+	});
 }
 
+/*
 function clearSelection() {
 	clearTimeout(timer);
 	$("#archivar_reporte").hide();

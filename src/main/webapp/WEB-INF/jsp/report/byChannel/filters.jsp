@@ -12,8 +12,8 @@
 
 	<div class="msg" id="main-msg">${msg}</div>
 	
-	<input type="hidden" id="form_action" value='<c:url value="/report/create"/>' />
-	<input type="hidden" id="check_existence_url" value='<c:url value="/report/exists"/>' />
+	<input type="hidden" id="form_action" value='<c:url value="/report/byChannel/create"/>' />
+	<input type="hidden" id="check_existence_url" value='<c:url value="/report/byChannel/exists"/>' />
 		
 	
 	<form method="post" id="reportByChannelForm">
@@ -52,7 +52,7 @@
 	
             
 				<div id="buscaBot">
-					<input type="button" value='<spring:message code="build"/>' />
+					<input type="button" value='<spring:message code="build"/>' onclick="checkExistence(this)"/>
 				</div>
 				
 			</div>
@@ -63,6 +63,35 @@
 	</form>
 	
 	
+	<div id="msg-report-in-progress" style="display: none;">
+		
+		<div class="msg">
+			<span id="progress-msg">
+				<spring:message code="report.in.progress"/>
+			</span>
+			
+			<div id="downloaded">
+				<spring:message code="report.ready"/>
+				<br/>
+				
+				<div class="width-20">
+					<input type="button" value='<spring:message code="download.report"/>' />
+				</div>
+				
+				<br/>
+				<br/>
+				
+				<spring:message code="would.you.like.to.save.this.report"/>
+				<br/>
+				
+				<div class="width-20">
+					<input type="button" value='<spring:message code="save"/>' />
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
 	<div id="dialog-report-exists" style="display:none;" title='<spring:message code="confirm"/>'>
 			<p>
 				<span class="message">
@@ -70,7 +99,7 @@
 			</p>
 			
 			<div class="ui-dialog-buttonpane">
-				<input type="button" value="Aceptar" onclick="saveReport()" />
+				<input type="button" value='<spring:message code="accept"/>' onclick="buildReport()" />
 				<button type="button" onclick="$('#dialog-report-exists').dialog('close');">
 					<spring:message code="cancel"/>
 				</button>

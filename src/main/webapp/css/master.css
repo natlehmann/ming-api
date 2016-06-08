@@ -1240,3 +1240,15 @@ table.dataTable thead th:last-child div.DataTables_sort_wrapper span,
 .width-40 {
 	width: 40%;
 }
+
+.width-20 {
+	width: 20%;
+}
+
+#downloaded input[type="submit"], 
+#downloaded button[type="button"], 
+#downloaded button[type="submit"], 
+#downloaded input[type="button"] {
+	background-image: none;
+	margin-top:10px;
+}
