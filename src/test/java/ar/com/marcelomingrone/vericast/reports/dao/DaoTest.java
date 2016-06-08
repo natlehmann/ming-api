@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:mvc-dispatcher-servlet-test.xml"})
 @Transactional
-public class DaoTest {
+public abstract class DaoTest {
 	
 	@Autowired
 	private SessionFactory sessionFactory;
