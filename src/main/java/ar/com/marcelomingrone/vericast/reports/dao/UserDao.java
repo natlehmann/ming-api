@@ -37,7 +37,7 @@ public class UserDao extends AbstractEntityDao<User> {
 		try {
 			user = (User)sessionFactory.getCurrentSession().createQuery(
 					"SELECT u FROM User u WHERE u.username = :username")
-					.setParameter("username", username).uniqueResult();
+					.setParameter("username", username.toLowerCase()).uniqueResult();
 			
 		} catch (NonUniqueResultException e) {
 			log.error("Se encontro mas de un usuario con nombre " + username);
@@ -47,6 +47,16 @@ public class UserDao extends AbstractEntityDao<User> {
 		}
 		
 		return user;
+	}
+	
+	@Override
+	public User save(User entidad) {
+		
+		if (entidad.getUsername() != null) {
+			entidad.setUsername(entidad.getUsername().toLowerCase());
+		}
+		
+		return super.save(entidad);
 	}
 
 }
