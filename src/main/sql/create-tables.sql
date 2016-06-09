@@ -23,3 +23,20 @@ create table User_Role(
 	FOREIGN KEY (role_id) REFERENCES Role(id)
 )  ENGINE=InnoDB;
 
+create table Report(
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	owner_id BIGINT NOT NULL,
+	timePeriod varchar(20) NOT NULL,
+	endDate date NOT NULL,
+	FOREIGN KEY (owner_id) REFERENCES User(id)
+)  ENGINE=InnoDB;
+
+create table ReportItem(
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	trackName varchar(255) NOT NULL,
+	artistName varchar(255) NOT NULL,
+	labelName varchar(255) NOT NULL,
+	playcounts blob NOT NULL,	
+	report_id BIGINT NOT NULL,
+	FOREIGN KEY (report_id) REFERENCES Report(id)
+)  ENGINE=InnoDB;

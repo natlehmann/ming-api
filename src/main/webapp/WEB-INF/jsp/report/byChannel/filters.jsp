@@ -45,7 +45,7 @@
 					<h2><spring:message code="end.date"/></h2>
 					
 					<div class="dropdown">
-						<input name="endDate" value='<fmt:formatDate value="${endDate}" pattern="dd/MM/yyyy"/>' 
+						<input name="endDate" value='<fmt:formatDate value="${selectedEndDate}" pattern="dd/MM/yyyy"/>' 
 							class="datepicker dropdown-select"/>
 					</div>
 				</div>

@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import ar.com.marcelomingrone.vericast.reports.model.Report;
 import ar.com.marcelomingrone.vericast.reports.model.TimePeriod;
+import ar.com.marcelomingrone.vericast.reports.services.ReportService;
 
 @Controller
 @RequestMapping("/report/byChannel")
@@ -33,6 +35,9 @@ public class ReportByChannelController {
 	
 	@Autowired
 	private MessageSource messageSource;
+	
+	@Autowired
+	private ReportService service;
 	
 	@InitBinder
 	private void dateBinder(WebDataBinder binder) {
@@ -47,38 +52,27 @@ public class ReportByChannelController {
 	public ModelAndView initReportFilters(ModelMap model) {
 		
 		model.addAttribute("timePeriods", TimePeriod.values());	
-		model.addAttribute("endDate", new Date());
 		
 		return new ModelAndView("report/byChannel/filters", model);
 	}
 	
 	@RequestMapping("/create")
-	public ModelAndView createReport(@RequestParam("timePeriod") String timePeriod, 
-			@RequestParam("endDate") Date endDate, ModelMap model, HttpSession session, Locale locale) {
+	public ModelAndView createReport(
+			@RequestParam("timePeriod") String timePeriod, 
+			@RequestParam("endDate") Date endDate, ModelMap model, 
+			HttpSession session, Locale locale) {
 		
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
-//		setConversationParameters(model, timePeriod, endDate);
-//		
-//		if (!validFilters(model, weekFrom, weekTo, month)) {
-//			return initReportFilters(model);
-//		}
-//		
-//		if (action.equals(EXPORT_ACTION)) {
-//			return getExcel(countryId, year, weekFrom, weekTo, 
-//					month, rightId, sourceId, model, session);
-//		}
-//		
-//		if (action.equals(SAVE_ACTION)) {
-//			return saveReport(model, session);
-//		}
+		setConversationParameters(model, timePeriod, endDate);
+		
+		Report report = service.getPlaycountsByChannel(timePeriod, endDate);
+		
+		session.setAttribute(Utils.SessionParams.ACTIVE_REPORT.toString(), report);
+		model.put("report", report);
+//		return new ModelAndView("chartSummaryExcelView", model);
 		
 		return null;
+
 	}
 
 
@@ -106,21 +100,14 @@ public class ReportByChannelController {
 		
 		return initReportFilters(model);
 	}
+*/
 
-
-	private void setConversationParameters(ModelMap model, Integer year, Long countryId, Integer weekFrom,
-			Integer weekTo, Long rightId, Long sourceId, Integer month) {
-		model.put("selectedYear", year);
-		model.put("selectedCountry", countryId);
-		model.put("selectedWeekFrom", weekFrom);
-		model.put("selectedWeekTo", weekTo);
-		model.put("selectedRight", rightId);
-		model.put("selectedMonth", month);
-		model.put("selectedSource", sourceId);		
-		model.put("selectedIsMonthly", month != null);
+	private void setConversationParameters(ModelMap model, String timePeriod, Date endDate) {
+		model.put("selectedPeriod", timePeriod);
+		model.put("selectedEndDate", endDate);
 	}
 
-
+	/*
 	public ModelAndView getExcel(Long countryId, Integer year, Integer weekFrom,
 			Integer weekTo, Integer month, Long rightId,
 			Long sourceId, ModelMap model, HttpSession session) {
