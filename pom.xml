@@ -47,9 +47,16 @@
 							<targetPath>WEB-INF</targetPath>
 							<filtering>true</filtering>
 						</resource>
+						
+						<resource>
+							<directory>src/main/sql</directory>
+							<targetPath>../sql</targetPath>
+							<filtering>true</filtering>
+						</resource>
 					</webResources>
 				</configuration>
 			</plugin>
+      
 		</plugins>
 	</build>
 
