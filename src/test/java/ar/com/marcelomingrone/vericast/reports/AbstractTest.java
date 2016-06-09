@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,6 +23,12 @@ public abstract class AbstractTest {
 	
 	@Autowired
 	protected SessionFactory sessionFactory;
+	
+	@Value(value="${test.username}")
+	protected String USERNAME;
+	
+	@Value(value="${test.apiKey}")
+	protected String API_KEY;
 	
 	protected TestDataBuilder builder;	
 

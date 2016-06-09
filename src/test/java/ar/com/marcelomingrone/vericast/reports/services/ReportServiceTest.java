@@ -24,8 +24,8 @@ public class ReportServiceTest extends AbstractTest {
 	@Test
 	public void getChannelListNotNull() {
 		
-		builder.buildUser("capif", "5ed325681f");
-		mockPrincipal("capif");
+		builder.buildUser(USERNAME, API_KEY);
+		mockPrincipal(USERNAME);
 		
 		ChannelList list = service.getChannelList();
 		assertNotNull(list);

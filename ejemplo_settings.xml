@@ -19,6 +19,9 @@
 				<db.user></db.user>
 				<db.password></db.password>
 				
+				<test.username></test.username>
+				<test.apiKey></test.apiKey>
+				
 				<smtp.hostname></smtp.hostname>
 				<smtp.username></smtp.username>
 				<smtp.password></smtp.password>
