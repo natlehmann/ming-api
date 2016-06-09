@@ -7,6 +7,8 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.NonUniqueResultException;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,6 +49,18 @@ public class UserDao extends AbstractEntityDao<User> {
 		}
 		
 		return user;
+	}
+	
+	@Transactional
+	public User getCurrentUser() {
+		
+		SecurityContext context = SecurityContextHolder.getContext();
+        if (context != null && context.getAuthentication() != null) {
+            
+        	return getByUsername(context.getAuthentication().getName());
+        }
+        
+        return null;        
 	}
 	
 	@Override

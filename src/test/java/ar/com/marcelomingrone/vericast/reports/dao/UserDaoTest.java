@@ -6,9 +6,10 @@ import static org.junit.Assert.assertNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import ar.com.marcelomingrone.vericast.reports.AbstractTest;
 import ar.com.marcelomingrone.vericast.reports.model.User;
 
-public class UserDaoTest extends DaoTest {
+public class UserDaoTest extends AbstractTest {
 	
 	@Autowired
 	private UserDao dao;
@@ -46,6 +47,33 @@ public class UserDaoTest extends DaoTest {
 		
 		User result = dao.getByUsername("Username");
 		assertEquals(result, user);
+	}
+	
+	@Test
+	public void findCurrentUser() {
+		
+		User user = builder.buildUser("username");
+		mockPrincipal("username");
+		
+		User result = dao.getCurrentUser();
+		assertEquals(result, user);
+	}
+	
+	@Test
+	public void currentUserNotFound() {
+		
+		mockPrincipal("username");
+		User result = dao.getCurrentUser();
+		assertNull(result);
+	}
+	
+	@Test
+	public void noCurrentUser() {
+		
+		builder.buildUser("username");
+		
+		User result = dao.getCurrentUser();
+		assertNull(result);
 	}
 
 }

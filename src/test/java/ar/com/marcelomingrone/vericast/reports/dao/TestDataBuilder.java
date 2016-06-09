@@ -12,14 +12,20 @@ public class TestDataBuilder {
 		this.currentSession = session;
 	}
 	
-	public User buildUser(String username) {
+	public User buildUser(String username, String apiKey) {
 		
 		User user = new User();
 		user.setUsername(username);
+		user.setApiKey(apiKey);
 		user.setPassword("password");
 		currentSession.saveOrUpdate(user);
 		
 		return user;
+	}
+	
+	public User buildUser(String username) {
+		
+		return buildUser(username, null);
 	}
 
 }
