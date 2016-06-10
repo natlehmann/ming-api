@@ -1,6 +1,7 @@
 package ar.com.marcelomingrone.vericast.reports.model.dto;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -37,6 +38,13 @@ public class ChannelList implements Serializable {
 
 	public void setChannels(List<Channel> channels) {
 		this.channels = channels;
+	}
+
+	public void addChannel(Channel channel) {
+		if (this.channels == null) {
+			this.channels = new LinkedList<>();
+		}
+		this.channels.add(channel);		
 	}
 	
 }

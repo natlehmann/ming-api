@@ -24,11 +24,13 @@ public abstract class AbstractTest {
 	@Autowired
 	protected SessionFactory sessionFactory;
 	
+	
 	@Value(value="${test.username}")
 	protected String USERNAME;
 	
 	@Value(value="${test.apiKey}")
 	protected String API_KEY;
+	
 	
 	protected TestDataBuilder builder;	
 

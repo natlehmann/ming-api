@@ -59,4 +59,9 @@ public class User extends AbstractEntity {
 		this.apiKey = apiKey;
 	}
 	
+	@Override
+	public String toString() {
+		return this.username;
+	}
+	
 }

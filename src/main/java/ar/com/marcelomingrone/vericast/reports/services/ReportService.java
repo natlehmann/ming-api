@@ -1,5 +1,6 @@
 package ar.com.marcelomingrone.vericast.reports.services;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -13,7 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import ar.com.marcelomingrone.vericast.reports.controllers.ReportByChannelController;
+import ar.com.marcelomingrone.vericast.reports.dao.ReportDao;
 import ar.com.marcelomingrone.vericast.reports.dao.UserDao;
 import ar.com.marcelomingrone.vericast.reports.model.Report;
 import ar.com.marcelomingrone.vericast.reports.model.ReportItem;
@@ -29,46 +30,27 @@ public class ReportService {
 	
 	private static Log log = LogFactory.getLog(ReportService.class);
 	
-	private static final String PAGE_LIMIT = "2000";
+	private static final SimpleDateFormat endDateFormat = new SimpleDateFormat("yyyyMMdd");
 	
-	@Value(value="${vericast.api.channel.list}")
-	private String CHANNEL_LIST_URL;
 	
-	@Value(value="${vericast.api.track.list.by.channel}")
-	private String TRACKS_BY_CHANNEL_URL;
-	
-	private enum ApiParams {
-		
-		USER,
-		API,
-		LIMIT,
-		CHANNEL,
-		END,
-		PERIOD;
-		
-		public String toString() {
-			return this.name().toLowerCase();
-		}
-		
-		public String asParam() {
-			return this.toString() + "=";
-		}
-	}
+	@Autowired
+	private VericastApiDelegate api;
 	
 	@Autowired
 	private UserDao userDao;
 	
-
-	public Report getPlaycountsByChannel(String timePeriod, Date endDate) {
-		
-		User currentUser = userDao.getCurrentUser();
+	@Autowired
+	private ReportDao reportDao;
+	
+/*
+	public void buildPlaycountsByChannel(Report report, String timePeriod, Date endDate) {
 		
 		Map<Track, List<PlaycountByChannel>> playcountsByTrack = new HashMap<>();
 		
-        ChannelList channelList = getChannelList(currentUser);
-        log.info("Recuperando lista de canales " + channelList);
+        List<Channel> channelList = api.getChannelList(report.getOwner());
+        log.info("Recuperando lista de canales para usuario " + report.getOwner());
         
-        for (Channel channel : channelList.getChannels()) {
+        for (Channel channel : channelList) {
         	
         	log.info("Recuperando lista de track para el canal " + channel.getName());
         	TrackList trackList = getTrackListByChannel(channel.getKeyname(), currentUser);
@@ -103,7 +85,7 @@ public class ReportService {
 		
         
         Report report = new Report();
-        report.setEndDate(new Date()); // TODO
+        report.setEndDate(endDate);
         report.setOwner(currentUser);
         report.setTimePeriod(timePeriod);
         report.setItems(items);
@@ -111,7 +93,8 @@ public class ReportService {
 		return report;
 	}
 	
-	protected TrackList getTrackListByChannel(String keyname, User currentUser) {
+	protected TrackList getTrackListByChannel(String keyname, User currentUser, 
+			Date endDate, String timePeriod) {
 		
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(TRACKS_BY_CHANNEL_URL)
@@ -119,8 +102,8 @@ public class ReportService {
 				.append("&").append(ApiParams.API.asParam()).append(currentUser.getApiKey())
 				.append("&").append(ApiParams.LIMIT.asParam()).append(PAGE_LIMIT)
 				.append("&").append(ApiParams.CHANNEL.asParam()).append(keyname)
-				.append("&").append(ApiParams.END.asParam()).append("20160606")  //TODO!!!!!!!!
-				.append("&").append(ApiParams.PERIOD.asParam()).append("week");  // TODO!!!!!!!!!!!
+				.append("&").append(ApiParams.END.asParam()).append(endDateFormat.format(endDate))  
+				.append("&").append(ApiParams.PERIOD.asParam()).append(timePeriod); 
 		
 		RestTemplate restTemplate = new RestTemplate();
 		TrackList list = restTemplate.getForObject(buffer.toString(), TrackList.class);
@@ -128,18 +111,21 @@ public class ReportService {
         return list;
 	}
 
-	protected ChannelList getChannelList(User currentUser) {
+	*/
+
+	public Report buildReport(String timePeriod, Date endDate) {
 		
-		StringBuffer buffer = new StringBuffer();
-		buffer.append(CHANNEL_LIST_URL)
-				.append("?").append(ApiParams.USER.asParam()).append(currentUser.getUsername())
-				.append("&").append(ApiParams.API.asParam()).append(currentUser.getApiKey())
-				.append("&").append(ApiParams.LIMIT.asParam()).append(PAGE_LIMIT);
+		User currentUser = userDao.getCurrentUser();
 		
-		RestTemplate restTemplate = new RestTemplate();
-        ChannelList channelList = restTemplate.getForObject(buffer.toString(), ChannelList.class);
+		Report report = new Report();
+        report.setEndDate(endDate);
+        report.setOwner(currentUser);
+        report.setTimePeriod(timePeriod);
         
-        return channelList;
+        report = reportDao.save(report);
+        return report;
 	}
+	
+	
 
 }
