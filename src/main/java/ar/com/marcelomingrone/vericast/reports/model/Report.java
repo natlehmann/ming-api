@@ -58,6 +58,12 @@ public class Report extends AbstractEntity {
 	
 	public void setItems(List<ReportItem> items) {
 		this.items = items;
+		
+		if (this.items != null) {
+			for (ReportItem item : this.items) {
+				item.setReport(this);
+			}
+		}
 	}
 	
 }

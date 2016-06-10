@@ -1,11 +1,21 @@
 package ar.com.marcelomingrone.vericast.reports.model;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
+
+import ar.com.marcelomingrone.vericast.reports.model.dto.Channel;
+import ar.com.marcelomingrone.vericast.reports.model.dto.PlaycountByChannel;
 
 @Entity
 public class ReportItem extends AbstractEntity {
@@ -27,6 +37,9 @@ public class ReportItem extends AbstractEntity {
 	
 	@ManyToOne(optional=false)
 	private Report report;
+	
+	@Transient
+	private transient Map<Channel, Long> playcountsByChannel;
 
 	public String getTrackName() {
 		return trackName;
@@ -66,6 +79,18 @@ public class ReportItem extends AbstractEntity {
 	
 	public void setReport(Report report) {
 		this.report = report;
+	}
+
+	@Transient
+	@JsonIgnore
+	public void setIndividualPlaycounts(List<PlaycountByChannel> playcounts) {
+		
+		this.playcountsByChannel = new HashMap<Channel, Long>();
+		
+		for (PlaycountByChannel count : playcounts) {
+			this.playcountsByChannel.put(count.getChannel(), count.getPlaycount());
+		}
+		
 	}
 	
 }

@@ -54,10 +54,11 @@ public class ReportServiceTest extends AbstractTest {
 		for (Track track : list.getTracks()) {
 			
 			assertNotNull(track.getName());
-			assertNotNull("Artista nulo para el track " + track.getName(), track.getArtist().getName());
-			assertNotNull("Label nulo para el track " + track.getName(), track.getLabel().getName());
-			assertNotNull("Playcount nulo para el track " + track.getName(), track.getPlaycount());
-			assertTrue("Playcount negativo para el track " + track.getName(), track.getPlaycount() >= 0);
+			assertNotNull("BmatID nulo para el track " + track, track.getId());
+			assertNotNull("Artista nulo para el track " + track, track.getArtist().getName());
+			assertNotNull("Label nulo para el track " + track, track.getLabel().getName());
+			assertNotNull("Playcount nulo para el track " + track, track.getPlaycount());
+			assertTrue("Playcount negativo para el track " + track, track.getPlaycount() >= 0);
 		}
 	}
 
