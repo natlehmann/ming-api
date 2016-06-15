@@ -30,8 +30,6 @@ public class ReportService {
 	
 	private static Log log = LogFactory.getLog(ReportService.class);
 	
-	private static final SimpleDateFormat endDateFormat = new SimpleDateFormat("yyyyMMdd");
-	
 	
 	@Autowired
 	private VericastApiDelegate api;
@@ -93,25 +91,9 @@ public class ReportService {
 		return report;
 	}
 	
-	protected TrackList getTrackListByChannel(String keyname, User currentUser, 
-			Date endDate, String timePeriod) {
-		
-		StringBuffer buffer = new StringBuffer();
-		buffer.append(TRACKS_BY_CHANNEL_URL)
-				.append("?").append(ApiParams.USER.asParam()).append(currentUser.getUsername())
-				.append("&").append(ApiParams.API.asParam()).append(currentUser.getApiKey())
-				.append("&").append(ApiParams.LIMIT.asParam()).append(PAGE_LIMIT)
-				.append("&").append(ApiParams.CHANNEL.asParam()).append(keyname)
-				.append("&").append(ApiParams.END.asParam()).append(endDateFormat.format(endDate))  
-				.append("&").append(ApiParams.PERIOD.asParam()).append(timePeriod); 
-		
-		RestTemplate restTemplate = new RestTemplate();
-		TrackList list = restTemplate.getForObject(buffer.toString(), TrackList.class);
-        
-        return list;
-	}
+*/
 
-	*/
+	
 
 	public Report buildReport(String timePeriod, Date endDate) {
 		

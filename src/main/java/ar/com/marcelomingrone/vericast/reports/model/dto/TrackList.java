@@ -1,6 +1,7 @@
 package ar.com.marcelomingrone.vericast.reports.model.dto;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -37,6 +38,14 @@ public class TrackList implements Serializable {
 
 	public void setTracks(List<Track> tracks) {
 		this.tracks = tracks;
+	}
+
+	public void addTrack(Track track) {
+		if (this.tracks == null) {
+			this.tracks = new LinkedList<>();
+		}
+		
+		this.tracks.add(track);		
 	}
 	
 }

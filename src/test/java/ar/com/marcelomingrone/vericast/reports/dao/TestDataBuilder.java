@@ -5,6 +5,8 @@ import org.hibernate.Session;
 import ar.com.marcelomingrone.vericast.reports.model.User;
 import ar.com.marcelomingrone.vericast.reports.model.dto.Channel;
 import ar.com.marcelomingrone.vericast.reports.model.dto.ChannelList;
+import ar.com.marcelomingrone.vericast.reports.model.dto.Track;
+import ar.com.marcelomingrone.vericast.reports.model.dto.TrackList;
 
 public class TestDataBuilder {
 	
@@ -42,6 +44,22 @@ public class TestDataBuilder {
 		}
 		
 		return channelList;
+	}
+
+	public Object buildTrackList(int elementCount) {
+		
+		TrackList trackList = new TrackList();
+		
+		for (int i = 0; i < elementCount; i++) {
+			Track track = new Track();
+			track.setAlbum("album");
+			track.setId("id" + i);
+			track.setName("name");
+			track.setPlaycount((long) i);
+			trackList.addTrack(track);
+		}
+		
+		return trackList;
 	}
 
 }

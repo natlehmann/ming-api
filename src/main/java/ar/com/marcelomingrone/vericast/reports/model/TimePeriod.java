@@ -16,5 +16,10 @@ public enum TimePeriod {
 	public String getCode() {
 		return code;
 	}
+	
+	@Override
+	public String toString() {
+		return this.name().toLowerCase();
+	}
 
 }
