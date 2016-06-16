@@ -1,21 +1,18 @@
 package ar.com.marcelomingrone.vericast.reports.model;
 
-import java.util.HashMap;
+import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-
 import ar.com.marcelomingrone.vericast.reports.model.dto.Channel;
-import ar.com.marcelomingrone.vericast.reports.model.dto.PlaycountByChannel;
 
 @Entity
 public class ReportItem extends AbstractEntity {
@@ -26,14 +23,18 @@ public class ReportItem extends AbstractEntity {
 	private String trackName;
 	
 	@Column(nullable=false)
+	private String trackId;
+	
+	@Column(nullable=false)
 	private String artistName;
 	
 	@Column(nullable=false)
 	private String labelName;
 	
-	@Lob @Basic(fetch=FetchType.EAGER)
-	@Column(nullable=false, length=4000)
-	private String playcounts;
+	private Long totalPlayCount;
+	
+	@OneToMany(mappedBy="reportItem", cascade=CascadeType.ALL)
+	private List<PlaycountByChannel> playcounts;
 	
 	@ManyToOne(optional=false)
 	private Report report;
@@ -65,11 +66,11 @@ public class ReportItem extends AbstractEntity {
 		this.labelName = labelName;
 	}
 
-	public String getPlaycounts() {
+	public List<PlaycountByChannel> getPlaycounts() {
 		return playcounts;
 	}
-
-	public void setPlaycounts(String playcounts) {
+	
+	public void setPlaycounts(List<PlaycountByChannel> playcounts) {
 		this.playcounts = playcounts;
 	}
 	
@@ -80,15 +81,38 @@ public class ReportItem extends AbstractEntity {
 	public void setReport(Report report) {
 		this.report = report;
 	}
+	
+	public String getTrackId() {
+		return trackId;
+	}
+	
+	public void setTrackId(String trackId) {
+		this.trackId = trackId;
+	}
+	
+	public Long getTotalPlayCount() {
+		return totalPlayCount;
+	}
+	
+	public void setTotalPlayCount(Long totalPlayCount) {
+		this.totalPlayCount = totalPlayCount;
+	}
+	
+	public void addPlaycount(PlaycountByChannel playcount) {
+		if (this.playcounts == null) {
+			this.playcounts = new LinkedList<>();
+		}
+		
+		this.playcounts.add(playcount);
+		playcount.setReportItem(this);
+		
+	}
+	
+	public static class TrackIdComparator implements Comparator<ReportItem> {
 
-	@Transient
-	@JsonIgnore
-	public void setIndividualPlaycounts(List<PlaycountByChannel> playcounts) {
-		
-		this.playcountsByChannel = new HashMap<Channel, Long>();
-		
-		for (PlaycountByChannel count : playcounts) {
-			this.playcountsByChannel.put(count.getChannel(), count.getPlaycount());
+		@Override
+		public int compare(ReportItem o1, ReportItem o2) {
+			return o1.getTrackId().compareTo(o2.getTrackId());
 		}
 		
 	}

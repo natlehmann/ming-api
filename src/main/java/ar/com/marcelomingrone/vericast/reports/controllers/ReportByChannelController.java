@@ -68,7 +68,7 @@ public class ReportByChannelController {
 		Report report = service.buildReport(timePeriod, endDate);
 		session.setAttribute(Utils.SessionParams.ACTIVE_REPORT.toString(), report);
 		
-//		service.buildPlaycountsByChannel(report, timePeriod, endDate);
+		service.buildPlaycountsByChannel(report, timePeriod, endDate);
 		
 		model.put("report", report);
 //		return new ModelAndView("chartSummaryExcelView", model);

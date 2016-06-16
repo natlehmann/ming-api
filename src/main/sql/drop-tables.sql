@@ -1,3 +1,6 @@
+DROP TABLE PlaycountByChannel;
+DROP TABLE Channel;
+
 DROP TABLE ReportItem;
 DROP TABLE Report;
 

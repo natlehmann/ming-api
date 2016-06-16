@@ -16,6 +16,12 @@ public class Artist implements Serializable {
 	@XmlElement(name="name")
 	private String name;
 	
+	public Artist(){}
+	
+	public Artist(String name) {
+		this.name = name;
+	}
+	
 	public String getName() {
 		return name;
 	}

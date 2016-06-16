@@ -55,7 +55,7 @@ public class VericastApiDelegate {
 		return getChannelList(currentUser, new RestTemplate());
 	}
 	
-	public List<Channel> getChannelList(User currentUser, RestTemplate restTemplate) {
+	protected List<Channel> getChannelList(User currentUser, RestTemplate restTemplate) {
 		
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(CHANNEL_LIST_URL)
@@ -67,7 +67,7 @@ public class VericastApiDelegate {
 		int page = 1;
 		List<Channel> channels = new LinkedList<>();
 		
-		log.info("Buscando lista de canales PAGINA 1 para usuario " + currentUser);
+		log.debug("Buscando lista de canales PAGINA 1 para usuario " + currentUser);
 		ChannelList channelList = restTemplate.getForObject(buffer.toString(), ChannelList.class);
 		
 		while (channelList.getChannels() != null && !channelList.getChannels().isEmpty()) {
@@ -81,7 +81,7 @@ public class VericastApiDelegate {
 			// solo se recupera siguiente pagina si la cant de registros fue igual al limite
 			if (channelList.getChannels().size() == PAGE_LIMIT) {
 				
-				log.info("Buscando lista de canales PAGINA " + page + " para usuario " + currentUser);
+				log.debug("Buscando lista de canales PAGINA " + page + " para usuario " + currentUser);
 				channelList = restTemplate.getForObject(buffer.toString(), ChannelList.class);
 				
 			} else {

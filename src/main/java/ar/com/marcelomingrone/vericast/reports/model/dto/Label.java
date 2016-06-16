@@ -16,6 +16,12 @@ public class Label implements Serializable {
 	@XmlElement(name="name")
 	private String name;
 	
+	public Label(){}
+	
+	public Label(String name) {
+		this.name = name;
+	}
+	
 	public String getName() {
 		return name;
 	}

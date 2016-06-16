@@ -2,9 +2,13 @@ package ar.com.marcelomingrone.vericast.reports.dao;
 
 import org.hibernate.Session;
 
+import ar.com.marcelomingrone.vericast.reports.model.Report;
+import ar.com.marcelomingrone.vericast.reports.model.ReportItem;
 import ar.com.marcelomingrone.vericast.reports.model.User;
+import ar.com.marcelomingrone.vericast.reports.model.dto.Artist;
 import ar.com.marcelomingrone.vericast.reports.model.dto.Channel;
 import ar.com.marcelomingrone.vericast.reports.model.dto.ChannelList;
+import ar.com.marcelomingrone.vericast.reports.model.dto.Label;
 import ar.com.marcelomingrone.vericast.reports.model.dto.Track;
 import ar.com.marcelomingrone.vericast.reports.model.dto.TrackList;
 
@@ -45,8 +49,20 @@ public class TestDataBuilder {
 		
 		return channelList;
 	}
+	
+	public Track buildTrack(String id, long playcount) {
+		
+		Track track = new Track();
+		track.setAlbum("album");
+		track.setId(id);
+		track.setName("name");
+		track.setPlaycount(playcount);
+		track.setArtist(new Artist("artist"));
+		track.setLabel(new Label("label"));
+		return track;
+	}
 
-	public Object buildTrackList(int elementCount) {
+	public TrackList buildTrackList(int elementCount) {
 		
 		TrackList trackList = new TrackList();
 		
@@ -60,6 +76,39 @@ public class TestDataBuilder {
 		}
 		
 		return trackList;
+	}
+
+	public Report buildReport(User user) {
+		
+		Report report = new Report();
+		report.setOwner(user);
+		currentSession.saveOrUpdate(report);
+		
+		return report;
+	}
+
+	public ReportItem buildReportItem(Report report, String bmaitId) {
+		
+		ReportItem item = new ReportItem();
+		item.setReport(report);
+		item.setTrackId(bmaitId);
+		item.setArtistName("artistName");
+		item.setTrackName("trackName");
+		item.setLabelName("labelName");
+		
+		currentSession.saveOrUpdate(item);
+		
+		return item;
+	}
+
+	public Channel buildChannel(String name, String keyname) {
+		
+		Channel channel = new Channel();
+		channel.setKeyname(keyname);
+		channel.setName(name);
+		currentSession.saveOrUpdate(channel);
+		
+		return channel;
 	}
 
 }

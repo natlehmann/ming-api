@@ -1,29 +1,25 @@
 package ar.com.marcelomingrone.vericast.reports.services;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
+import ar.com.marcelomingrone.vericast.reports.dao.ChannelDao;
+import ar.com.marcelomingrone.vericast.reports.dao.PlaycountByChannelDao;
 import ar.com.marcelomingrone.vericast.reports.dao.ReportDao;
+import ar.com.marcelomingrone.vericast.reports.dao.ReportItemDao;
 import ar.com.marcelomingrone.vericast.reports.dao.UserDao;
+import ar.com.marcelomingrone.vericast.reports.model.PlaycountByChannel;
 import ar.com.marcelomingrone.vericast.reports.model.Report;
 import ar.com.marcelomingrone.vericast.reports.model.ReportItem;
 import ar.com.marcelomingrone.vericast.reports.model.User;
 import ar.com.marcelomingrone.vericast.reports.model.dto.Channel;
-import ar.com.marcelomingrone.vericast.reports.model.dto.ChannelList;
-import ar.com.marcelomingrone.vericast.reports.model.dto.PlaycountByChannel;
 import ar.com.marcelomingrone.vericast.reports.model.dto.Track;
-import ar.com.marcelomingrone.vericast.reports.model.dto.TrackList;
 
 @Service
 public class ReportService {
@@ -40,60 +36,52 @@ public class ReportService {
 	@Autowired
 	private ReportDao reportDao;
 	
-/*
+	@Autowired
+	private ReportItemDao reportItemDao;
+	
+	@Autowired
+	private PlaycountByChannelDao playcountByChannelDao;
+	
+	@Autowired
+	private ChannelDao channelDao;
+	
+
+	@Transactional
 	public void buildPlaycountsByChannel(Report report, String timePeriod, Date endDate) {
 		
-		Map<Track, List<PlaycountByChannel>> playcountsByTrack = new HashMap<>();
-		
+		log.info("Recuperando lista de canales para usuario " + report.getOwner());
         List<Channel> channelList = api.getChannelList(report.getOwner());
-        log.info("Recuperando lista de canales para usuario " + report.getOwner());
         
         for (Channel channel : channelList) {
         	
         	log.info("Recuperando lista de track para el canal " + channel.getName());
-        	TrackList trackList = getTrackListByChannel(channel.getKeyname(), currentUser);
+        	List<Track> trackList = api.getTracksByChannel(channel.getKeyname(), 
+        			report.getOwner(), endDate, timePeriod);
         	
-        	for (Track track : trackList.getTracks()) {
+        	for (Track track : trackList) {
         		
-        		List<PlaycountByChannel> playcounts = playcountsByTrack.get(track);
-        		if (playcounts == null) {
-        			playcounts = new LinkedList<>();
-        			playcountsByTrack.put(track, playcounts);
+        		ReportItem item = reportItemDao.getByTrackId(report, track.getId());
+        		if (item == null) {
+        			item = new ReportItem();
+        			item.setArtistName(track.getArtist().getName());
+        			item.setLabelName(track.getLabel().getName());
+        			item.setTrackId(track.getId());
+        			item.setTrackName(track.getName());
+        			report.addItem(item);
+        			item = reportItemDao.save(item);
         		}
         		
-        		playcounts.add(new PlaycountByChannel(channel, track.getPlaycount()));
+        		channel = channelDao.findOrSave(channel);
+        		
+        		PlaycountByChannel playcount = new PlaycountByChannel(channel, track.getPlaycount());
+        		item.addPlaycount(playcount);
+        		playcountByChannelDao.save(playcount);
         	}
         }
         
-        
-        List<ReportItem> items = new LinkedList<>();
-        
-        
-        for (Track track : playcountsByTrack.keySet()) {
-        	
-        	ReportItem item = new ReportItem();
-        	item.setArtistName(track.getArtist() != null ? track.getArtist().getName() : null);
-        	item.setLabelName(track.getLabel() != null ? track.getLabel().getName() : null);
-        	item.setTrackName(track.getName());
-        	
-        	item.setIndividualPlaycounts(playcountsByTrack.get(track));
-        	
-        	items.add(item);
-        }
-		
-        
-        Report report = new Report();
-        report.setEndDate(endDate);
-        report.setOwner(currentUser);
-        report.setTimePeriod(timePeriod);
-        report.setItems(items);
-        
-		return report;
 	}
 	
-*/
 
-	
 
 	public Report buildReport(String timePeriod, Date endDate) {
 		
@@ -108,6 +96,29 @@ public class ReportService {
         return report;
 	}
 	
+	public void setVericastApiDelegate(VericastApiDelegate api) {
+		this.api = api;
+	}
 	
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
+	}
+	
+	public void setReportDao(ReportDao reportDao) {
+		this.reportDao = reportDao;
+	}
+	
+	public void setReportItemDao(ReportItemDao reportItemDao) {
+		this.reportItemDao = reportItemDao;
+	}
+	
+	public void setPlaycountByChannelDao(
+			PlaycountByChannelDao playcountByChannelDao) {
+		this.playcountByChannelDao = playcountByChannelDao;
+	}
+	
+	public void setChannelDao(ChannelDao channelDao) {
+		this.channelDao = channelDao;
+	}
 
 }

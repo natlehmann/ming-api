@@ -1,6 +1,7 @@
 package ar.com.marcelomingrone.vericast.reports.model;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -64,6 +65,16 @@ public class Report extends AbstractEntity {
 				item.setReport(this);
 			}
 		}
+	}
+
+	public void addItem(ReportItem item) {
+		if (this.items == null) {
+			this.items = new LinkedList<>();
+		}
+		
+		this.items.add(item);
+		item.setReport(this);
+		
 	}
 	
 }
