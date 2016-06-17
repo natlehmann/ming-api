@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
  
-<!-- 	<bean id="chartSummaryExcelView" class="com.bmat.digitalcharts.admin.view.ChartSummaryExcelView"/> -->
+	<bean id="playcountsExcelView" class="ar.com.marcelomingrone.vericast.reports.view.PlaycountsExcelView"/>
 	
 <!-- 	<bean id="chartSummaryCsvView" class="com.bmat.digitalcharts.admin.view.ChartSummaryCsvView"/> -->
 

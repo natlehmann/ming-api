@@ -109,7 +109,7 @@ public class VericastApiDelegate {
 				.append("&").append(ApiParams.LIMIT.asParam()).append(PAGE_LIMIT)
 				.append("&").append(ApiParams.CHANNEL.asParam()).append(keyname)
 				.append("&").append(ApiParams.END.asParam()).append(endDateFormat.format(endDate))  
-				.append("&").append(ApiParams.PERIOD.asParam()).append(timePeriod); 
+				.append("&").append(ApiParams.PERIOD.asParam()).append(timePeriod.toLowerCase()); 
 		
 		
 		String baseUrl = buffer.toString();

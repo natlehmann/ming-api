@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import ar.com.marcelomingrone.vericast.reports.model.Report;
+import ar.com.marcelomingrone.vericast.reports.model.ReportItem;
 
 @Repository
 public class ReportDao extends AbstractEntityDao<Report> {
@@ -27,6 +28,21 @@ public class ReportDao extends AbstractEntityDao<Report> {
 		Report report = getById(id);
 		if (report != null && report.getItems() != null) {
 			report.getItems().size();
+		}
+		
+		return report;
+	}
+
+	@Transactional
+	public Report getByIdWithItemsAndPlaycounts(Long id) {
+		Report report = getByIdWithItems(id);
+		if (report != null && report.getItems() != null) {
+			
+			for (ReportItem item : report.getItems()) {
+				if (item.getPlaycounts() != null) {
+					item.getPlaycounts().size();
+				}
+			}
 		}
 		
 		return report;

@@ -74,9 +74,11 @@
 				<spring:message code="report.ready"/>
 				<br/>
 				
-				<div class="width-20">
-					<input type="button" value='<spring:message code="download.report"/>' />
-				</div>
+				<form action="download" method="post">
+					<div class="width-20">
+						<input type="submit" value='<spring:message code="download.report"/>' />
+					</div>
+				</form>
 				
 				<br/>
 				<br/>

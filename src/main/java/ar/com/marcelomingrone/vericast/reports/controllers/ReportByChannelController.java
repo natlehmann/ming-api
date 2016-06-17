@@ -70,11 +70,20 @@ public class ReportByChannelController {
 		
 		service.buildPlaycountsByChannel(report, timePeriod, endDate);
 		
-		model.put("report", report);
-//		return new ModelAndView("chartSummaryExcelView", model);
-		
 		return null;
 
+	}
+	
+	@RequestMapping("/download")
+	public ModelAndView downloadReport(ModelMap model, 
+			HttpSession session, Locale locale) {
+		
+		Report report = (Report) session.getAttribute(Utils.SessionParams.ACTIVE_REPORT.toString());
+		report = service.getReportEager(report.getId());
+		
+		model.put("report", report);
+		return new ModelAndView("playcountsExcelView", model);
+	
 	}
 
 

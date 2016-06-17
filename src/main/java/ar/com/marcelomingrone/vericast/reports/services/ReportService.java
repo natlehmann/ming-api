@@ -108,6 +108,9 @@ public class ReportService {
 	}
 
 
+	public Report getReportEager(Long id) {
+		return reportDao.getByIdWithItemsAndPlaycounts(id);
+	}
 
 	public Report buildReport(String timePeriod, Date endDate) {
 		
