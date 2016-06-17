@@ -79,8 +79,34 @@ public class ReportService {
         	}
         }
         
+        calculateTotalPlaycounts(report);
+        
 	}
 	
+
+
+	private void calculateTotalPlaycounts(Report report) {
+		
+		Report withItems = reportDao.getByIdWithItems(report.getId());
+		
+		if (withItems.getItems() != null) {
+			
+			for (ReportItem item : withItems.getItems()){
+				
+				List<PlaycountByChannel> playcounts = playcountByChannelDao.getByReportItem(item);
+				long total = 0;
+				
+				for (PlaycountByChannel playcount : playcounts) {
+					total += playcount.getPlaycount();
+				}
+				
+				item.setTotalPlayCount(total);
+				reportItemDao.save(item);
+			}
+		}
+		
+	}
+
 
 
 	public Report buildReport(String timePeriod, Date endDate) {

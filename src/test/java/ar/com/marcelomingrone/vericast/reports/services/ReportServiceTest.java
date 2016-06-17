@@ -76,7 +76,7 @@ public class ReportServiceTest extends AbstractTest {
 		
 		tracksChannel2 = new LinkedList<>();
 		tracksChannel2.add(builder.buildTrack("4", 4));
-		tracksChannel2.add(builder.buildTrack("5", 5));
+		tracksChannel2.add(builder.buildTrack("3", 2));
 		tracksChannel2.add(builder.buildTrack("1", 6));
 		
 		Mockito.when(api.getTracksByChannel(Mockito.anyString(), Mockito.any(User.class), 
@@ -135,6 +135,23 @@ public class ReportServiceTest extends AbstractTest {
 		
 	}
 	
-	
+	@Test
+	public void buildPlaycountsByChannelTotalCount() {
+		
+		User user = builder.buildUser(USERNAME);
+		Report report = builder.buildReport(user);
+		Date endDate = new Date();
+		
+		service.buildPlaycountsByChannel(report, TimePeriod.WEEK.toString(), endDate);
+		
+		Report result = reportDao.getByIdWithItems(report.getId());
+		
+		Collections.sort(result.getItems(), new TrackIdComparator());
+		
+		assertEquals(new Long(7), result.getItems().get(0).getTotalPlayCount());
+		assertEquals(new Long(2), result.getItems().get(1).getTotalPlayCount());
+		assertEquals(new Long(5), result.getItems().get(2).getTotalPlayCount());
+		assertEquals(new Long(4), result.getItems().get(3).getTotalPlayCount());
+	}
 
 }

@@ -2,6 +2,7 @@ package ar.com.marcelomingrone.vericast.reports.dao;
 
 import org.hibernate.Session;
 
+import ar.com.marcelomingrone.vericast.reports.model.PlaycountByChannel;
 import ar.com.marcelomingrone.vericast.reports.model.Report;
 import ar.com.marcelomingrone.vericast.reports.model.ReportItem;
 import ar.com.marcelomingrone.vericast.reports.model.User;
@@ -109,6 +110,18 @@ public class TestDataBuilder {
 		currentSession.saveOrUpdate(channel);
 		
 		return channel;
+	}
+
+	public PlaycountByChannel buildPlaycountByChannel(ReportItem item, String channelName) {
+		
+		PlaycountByChannel playcount = new PlaycountByChannel();
+		playcount.setChannel(buildChannel(channelName, channelName));
+		playcount.setPlaycount(3);
+		item.addPlaycount(playcount);
+		
+		currentSession.saveOrUpdate(playcount);
+		
+		return playcount;
 	}
 
 }
