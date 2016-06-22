@@ -12,6 +12,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>3.2.4.RELEASE</spring.version>
 		<spring.security.version>3.1.4.RELEASE</spring.security.version>
+		
+		<vericast.api.channel.list>http://api.vericast.bmat.me/1/channel/list</vericast.api.channel.list>
+		<vericast.api.track.list.by.channel>http://api.vericast.bmat.me/1/channel/toptracks</vericast.api.track.list.by.channel>
 	</properties>
 
 
