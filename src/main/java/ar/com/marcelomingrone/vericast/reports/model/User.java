@@ -22,6 +22,10 @@ public class User extends AbstractEntity {
 	@Column(nullable=false)
 	private String password;
 	
+	@NotNull @NotBlank 
+	@Column(nullable=false)
+	private String email;
+	
 	@Column(length=2)
 	private String language;
 	
@@ -57,6 +61,14 @@ public class User extends AbstractEntity {
 
 	public void setApiKey(String apiKey) {
 		this.apiKey = apiKey;
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	@Override

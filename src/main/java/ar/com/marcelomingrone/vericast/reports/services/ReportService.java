@@ -45,41 +45,51 @@ public class ReportService {
 	@Autowired
 	private ChannelDao channelDao;
 	
+	@Autowired
+	private SendMailService sendMailService;
+	
 
 	@Transactional
 	public void buildPlaycountsByChannel(Report report, String timePeriod, Date endDate) {
 		
-		log.info("Recuperando lista de canales para usuario " + report.getOwner());
-        List<Channel> channelList = api.getChannelList(report.getOwner());
-        
-        for (Channel channel : channelList) {
-        	
-        	log.info("Recuperando lista de track para el canal " + channel.getName());
-        	List<Track> trackList = api.getTracksByChannel(channel.getKeyname(), 
-        			report.getOwner(), endDate, timePeriod);
-        	
-        	for (Track track : trackList) {
-        		
-        		ReportItem item = reportItemDao.getByTrackId(report, track.getId());
-        		if (item == null) {
-        			item = new ReportItem();
-        			item.setArtistName(track.getArtist().getName());
-        			item.setLabelName(track.getLabel().getName());
-        			item.setTrackId(track.getId());
-        			item.setTrackName(track.getName());
-        			report.addItem(item);
-        			item = reportItemDao.save(item);
-        		}
-        		
-        		channel = channelDao.findOrSave(channel);
-        		
-        		PlaycountByChannel playcount = new PlaycountByChannel(channel, track.getPlaycount());
-        		item.addPlaycount(playcount);
-        		playcountByChannelDao.save(playcount);
-        	}
-        }
-        
-        calculateTotalPlaycounts(report);
+		try {
+			log.info("Recuperando lista de canales para usuario " + report.getOwner());
+	        List<Channel> channelList = api.getChannelList(report.getOwner());
+	        
+	        for (Channel channel : channelList) {
+	        	
+	        	log.info("Recuperando lista de track para el canal " + channel.getName());
+	        	List<Track> trackList = api.getTracksByChannel(channel.getKeyname(), 
+	        			report.getOwner(), endDate, timePeriod);
+	        	
+	        	for (Track track : trackList) {
+	        		
+	        		ReportItem item = reportItemDao.getByTrackId(report, track.getId());
+	        		if (item == null) {
+	        			item = new ReportItem();
+	        			item.setArtistName(track.getArtist().getName());
+	        			item.setLabelName(track.getLabel().getName());
+	        			item.setTrackId(track.getId());
+	        			item.setTrackName(track.getName());
+	        			report.addItem(item);
+	        			item = reportItemDao.save(item);
+	        		}
+	        		
+	        		channel = channelDao.findOrSave(channel);
+	        		
+	        		PlaycountByChannel playcount = new PlaycountByChannel(channel, track.getPlaycount());
+	        		item.addPlaycount(playcount);
+	        		playcountByChannelDao.save(playcount);
+	        	}
+	        }
+	        
+	        calculateTotalPlaycounts(report);
+	        
+	        sendMailService.sendReport( getReportOrderedByPlaycounts(report.getId()) );
+	        
+		} catch (Exception e) {
+			sendMailService.sendErrorReport(report, e);
+		}
         
 	}
 	
@@ -148,6 +158,10 @@ public class ReportService {
 	
 	public void setChannelDao(ChannelDao channelDao) {
 		this.channelDao = channelDao;
+	}
+	
+	public void setSendMailService(SendMailService sendMailService) {
+		this.sendMailService = sendMailService;
 	}
 
 }

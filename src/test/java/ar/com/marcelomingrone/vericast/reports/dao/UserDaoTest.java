@@ -32,6 +32,7 @@ public class UserDaoTest extends AbstractTest {
 		User user = new User();
 		user.setPassword("password");
 		user.setUsername("username");
+		user.setEmail("email");
 		user = dao.save(user);
 		
 		User result = dao.getByUsername("USERNAME");
@@ -43,6 +44,7 @@ public class UserDaoTest extends AbstractTest {
 		User user = new User();
 		user.setPassword("password");
 		user.setUsername("userNAME");
+		user.setEmail("email");
 		user = dao.save(user);
 		
 		User result = dao.getByUsername("Username");

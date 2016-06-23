@@ -27,6 +27,8 @@ public class TestDataBuilder {
 		User user = new User();
 		user.setUsername(username);
 		user.setApiKey(apiKey);
+		user.setEmail("email");
+		user.setLanguage("es");
 		user.setPassword("password");
 		currentSession.saveOrUpdate(user);
 		

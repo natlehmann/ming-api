@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.mail.MessagingException;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,6 +39,8 @@ public class ReportServiceTest extends AbstractTest {
 	private ReportService service;
 	
 	private VericastApiDelegate api;
+	
+	private SendMailService sendMailServiceMock;
 	
 	@Autowired
 	private UserDao userDao;
@@ -69,6 +73,8 @@ public class ReportServiceTest extends AbstractTest {
 		api = Mockito.mock(VericastApiDelegate.class);
 		Mockito.when(api.getChannelList(Mockito.any(User.class))).thenReturn(channels);
 		
+		sendMailServiceMock = Mockito.mock(SendMailService.class);
+		
 		tracksChannel1 = new LinkedList<>();
 		tracksChannel1.add(builder.buildTrack("1", 1));
 		tracksChannel1.add(builder.buildTrack("2", 2));
@@ -89,6 +95,7 @@ public class ReportServiceTest extends AbstractTest {
 		service.setReportItemDao(reportItemDao);
 		service.setUserDao(userDao);
 		service.setChannelDao(channelDao);
+		service.setSendMailService(sendMailServiceMock);
 	}
 
 	
@@ -104,6 +111,18 @@ public class ReportServiceTest extends AbstractTest {
 		Mockito.verify(api, Mockito.times(1)).getChannelList(user);
 		Mockito.verify(api, Mockito.times(1)).getTracksByChannel("1", user, endDate, TimePeriod.WEEK.toString());
 		Mockito.verify(api, Mockito.times(1)).getTracksByChannel("2", user, endDate, TimePeriod.WEEK.toString());
+	}
+	
+	@Test
+	public void buildPlaycountsByChannelVerifySendMail() throws MessagingException {
+		
+		User user = builder.buildUser(USERNAME);
+		Report report = builder.buildReport(user);
+		Date endDate = new Date();
+		
+		service.buildPlaycountsByChannel(report, TimePeriod.WEEK.toString(), endDate);
+		
+		Mockito.verify(sendMailServiceMock, Mockito.times(1)).sendReport(report);
 	}
 	
 	

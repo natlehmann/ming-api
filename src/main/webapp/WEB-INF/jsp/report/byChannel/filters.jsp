@@ -15,6 +15,9 @@
 	<input type="hidden" id="form_action" value='<c:url value="/report/byChannel/create"/>' />
 	<input type="hidden" id="check_existence_url" value='<c:url value="/report/byChannel/exists"/>' />
 		
+	<div class="msg" id="process-msg" style="display: none;">
+		<spring:message code="report.in.progress"/>
+	</div>
 	
 	<form method="post" id="reportByChannelForm">
 	
@@ -61,38 +64,7 @@
 		</div>		
 		
 	</form>
-	
-	
-	<div id="msg-report-in-progress" style="display: none;">
 		
-		<div class="msg">
-			<span id="progress-msg">
-				<spring:message code="report.in.progress"/>
-			</span>
-			
-			<div id="downloaded">
-				<spring:message code="report.ready"/>
-				<br/>
-				
-				<form action="download" method="post">
-					<div class="width-20">
-						<input type="submit" value='<spring:message code="download.report"/>' />
-					</div>
-				</form>
-				
-				<br/>
-				<br/>
-				
-				<spring:message code="would.you.like.to.save.this.report"/>
-				<br/>
-				
-				<div class="width-20">
-					<input type="button" value='<spring:message code="save"/>' />
-				</div>
-			</div>
-		</div>
-	</div>
-	
 	
 	<div id="dialog-report-exists" style="display:none;" title='<spring:message code="confirm"/>'>
 			<p>

@@ -139,9 +139,8 @@
 
 
 	<!-- Envio de mails -->
-	<!-- 
 	
-	<bean id="smtpAuthenticator" class="com.bmat.digitalcharts.admin.services.SmtpAuthenticator">
+	<bean id="smtpAuthenticator" class="ar.com.marcelomingrone.vericast.reports.services.SmtpAuthenticator">
 		<constructor-arg value="${smtp.username}" />
 		<constructor-arg value="${smtp.password}" />
 	</bean>
@@ -150,7 +149,7 @@
 		<constructor-arg>
 			<props>
 				<prop key="mail.smtp.auth">true</prop>
-<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
 				<prop key="mail.smtp.socketFactory.port">${smtp.port}</prop>
 				<prop key="mail.smtp.socketFactory.class">${smtp.socket.factory}</prop>
 				<prop key="mail.smtp.socketFactory.fallback">false</prop>
@@ -175,6 +174,5 @@
 	<bean id="mimeMessage" class="javax.mail.internet.MimeMessage">
 		<constructor-arg ref="mailSession" />
 	</bean>
-	 -->
 	
 </beans>

@@ -27,13 +27,10 @@ function buildReport() {
 	
 	$('#dialog-report-exists').dialog('close');
 	
-	$("#reportByChannelForm").hide();
-	$("#msg-report-in-progress").show();
-	$("#downloaded").hide();
+	$("#process-msg").show();
 	
 	$.get( $("#form_action").val(), $("#reportByChannelForm").serialize(), function() {
-		$("#progress-msg").hide();
-		$("#downloaded").show();
+		$("#process-msg").hide();
 	});
 }
 
