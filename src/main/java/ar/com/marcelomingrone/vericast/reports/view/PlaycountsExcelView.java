@@ -150,14 +150,14 @@ public class PlaycountsExcelView extends AbstractExcelView {
 		CellStyle style = styleManager.getColumnHeaderStyle(); 
         
 		HSSFRow excelHeader = excelSheet.createRow(0);
-		excelHeader.createCell(1).setCellValue("Total playcount by channel");
-		excelHeader.getCell(1).setCellStyle(styleManager.getTitleCellStyle());
+		excelHeader.createCell(0).setCellValue("Total playcount by channel");
+		excelHeader.getCell(0).setCellStyle(styleManager.getTitleCellStyle());
 		excelHeader.setHeightInPoints(40);
 		
 		excelHeader = excelSheet.createRow(2);
 		excelHeader.setHeightInPoints(22);
-		excelHeader.createCell(1).setCellValue("Time period: " + report.getTimePeriod());
-		excelHeader.getCell(1).setCellStyle(styleManager.getSubtitleCellStyle());
+		excelHeader.createCell(0).setCellValue("Time period: " + report.getTimePeriod());
+		excelHeader.getCell(0).setCellStyle(styleManager.getSubtitleCellStyle());
 		
 		excelHeader.createCell(3).setCellValue("End date: " + headerDateFormat.format(report.getEndDate()));
 		excelHeader.getCell(3).setCellStyle(styleManager.getSubtitleCellStyle());
@@ -198,50 +198,45 @@ public class PlaycountsExcelView extends AbstractExcelView {
 			
 			for (ReportColumnHeader header : ReportColumnHeader.values()) {
 				
+				// fill in fixed fields
 				excelRow.createCell(header.ordinal()).setCellValue(header.getValue(item));				
 				excelRow.getCell(header.ordinal()).setCellStyle(header.getStyle(styleManager));
-				
-				for (PlaycountByChannel pbc : item.getPlaycounts()) {
-					
-					Integer columnIndex = channelHeaders.get(pbc.getChannel().getName());
-					int col = initialCol;
-					
-					if (columnIndex == null) {						
-						
-						// create header
-						HSSFRow headerRow = excelSheet.getRow(COLUMN_HEADER_INDEX);
-						headerRow.createCell(col).setCellValue(pbc.getChannel().getName());
-						headerRow.getCell(col).setCellStyle(headerStyle);
-						
-						//update status
-						channelHeaders.put(pbc.getChannel().getName(), new Integer(col));
-						initialCol++;
-						
-					} else {
-						
-						col = columnIndex;
-					}
-					
-					// create value
-					excelRow.createCell(col).setCellValue(
-							new HSSFRichTextString(String.valueOf(pbc.getPlaycount())));				
-					excelRow.getCell(col).setCellStyle(styleManager.getRightCellStyle());
-				}
 			}
+				
+			for (PlaycountByChannel pbc : item.getPlaycounts()) {
+				
+				Integer columnIndex = channelHeaders.get(pbc.getChannel().getName());
+				int col = initialCol;
+				
+				if (columnIndex == null) {						
+					
+					// create header
+					HSSFRow headerRow = excelSheet.getRow(COLUMN_HEADER_INDEX);
+					headerRow.createCell(col).setCellValue(pbc.getChannel().getName());
+					headerRow.getCell(col).setCellStyle(headerStyle);
+					
+					//update status
+					channelHeaders.put(pbc.getChannel().getName(), new Integer(col));
+					initialCol++;
+					
+				} else {
+					
+					col = columnIndex;
+				}
+				
+				// create value
+				excelRow.createCell(col).setCellValue(
+						new HSSFRichTextString(String.valueOf(pbc.getPlaycount())));				
+				excelRow.getCell(col).setCellStyle(styleManager.getRightCellStyle());
+			}
+			
 			
 			row++;
 		}
 
-//		excelSheet.setColumnWidth(5, excelSheet.getColumnWidth(0) * 8);
-//		excelSheet.setColumnWidth(6, excelSheet.getColumnWidth(0) * 5);
-//		excelSheet.setColumnWidth(7, excelSheet.getColumnWidth(0) * 2);
-//		excelSheet.setColumnWidth(8, excelSheet.getColumnWidth(0) * 2);
-//		excelSheet.setColumnWidth(9, excelSheet.getColumnWidth(0) * 2);
-//		
-//		excelSheet.setColumnWidth(10, excelSheet.getColumnWidth(0) * 5);
-//		excelSheet.setColumnWidth(12, excelSheet.getColumnWidth(0) * 3);
-//		excelSheet.setColumnWidth(13, excelSheet.getColumnWidth(0) * 2);
-//		excelSheet.setColumnWidth(14, excelSheet.getColumnWidth(0) * 2);
+		excelSheet.setColumnWidth(0, excelSheet.getColumnWidth(3) * 7);
+		excelSheet.setColumnWidth(1, excelSheet.getColumnWidth(3) * 5);
+		excelSheet.setColumnWidth(2, excelSheet.getColumnWidth(3) * 4);
 	}
 
 

@@ -67,7 +67,7 @@ public class ChartStyleManager {
         font.setFontHeightInPoints((short)12);
         style.setFont(font);
         
-        setBorders(style);
+//        setBorders(style);
         
         style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
         

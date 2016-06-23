@@ -108,7 +108,7 @@ public class ReportService {
 	}
 
 
-	public Report getReportEager(Long id) {
+	public Report getReportOrderedByPlaycounts(Long id) {
 		return reportDao.getByIdWithItemsAndPlaycounts(id);
 	}
 

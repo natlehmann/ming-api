@@ -79,7 +79,7 @@ public class ReportByChannelController {
 			HttpSession session, Locale locale) {
 		
 		Report report = (Report) session.getAttribute(Utils.SessionParams.ACTIVE_REPORT.toString());
-		report = service.getReportEager(report.getId());
+		report = service.getReportOrderedByPlaycounts(report.getId());
 		
 		model.put("report", report);
 		return new ModelAndView("playcountsExcelView", model);

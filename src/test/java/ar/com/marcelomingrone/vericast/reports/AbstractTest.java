@@ -24,7 +24,6 @@ public abstract class AbstractTest {
 	@Autowired
 	protected SessionFactory sessionFactory;
 	
-	
 	@Value(value="${test.username}")
 	protected String USERNAME;
 	

@@ -2,6 +2,7 @@ package ar.com.marcelomingrone.vericast.reports.dao;
 
 import org.hibernate.Session;
 
+import ar.com.marcelomingrone.vericast.reports.model.AbstractEntity;
 import ar.com.marcelomingrone.vericast.reports.model.PlaycountByChannel;
 import ar.com.marcelomingrone.vericast.reports.model.Report;
 import ar.com.marcelomingrone.vericast.reports.model.ReportItem;
@@ -91,11 +92,12 @@ public class TestDataBuilder {
 	public ReportItem buildReportItem(Report report, String bmaitId) {
 		
 		ReportItem item = new ReportItem();
-		item.setReport(report);
 		item.setTrackId(bmaitId);
 		item.setArtistName("artistName");
 		item.setTrackName("trackName");
 		item.setLabelName("labelName");
+		
+		report.addItem(item);
 		
 		currentSession.saveOrUpdate(item);
 		
@@ -122,6 +124,11 @@ public class TestDataBuilder {
 		currentSession.saveOrUpdate(playcount);
 		
 		return playcount;
+	}
+	
+	public AbstractEntity save(AbstractEntity entity) {
+		currentSession.saveOrUpdate(entity);
+		return entity;
 	}
 
 }

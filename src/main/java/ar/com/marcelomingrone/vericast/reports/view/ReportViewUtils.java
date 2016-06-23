@@ -14,7 +14,7 @@ public class ReportViewUtils {
 		XLS {
 			@Override
 			public String getReportName(Report report) {
-				return report.getTimePeriod() + "-" 
+				return "TotalPlaycount-" + report.getTimePeriod() + "-" 
 						+ dateFormat.format(report.getEndDate()) + ".xls";
 			}
 		},
@@ -22,7 +22,7 @@ public class ReportViewUtils {
 		CSV {
 			@Override
 			public String getReportName(Report report) {
-				return report.getTimePeriod() + "-" 
+				return "TotalPlaycount-" + report.getTimePeriod() + "-" 
 						+ dateFormat.format(report.getEndDate()) + ".csv";
 			}
 		};
