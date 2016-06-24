@@ -84,7 +84,7 @@ public class SendMailRunnable implements Runnable {
 		
 		MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);					
 		
-		helper.setText(mailBody);
+		helper.setText(mailBody, true);
 
 		helper.setTo(new InternetAddress(email));
 		
