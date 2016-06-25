@@ -5,7 +5,10 @@ import org.hibernate.Session;
 import ar.com.marcelomingrone.vericast.reports.model.AbstractEntity;
 import ar.com.marcelomingrone.vericast.reports.model.PlaycountByChannel;
 import ar.com.marcelomingrone.vericast.reports.model.Report;
+import ar.com.marcelomingrone.vericast.reports.model.Report.State;
 import ar.com.marcelomingrone.vericast.reports.model.ReportItem;
+import ar.com.marcelomingrone.vericast.reports.model.Role;
+import ar.com.marcelomingrone.vericast.reports.model.RoleNames;
 import ar.com.marcelomingrone.vericast.reports.model.User;
 import ar.com.marcelomingrone.vericast.reports.model.dto.Artist;
 import ar.com.marcelomingrone.vericast.reports.model.dto.Channel;
@@ -35,9 +38,23 @@ public class TestDataBuilder {
 		return user;
 	}
 	
-	public User buildUser(String username) {
-		
+	public User buildUser(String username) {		
 		return buildUser(username, null);
+	}
+	
+	public User buildAdminUser(String username) {
+		User user = buildUser(username);
+		Role role = buildRole(RoleNames.ADMINISTRATOR.toString());
+		user.addRole(role);
+		currentSession.saveOrUpdate(user);
+		return user;
+	}
+
+	public Role buildRole(String name) {
+		Role role = new Role();
+		role.setName(name);
+		currentSession.saveOrUpdate(role);
+		return role;
 	}
 
 	public ChannelList buildChannelList(int elementCount) {
@@ -82,13 +99,18 @@ public class TestDataBuilder {
 		return trackList;
 	}
 
-	public Report buildReport(User user) {
+	public Report buildReport(User user, State state) {
 		
 		Report report = new Report();
 		report.setOwner(user);
+		report.setState(state);
 		currentSession.saveOrUpdate(report);
 		
 		return report;
+	}
+	
+	public Report buildReport(User user) {
+		return buildReport(user, State.IN_PROCESS);
 	}
 
 	public ReportItem buildReportItem(Report report, String bmaitId) {

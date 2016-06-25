@@ -7,6 +7,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
@@ -16,6 +18,12 @@ import javax.persistence.TemporalType;
 public class Report extends AbstractEntity {
 
 	private static final long serialVersionUID = -6583423007874315353L;
+	
+	public static enum State {
+		IN_PROCESS,
+		FINISHED,
+		APPROVED;
+	}
 
 	@ManyToOne(optional=false)
 	private User owner;
@@ -28,6 +36,10 @@ public class Report extends AbstractEntity {
 	
 	@OneToMany(mappedBy="report", cascade=CascadeType.ALL)
 	private List<ReportItem> items;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(nullable=false)
+	private State state;
 
 	public User getOwner() {
 		return owner;
@@ -75,6 +87,14 @@ public class Report extends AbstractEntity {
 		this.items.add(item);
 		item.setReport(this);
 		
+	}
+	
+	public State getState() {
+		return state;
+	}
+	
+	public void setState(State state) {
+		this.state = state;
 	}
 	
 }

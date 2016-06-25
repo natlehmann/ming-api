@@ -23,9 +23,14 @@ import ar.com.marcelomingrone.vericast.reports.dao.PlaycountByChannelDao;
 import ar.com.marcelomingrone.vericast.reports.dao.ReportDao;
 import ar.com.marcelomingrone.vericast.reports.dao.ReportItemDao;
 import ar.com.marcelomingrone.vericast.reports.dao.UserDao;
+import ar.com.marcelomingrone.vericast.reports.model.InvalidStateException;
+import ar.com.marcelomingrone.vericast.reports.model.LocalizedException;
+import ar.com.marcelomingrone.vericast.reports.model.NoReportException;
 import ar.com.marcelomingrone.vericast.reports.model.PlaycountByChannel;
 import ar.com.marcelomingrone.vericast.reports.model.Report;
+import ar.com.marcelomingrone.vericast.reports.model.Report.State;
 import ar.com.marcelomingrone.vericast.reports.model.ReportItem;
+import ar.com.marcelomingrone.vericast.reports.model.UserNotAuthorizedException;
 import ar.com.marcelomingrone.vericast.reports.model.ReportItem.TrackIdComparator;
 import ar.com.marcelomingrone.vericast.reports.model.TimePeriod;
 import ar.com.marcelomingrone.vericast.reports.model.User;
@@ -171,6 +176,56 @@ public class ReportServiceTest extends AbstractTest {
 		assertEquals(new Long(2), result.getItems().get(1).getTotalPlayCount());
 		assertEquals(new Long(5), result.getItems().get(2).getTotalPlayCount());
 		assertEquals(new Long(4), result.getItems().get(3).getTotalPlayCount());
+	}
+	
+	@Test(expected=NoReportException.class)
+	public void approveNullReport() throws LocalizedException {
+		
+		service.approveReport(1L, "user");
+	}
+	
+	@Test(expected=UserNotAuthorizedException.class)
+	public void approveReportNotTheSameUser() throws LocalizedException {
+		
+		User user = builder.buildUser(USERNAME);
+		Report report = builder.buildReport(user);
+		
+		service.approveReport(report.getId(), "otroUsuario");
+	}
+	
+	@Test
+	public void approveReportNotTheSameUserButAdministrator() throws LocalizedException {
+		
+		User user = builder.buildUser(USERNAME);
+		Report report = builder.buildReport(user, State.FINISHED);
+		
+		User admin = builder.buildAdminUser("admin");
+		mockPrincipal(admin.getUsername(), true);
+		
+		Report result = service.approveReport(report.getId(), admin.getUsername());
+		
+		assertEquals(State.APPROVED, result.getState());
+	}
+	
+	@Test(expected=InvalidStateException.class)
+	public void approveReportInvalidState() throws LocalizedException {
+		
+		User user = builder.buildUser(USERNAME);
+		Report report = builder.buildReport(user, State.IN_PROCESS);
+		
+		service.approveReport(report.getId(), user.getUsername());
+	}
+	
+	@Test
+	public void approveReportHappyPath() throws LocalizedException {
+		
+		User user = builder.buildUser(USERNAME);
+		Report report = builder.buildReport(user, State.FINISHED);
+		
+		service.approveReport(report.getId(), user.getUsername());
+		
+		Report result = service.getReportOrderedByPlaycounts(report.getId());
+		assertEquals(State.APPROVED, result.getState());
 	}
 
 }

@@ -14,10 +14,6 @@ import javax.persistence.Transient;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.context.MessageSource;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 @MappedSuperclass
 public class AbstractEntity implements Serializable, Listable {
@@ -101,27 +97,5 @@ public class AbstractEntity implements Serializable, Listable {
 				+ messageSource.getMessage("delete", null, locale)  + "'></a>";
 	}
 	
-	@Transient
-	@JsonIgnore
-	protected boolean isAdministrator() {
-
-		SecurityContext context = SecurityContextHolder.getContext();
-        if (context == null) {
-            return false;
-        }
-
-        Authentication authentication = context.getAuthentication();
-        if (authentication == null) {
-            return false;
-        }
-
-        for (GrantedAuthority auth : authentication.getAuthorities()) {
-            if ("administrator".equals(auth.getAuthority())) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 	
 }

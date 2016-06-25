@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import ar.com.marcelomingrone.vericast.reports.model.LocalizedException;
 import ar.com.marcelomingrone.vericast.reports.model.Report;
 import ar.com.marcelomingrone.vericast.reports.model.TimePeriod;
 import ar.com.marcelomingrone.vericast.reports.services.ReportService;
@@ -84,6 +85,22 @@ public class ReportByChannelController {
 		model.put("report", report);
 		return new ModelAndView("playcountsExcelView", model);
 	
+	}
+	
+	
+	@RequestMapping("/approve")
+	public ModelAndView approveReport(ModelMap model, Locale locale, 
+			@RequestParam("id")long id, @RequestParam("user")String user) {
+		
+		try {
+			service.approveReport(id, user);
+			model.put("msg", messageSource.getMessage("report.approved", null, locale));
+			
+		} catch (LocalizedException e){
+			model.put("msg", messageSource.getMessage(e.getCode(), null, locale));
+		}
+		
+		return initReportFilters(model);
 	}
 
 

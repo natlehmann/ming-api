@@ -29,6 +29,7 @@ create table Report(
 	owner_id BIGINT NOT NULL,
 	timePeriod varchar(20) NOT NULL,
 	endDate date NOT NULL,
+	state varchar(255) NOT NULL,
 	FOREIGN KEY (owner_id) REFERENCES User(id)
 )  ENGINE=InnoDB;
 

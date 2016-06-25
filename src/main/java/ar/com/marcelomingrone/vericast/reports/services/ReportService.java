@@ -9,15 +9,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ar.com.marcelomingrone.vericast.reports.controllers.Utils;
 import ar.com.marcelomingrone.vericast.reports.dao.ChannelDao;
 import ar.com.marcelomingrone.vericast.reports.dao.PlaycountByChannelDao;
 import ar.com.marcelomingrone.vericast.reports.dao.ReportDao;
 import ar.com.marcelomingrone.vericast.reports.dao.ReportItemDao;
 import ar.com.marcelomingrone.vericast.reports.dao.UserDao;
+import ar.com.marcelomingrone.vericast.reports.model.InvalidStateException;
+import ar.com.marcelomingrone.vericast.reports.model.LocalizedException;
+import ar.com.marcelomingrone.vericast.reports.model.NoReportException;
 import ar.com.marcelomingrone.vericast.reports.model.PlaycountByChannel;
 import ar.com.marcelomingrone.vericast.reports.model.Report;
 import ar.com.marcelomingrone.vericast.reports.model.ReportItem;
 import ar.com.marcelomingrone.vericast.reports.model.User;
+import ar.com.marcelomingrone.vericast.reports.model.UserNotAuthorizedException;
+import ar.com.marcelomingrone.vericast.reports.model.Report.State;
 import ar.com.marcelomingrone.vericast.reports.model.dto.Channel;
 import ar.com.marcelomingrone.vericast.reports.model.dto.Track;
 
@@ -135,6 +141,36 @@ public class ReportService {
         return report;
 	}
 	
+	
+	public Report approveReport(long id, String user) throws LocalizedException {
+		
+		Report report = reportDao.getById(id);
+		
+		if (report == null) {
+			throw new NoReportException();
+		}
+		
+		if (!report.getOwner().getUsername().equalsIgnoreCase(user) 
+				&& !Utils.isCurrentUserAdministrator()){
+			throw new UserNotAuthorizedException();
+		}
+		
+		if (report.getState() == State.IN_PROCESS) {
+			throw new InvalidStateException();
+		}
+		
+		if (report.getState() == State.FINISHED) {
+			report.setState(State.APPROVED);
+			reportDao.save(report);
+		}
+		
+		return report;
+	}
+	
+	
+	
+	
+	
 	public void setVericastApiDelegate(VericastApiDelegate api) {
 		this.api = api;
 	}
@@ -163,5 +199,6 @@ public class ReportService {
 	public void setSendMailService(SendMailService sendMailService) {
 		this.sendMailService = sendMailService;
 	}
+
 
 }

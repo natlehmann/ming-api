@@ -1,7 +1,13 @@
 package ar.com.marcelomingrone.vericast.reports.model;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
@@ -30,6 +36,11 @@ public class User extends AbstractEntity {
 	private String language;
 	
 	private String apiKey;
+	
+	@ManyToMany
+	@JoinTable(name="User_Role", joinColumns={@JoinColumn(name="user_id")}, 
+		inverseJoinColumns={@JoinColumn(name="role_id")})
+	private List<Role> roles;
 
 	public String getUsername() {
 		return username;
@@ -69,6 +80,20 @@ public class User extends AbstractEntity {
 	
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public List<Role> getRoles() {
+		return roles;
+	}
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+	
+	public void addRole(Role role) {
+		if (this.roles == null) {
+			this.roles = new LinkedList<>();
+		}
+		this.roles.add(role);
 	}
 	
 	@Override
