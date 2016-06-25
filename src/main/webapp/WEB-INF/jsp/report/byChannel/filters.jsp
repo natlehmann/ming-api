@@ -19,6 +19,10 @@
 		<spring:message code="report.in.progress"/>
 	</div>
 	
+	<div class="msg" id="validation-msg" style="display: none;">
+		<spring:message code="fill.in.time.period.and.end.date"/>
+	</div>
+	
 	<form method="post" id="reportByChannelForm">
 	
 		<input type="hidden" id="action" name="action" />

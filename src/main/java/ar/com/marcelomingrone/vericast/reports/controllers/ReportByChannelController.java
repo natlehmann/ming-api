@@ -13,6 +13,7 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,16 +54,23 @@ public class ReportByChannelController {
 	public ModelAndView initReportFilters(ModelMap model) {
 		
 		model.addAttribute("timePeriods", TimePeriod.values());	
+		if (model.get("selectedPeriod") == null) {
+			model.put("selectedPeriod", TimePeriod.WEEK);
+		}
 		
 		return new ModelAndView("report/byChannel/filters", model);
 	}
 	
 	@RequestMapping("/create")
-	public ModelAndView createReport(
-			@RequestParam("timePeriod") String timePeriod, 
-			@RequestParam("endDate") Date endDate, ModelMap model, 
+	@ResponseBody
+	public String createReport(
+			@RequestParam(value="timePeriod", required=true) String timePeriod, 
+			@RequestParam(value="endDate", required=true) Date endDate, ModelMap model, 
 			HttpSession session, Locale locale) {
 		
+		if (StringUtils.isEmpty(timePeriod) || endDate == null) {
+			return messageSource.getMessage("error.missing.filters", null, locale);
+		}
 
 		setConversationParameters(model, timePeriod, endDate);
 		
@@ -71,7 +79,7 @@ public class ReportByChannelController {
 		
 		service.buildPlaycountsByChannel(report, timePeriod, endDate);
 		
-		return null;
+		return messageSource.getMessage("report.ready", null, locale);
 
 	}
 	
@@ -120,57 +128,12 @@ public class ReportByChannelController {
 	}
 
 
-	/*
-	private ModelAndView saveReport(ModelMap model, HttpSession session) {
-		
-		SummaryReport report = (SummaryReport) session.getAttribute(
-				Utils.SessionParams.ACTIVE_REPORT.toString());
-		
-		if (report != null) {
-		
-			String msg = service.saveReport(report);
-			
-			setConversationParameters(model, report.getYear(), report.getCountry().getId(),
-					report.getWeekFrom(), report.getWeekTo(), report.getRight().getId(),
-					report.getFilteredBySource() != null ? report.getFilteredBySource().getId() :  null, 
-					report.getMonth());
-			model.put("msg", msg);
-			
-			session.removeAttribute(Utils.SessionParams.ACTIVE_REPORT.toString());
-			
-		} else {
-			model.put("msg", "Genere un reporte a partir de estos filtros.");
-		}
-		
-		return initReportFilters(model);
-	}
-*/
-
 	private void setConversationParameters(ModelMap model, String timePeriod, Date endDate) {
 		model.put("selectedPeriod", timePeriod);
 		model.put("selectedEndDate", endDate);
 	}
 
 	/*
-	public ModelAndView getExcel(Long countryId, Integer year, Integer weekFrom,
-			Integer weekTo, Integer month, Long rightId,
-			Long sourceId, ModelMap model, HttpSession session) {
-
-		SummaryReport report = service.getSummaryReport(
-				countryId, year, weekFrom, weekTo, month, rightId, sourceId);
-		
-		session.setAttribute(Utils.SessionParams.ACTIVE_REPORT.toString(), report);
-		model.put("summaryReport", report);
-		return new ModelAndView("chartSummaryExcelView", model);
-	}
-	
-	@RequestMapping("/isReady")
-	@ResponseBody
-	public boolean isReady(HttpSession session) {
-		
-		return session.getAttribute(Utils.SessionParams.ACTIVE_REPORT.toString()) != null;
-	}
-
 	
 	@ResponseBody
 	@RequestMapping("/weekly/list_ajax")
