@@ -1,6 +1,7 @@
 package ar.com.marcelomingrone.vericast.reports.services;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.Collections;
 import java.util.Date;
@@ -201,6 +202,12 @@ public class ReportServiceTest extends AbstractTest {
 		service.approveReport(1L, "user");
 	}
 	
+	@Test(expected=NoReportException.class)
+	public void rejectNullReport() throws LocalizedException {
+		
+		service.rejectReport(1L, "user");
+	}
+	
 	@Test(expected=UserNotAuthorizedException.class)
 	public void approveReportNotTheSameUser() throws LocalizedException {
 		
@@ -208,6 +215,15 @@ public class ReportServiceTest extends AbstractTest {
 		Report report = builder.buildReport(user);
 		
 		service.approveReport(report.getId(), "otroUsuario");
+	}
+	
+	@Test(expected=UserNotAuthorizedException.class)
+	public void rejectReportNotTheSameUser() throws LocalizedException {
+		
+		User user = builder.buildUser(USERNAME);
+		Report report = builder.buildReport(user);
+		
+		service.rejectReport(report.getId(), "otroUsuario");
 	}
 	
 	@Test
@@ -224,6 +240,21 @@ public class ReportServiceTest extends AbstractTest {
 		assertEquals(State.APPROVED, result.getState());
 	}
 	
+	@Test
+	public void rejectReportNotTheSameUserButAdministrator() throws LocalizedException {
+		
+		User user = builder.buildUser(USERNAME);
+		Report report = builder.buildReport(user, State.FINISHED);
+		
+		User admin = builder.buildAdminUser("admin");
+		mockPrincipal(admin.getUsername(), true);
+		
+		service.rejectReport(report.getId(), admin.getUsername());
+		
+		Report result = service.getReportOrderedByPlaycounts(report.getId());
+		assertNull(result);
+	}
+	
 	@Test(expected=InvalidStateException.class)
 	public void approveReportInvalidState() throws LocalizedException {
 		
@@ -231,6 +262,15 @@ public class ReportServiceTest extends AbstractTest {
 		Report report = builder.buildReport(user, State.IN_PROCESS);
 		
 		service.approveReport(report.getId(), user.getUsername());
+	}
+	
+	@Test(expected=InvalidStateException.class)
+	public void rejectReportInvalidState() throws LocalizedException {
+		
+		User user = builder.buildUser(USERNAME);
+		Report report = builder.buildReport(user, State.IN_PROCESS);
+		
+		service.rejectReport(report.getId(), user.getUsername());
 	}
 	
 	@Test
@@ -243,6 +283,18 @@ public class ReportServiceTest extends AbstractTest {
 		
 		Report result = service.getReportOrderedByPlaycounts(report.getId());
 		assertEquals(State.APPROVED, result.getState());
+	}
+	
+	@Test
+	public void rejectReportHappyPath() throws LocalizedException {
+		
+		User user = builder.buildUser(USERNAME);
+		Report report = builder.buildReport(user, State.FINISHED);
+		
+		service.rejectReport(report.getId(), user.getUsername());
+		
+		Report result = service.getReportOrderedByPlaycounts(report.getId());
+		assertNull(result);
 	}
 	
 	@Test

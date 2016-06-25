@@ -102,6 +102,22 @@ public class ReportByChannelController {
 		
 		return initReportFilters(model);
 	}
+	
+	
+	@RequestMapping("/reject")
+	public ModelAndView rejectReport(ModelMap model, Locale locale, 
+			@RequestParam("id")long id, @RequestParam("user")String user) {
+		
+		try {
+			service.rejectReport(id, user);
+			model.put("msg", messageSource.getMessage("report.rejected", null, locale));
+			
+		} catch (LocalizedException e){
+			model.put("msg", messageSource.getMessage(e.getCode(), null, locale));
+		}
+		
+		return initReportFilters(model);
+	}
 
 
 	/*

@@ -173,6 +173,25 @@ public class ReportService {
 	}
 	
 	
+	public void rejectReport(long id, String user) throws LocalizedException {
+		
+		Report report = reportDao.getById(id);
+		
+		if (report == null) {
+			throw new NoReportException();
+		}
+		
+		if (!report.getOwner().getUsername().equalsIgnoreCase(user) 
+				&& !Utils.isCurrentUserAdministrator()){
+			throw new UserNotAuthorizedException();
+		}
+		
+		if (report.getState() == State.IN_PROCESS) {
+			throw new InvalidStateException();
+		}
+		
+		reportDao.delete(id);
+	}
 	
 	
 	

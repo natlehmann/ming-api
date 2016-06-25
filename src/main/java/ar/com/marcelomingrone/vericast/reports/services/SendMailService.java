@@ -72,6 +72,7 @@ public class SendMailService {
 
 
 	public void sendErrorReport(Report report, Exception error) {
+		// TODO: FALTA IMPLEMENTAR!!!!!!!!!!!!!!
 		throw new IllegalArgumentException(error);
 		
 	}
