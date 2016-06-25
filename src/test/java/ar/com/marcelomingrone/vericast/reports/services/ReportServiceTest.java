@@ -178,6 +178,23 @@ public class ReportServiceTest extends AbstractTest {
 		assertEquals(new Long(4), result.getItems().get(3).getTotalPlayCount());
 	}
 	
+	@Test
+	public void buildPlaycountsByChannelFinishedState() {
+		
+		builder.buildUser(USERNAME);
+		mockPrincipal(USERNAME);
+		
+		Report report = service.buildReport(TimePeriod.WEEK.toString(), new Date());
+		
+		assertEquals(State.IN_PROCESS, report.getState());
+		
+		service.buildPlaycountsByChannel(report, TimePeriod.WEEK.toString(), new Date());
+		
+		Report result = reportDao.getByIdWithItems(report.getId());
+		
+		assertEquals(State.FINISHED, result.getState());
+	}
+	
 	@Test(expected=NoReportException.class)
 	public void approveNullReport() throws LocalizedException {
 		
@@ -226,6 +243,26 @@ public class ReportServiceTest extends AbstractTest {
 		
 		Report result = service.getReportOrderedByPlaycounts(report.getId());
 		assertEquals(State.APPROVED, result.getState());
+	}
+	
+	@Test
+	public void buildReportLeavesItInProcessState() {
+		
+		builder.buildUser(USERNAME);
+		mockPrincipal(USERNAME);
+		
+		Report report = service.buildReport(TimePeriod.DAY.toString(), new Date());
+		assertEquals(State.IN_PROCESS, report.getState());
+	}
+	
+	@Test
+	public void buildReportTakesCurrentUser() {
+		
+		User user = builder.buildUser(USERNAME);
+		mockPrincipal(USERNAME);
+		
+		Report report = service.buildReport(TimePeriod.DAY.toString(), new Date());
+		assertEquals(user, report.getOwner());
 	}
 
 }

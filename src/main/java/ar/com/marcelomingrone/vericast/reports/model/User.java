@@ -11,6 +11,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -21,6 +22,7 @@ public class User extends AbstractEntity {
 	private static final long serialVersionUID = -4460933541058895296L;
 	
 	@NotNull @NotBlank 
+	@Pattern(regexp="^[A-Za-z0-9_-]{3,30}$")
 	@Column(nullable=false)
 	private String username;
 	

@@ -91,6 +91,10 @@ public class ReportService {
 	        
 	        calculateTotalPlaycounts(report);
 	        
+	        Report simplified = reportDao.getById(report.getId());
+	        simplified.setState(State.FINISHED);
+	        reportDao.save(simplified);
+	        
 	        sendMailService.sendReport( getReportOrderedByPlaycounts(report.getId()) );
 	        
 		} catch (Exception e) {
@@ -136,6 +140,7 @@ public class ReportService {
         report.setEndDate(endDate);
         report.setOwner(currentUser);
         report.setTimePeriod(timePeriod);
+        report.setState(State.IN_PROCESS);
         
         report = reportDao.save(report);
         return report;

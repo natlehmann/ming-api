@@ -10,6 +10,7 @@ import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -36,6 +37,9 @@ public class SendMailService {
 	@Resource(name = "messageSource")
     private MessageSource messageSource;
 	
+	@Value("${base.url}")
+	private String BASE_URL;
+	
 	
 	public void sendReport(Report report) throws MessagingException {
 		
@@ -52,11 +56,18 @@ public class SendMailService {
 
 	private String buildMailMessage(Report report) {
 		
-		StringBuffer buffer = new StringBuffer();
-		buffer.append(messageSource.getMessage("report.bychannel.email.body", 
-				new Object[]{"hola", "chau"}, new Locale(report.getOwner().getLanguage())) );
+		StringBuffer approveUrl = new StringBuffer();
+		approveUrl.append(BASE_URL).append("/report/byChannel/approve?user=")
+			.append(report.getOwner().getUsername()).append("&id=").append(report.getId());
 		
-		return buffer.toString();
+		StringBuffer rejectUrl = new StringBuffer();
+		rejectUrl.append(BASE_URL).append("/report/byChannel/reject?user=")
+			.append(report.getOwner().getUsername()).append("&id=").append(report.getId());
+		
+		return messageSource.getMessage("report.bychannel.email.body", 
+				new Object[]{approveUrl.toString(), rejectUrl.toString()}, 
+				new Locale(report.getOwner().getLanguage()));
+		
 	}
 
 
