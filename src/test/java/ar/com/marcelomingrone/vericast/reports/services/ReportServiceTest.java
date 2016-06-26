@@ -133,6 +133,25 @@ public class ReportServiceTest extends AbstractTest {
 		Mockito.verify(sendMailServiceMock, Mockito.times(1)).sendReport(report);
 	}
 	
+	@Test
+	public void buildPlaycountsByChannelWithError() throws MessagingException {
+		
+		User user = builder.buildUser(USERNAME);
+		Report report = builder.buildReport(user);
+		Date endDate = new Date();
+		
+		service.setVericastApiDelegate(null);// to simulate error
+		
+		service.buildPlaycountsByChannel(report, TimePeriod.WEEK.toString(), endDate);
+		
+		// Report is deleted
+		Report result = service.getReportOrderedByPlaycounts(report.getId());
+		assertNull(result);
+		
+		Mockito.verify(sendMailServiceMock, Mockito.times(1)).sendErrorReport(
+				Mockito.any(Report.class), Mockito.any(Exception.class));
+	}
+	
 	
 	@Test
 	public void buildPlaycountsByChannelItems() {

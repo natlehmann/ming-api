@@ -20,11 +20,10 @@ import ar.com.marcelomingrone.vericast.reports.model.LocalizedException;
 import ar.com.marcelomingrone.vericast.reports.model.NoReportException;
 import ar.com.marcelomingrone.vericast.reports.model.PlaycountByChannel;
 import ar.com.marcelomingrone.vericast.reports.model.Report;
+import ar.com.marcelomingrone.vericast.reports.model.Report.State;
 import ar.com.marcelomingrone.vericast.reports.model.ReportItem;
-import ar.com.marcelomingrone.vericast.reports.model.TimePeriod;
 import ar.com.marcelomingrone.vericast.reports.model.User;
 import ar.com.marcelomingrone.vericast.reports.model.UserNotAuthorizedException;
-import ar.com.marcelomingrone.vericast.reports.model.Report.State;
 import ar.com.marcelomingrone.vericast.reports.model.dto.Channel;
 import ar.com.marcelomingrone.vericast.reports.model.dto.Track;
 
@@ -99,6 +98,11 @@ public class ReportService {
 	        sendMailService.sendReport( getReportOrderedByPlaycounts(report.getId()) );
 	        
 		} catch (Exception e) {
+			
+			// if it fails, delete the report
+			log.info("Se elimina el reporte del usuario " + report.getOwner().getUsername());
+			reportDao.delete(report.getId());
+			
 			sendMailService.sendErrorReport(report, e);
 		}
         

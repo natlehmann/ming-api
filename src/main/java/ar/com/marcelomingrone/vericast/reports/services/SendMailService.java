@@ -1,5 +1,8 @@
 package ar.com.marcelomingrone.vericast.reports.services;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Date;
 import java.util.Locale;
 
@@ -8,6 +11,8 @@ import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +26,8 @@ import ar.com.marcelomingrone.vericast.reports.model.Report;
 
 @Service
 public class SendMailService {
+	
+	private static Log log = LogFactory.getLog(SendMailService.class);
 	
 	@Autowired
 	private ThreadPoolTaskExecutor taskExecutor;
@@ -43,7 +50,7 @@ public class SendMailService {
 	
 	public void sendReport(Report report) throws MessagingException {
 		
-		configureMimeMessage(report);
+		configureMimeMessage(report, "report.ready");
 		
 		String text = buildMailMessage(report);
 		
@@ -72,19 +79,45 @@ public class SendMailService {
 
 
 	public void sendErrorReport(Report report, Exception error) {
-		// TODO: FALTA IMPLEMENTAR!!!!!!!!!!!!!!
-		throw new IllegalArgumentException(error);
+		
+		try {
+			configureMimeMessage(report, "report.error");
+			
+			String text = buildErrorMailMessage(report, error);
+			
+			SendMailErrorRunnable runnable = new SendMailErrorRunnable(
+					report, text, mimeMessage, javaMailSender);
+				
+			taskExecutor.execute(runnable);
+			
+		} catch (Exception e) {
+			log.error("Se produjo un error enviando el mail de informe de errores", e);
+		}
 		
 	}
 	
 	
-	protected void configureMimeMessage(Report report) throws MessagingException {
+	private String buildErrorMailMessage(Report report, Exception error) throws IOException {
+		
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		error.printStackTrace(new PrintStream(out));
+		out.flush();
+		
+		String stackTrace = out.toString().replace("\n", "<br/>");
+		
+		return messageSource.getMessage("report.bychannel.error.email.body", 
+				new String[]{stackTrace}, 
+				new Locale(report.getOwner().getLanguage()));
+	}
+
+
+	protected void configureMimeMessage(Report report, String subjectCode) throws MessagingException {
 		
 		mimeMessage.setHeader("Content-Type", "text/html");
 		mimeMessage.setHeader("Content-Transfer-Encoding", "base64");
 		
 		mimeMessage.setSubject(messageSource.getMessage(
-				"report.ready", null, new Locale(report.getOwner().getLanguage())), "UTF-8");					
+				subjectCode, null, new Locale(report.getOwner().getLanguage())), "UTF-8");					
 		mimeMessage.setSentDate(new Date());					
 		mimeMessage.setFrom(fromAddress);
 		
