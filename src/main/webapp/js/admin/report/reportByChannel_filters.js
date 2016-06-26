@@ -11,6 +11,8 @@ $(document).ready(function() {
 
 function checkExistence(element) {
 	
+	$("#main-msg").html("");
+	
 	if ( $("input[name='endDate']").val() == '' || $("select[name='timePeriod']").val() == '') {
 		$("#validation-msg").show();
 		

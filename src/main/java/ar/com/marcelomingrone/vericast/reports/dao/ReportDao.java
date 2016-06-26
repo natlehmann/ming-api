@@ -1,9 +1,13 @@
 package ar.com.marcelomingrone.vericast.reports.dao;
 
+import java.util.Date;
 import java.util.List;
+
+import javax.persistence.NoResultException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.NonUniqueResultException;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -11,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ar.com.marcelomingrone.vericast.reports.model.Report;
 import ar.com.marcelomingrone.vericast.reports.model.ReportItem;
+import ar.com.marcelomingrone.vericast.reports.model.User;
+import ar.com.marcelomingrone.vericast.reports.model.Report.State;
 
 @Repository
 public class ReportDao extends AbstractEntityDao<Report> {
@@ -58,6 +64,39 @@ public class ReportDao extends AbstractEntityDao<Report> {
 			}
 			
 			report.setItems(items);
+		}
+		
+		return report;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<Report> getUnfinishedReports(User user) {
+		
+		return sessionFactory.getCurrentSession().createQuery(
+				"SELECT r FROM Report r WHERE r.owner = :user AND r.state IN (:states)")
+				.setParameter("user", user)
+				.setParameterList("states", new State[]{State.IN_PROCESS, State.FINISHED})
+				.list();
+	}
+
+	@Transactional
+	public Report getReport(User user, String timePeriod, Date endDate) {
+		
+		Report report = null;
+		try {
+			report = (Report) sessionFactory.getCurrentSession().createQuery(
+					"SELECT r FROM Report r WHERE r.owner = :user AND r.timePeriod = :timePeriod "
+					+ "AND r.endDate = :endDate")
+					.setParameter("user", user)
+					.setParameter("timePeriod", timePeriod)
+					.setParameter("endDate", endDate)
+					.uniqueResult();
+			
+		} catch (NoResultException e) {
+			// nothing
+		} catch (NonUniqueResultException e) {
+			log.error("Se encontro mas de un reporte con iguales parametros para el mismo usuario", e);
 		}
 		
 		return report;

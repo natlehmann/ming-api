@@ -240,8 +240,20 @@ public class ReportByChannelController {
 	public String checkIfReportExists(@RequestParam("timePeriod") String timePeriod, 
 			@RequestParam("endDate") Date endDate, ModelMap model, HttpSession session, Locale locale) {
 		
-		//TODO: IMPLEMENTAR!!
-//		return messageSource.getMessage("report.byChannel.exists", null, locale);
+		if (StringUtils.isEmpty(timePeriod) || endDate == null) {
+			return messageSource.getMessage("error.missing.filters", null, locale);
+		}
+		
+		if (service.userCanBuildReport()) {
+			
+			Report existing = service.getSameReport(timePeriod, endDate);
+			if (existing != null) {
+				return messageSource.getMessage("error.same.report.exists", null, locale);
+			}
+			
+		} else {
+			return messageSource.getMessage("error.report.in.process", null, locale);
+		}
 		
 		return "";
 		

@@ -77,9 +77,8 @@
 			</p>
 			
 			<div class="ui-dialog-buttonpane">
-				<input type="button" value='<spring:message code="accept"/>' onclick="buildReport()" />
 				<button type="button" onclick="$('#dialog-report-exists').dialog('close');">
-					<spring:message code="cancel"/>
+					<spring:message code="accept"/>
 				</button>
 			</div>
 	</div>

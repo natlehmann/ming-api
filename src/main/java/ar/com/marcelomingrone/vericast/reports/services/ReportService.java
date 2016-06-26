@@ -21,6 +21,7 @@ import ar.com.marcelomingrone.vericast.reports.model.NoReportException;
 import ar.com.marcelomingrone.vericast.reports.model.PlaycountByChannel;
 import ar.com.marcelomingrone.vericast.reports.model.Report;
 import ar.com.marcelomingrone.vericast.reports.model.ReportItem;
+import ar.com.marcelomingrone.vericast.reports.model.TimePeriod;
 import ar.com.marcelomingrone.vericast.reports.model.User;
 import ar.com.marcelomingrone.vericast.reports.model.UserNotAuthorizedException;
 import ar.com.marcelomingrone.vericast.reports.model.Report.State;
@@ -195,6 +196,23 @@ public class ReportService {
 	
 	
 	
+	public boolean userCanBuildReport() {
+		
+		User currentUser = userDao.getCurrentUser();
+		List<Report> reports = reportDao.getUnfinishedReports(currentUser);
+		
+		return reports.isEmpty();
+	}
+	
+	
+	public Report getSameReport(String timePeriod, Date endDate) {
+		
+		User currentUser = userDao.getCurrentUser();
+		return reportDao.getReport(currentUser, timePeriod, endDate);
+	}
+	
+	
+	
 	public void setVericastApiDelegate(VericastApiDelegate api) {
 		this.api = api;
 	}
@@ -223,6 +241,5 @@ public class ReportService {
 	public void setSendMailService(SendMailService sendMailService) {
 		this.sendMailService = sendMailService;
 	}
-
 
 }

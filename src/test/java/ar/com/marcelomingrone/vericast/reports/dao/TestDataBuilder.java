@@ -1,5 +1,7 @@
 package ar.com.marcelomingrone.vericast.reports.dao;
 
+import java.util.Date;
+
 import org.hibernate.Session;
 
 import ar.com.marcelomingrone.vericast.reports.model.AbstractEntity;
@@ -99,18 +101,24 @@ public class TestDataBuilder {
 		return trackList;
 	}
 
-	public Report buildReport(User user, State state) {
+	public Report buildReport(User user, State state, String timePeriod, Date endDate) {
 		
 		Report report = new Report();
 		report.setOwner(user);
 		report.setState(state);
+		report.setTimePeriod(timePeriod);
+		report.setEndDate(endDate);
 		currentSession.saveOrUpdate(report);
 		
 		return report;
 	}
 	
+	public Report buildReport(User user, State state) {
+		return buildReport(user, state, null, null);
+	}
+	
 	public Report buildReport(User user) {
-		return buildReport(user, State.IN_PROCESS);
+		return buildReport(user, State.IN_PROCESS, null, null);
 	}
 
 	public ReportItem buildReportItem(Report report, String bmaitId) {

@@ -2,6 +2,8 @@ package ar.com.marcelomingrone.vericast.reports.services;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import java.util.Collections;
 import java.util.Date;
@@ -315,6 +317,108 @@ public class ReportServiceTest extends AbstractTest {
 		
 		Report report = service.buildReport(TimePeriod.DAY.toString(), new Date());
 		assertEquals(user, report.getOwner());
+	}
+	
+	@Test
+	public void userCanBuildReportSimplePath() {
+		
+		builder.buildUser(USERNAME);
+		mockPrincipal(USERNAME);
+		
+		assertTrue(service.userCanBuildReport());
+	}
+	
+	@Test
+	public void userHasReportInProcess() {
+		
+		User user = builder.buildUser(USERNAME);
+		mockPrincipal(USERNAME);
+		builder.buildReport(user, State.IN_PROCESS);
+		
+		assertFalse(service.userCanBuildReport());
+	}
+	
+	@Test
+	public void userHasReportUnapproved() {
+		
+		User user = builder.buildUser(USERNAME);
+		mockPrincipal(USERNAME);
+		builder.buildReport(user, State.FINISHED);
+		
+		assertFalse(service.userCanBuildReport());
+	}
+	
+	@Test
+	public void userHasApprovedReports() {
+		
+		User user = builder.buildUser(USERNAME);
+		mockPrincipal(USERNAME);
+		builder.buildReport(user, State.APPROVED);
+		builder.buildReport(user, State.APPROVED);
+		
+		assertTrue(service.userCanBuildReport());
+	}
+	
+	@Test
+	public void getSameReportNoResults() {
+		
+		Date endDate = new Date();
+		Report report = service.getSameReport(TimePeriod.WEEK.toString(), endDate);
+		assertNull(report);
+	}
+	
+	@Test
+	public void getSameReportSameParameters() {
+		
+		Date endDate = new Date();
+		
+		User user = builder.buildUser(USERNAME);
+		mockPrincipal(USERNAME);
+		Report report = builder.buildReport(user, State.APPROVED, TimePeriod.WEEK.toString(), endDate);
+		
+		Report result = service.getSameReport(TimePeriod.WEEK.toString(), endDate);
+		assertEquals(report, result);
+	}
+	
+	@Test
+	public void getSameReportSameParametersOtherState() {
+		
+		Date endDate = new Date();
+		
+		User user = builder.buildUser(USERNAME);
+		mockPrincipal(USERNAME);
+		Report report = builder.buildReport(user, State.FINISHED, TimePeriod.WEEK.toString(), endDate);
+		
+		Report result = service.getSameReport(TimePeriod.WEEK.toString(), endDate);
+		assertEquals(report, result);
+	}
+	
+	@Test
+	public void getSameReportSameParametersOtherState2() {
+		
+		Date endDate = new Date();
+		
+		User user = builder.buildUser(USERNAME);
+		mockPrincipal(USERNAME);
+		Report report = builder.buildReport(user, State.IN_PROCESS, TimePeriod.WEEK.toString(), endDate);
+		
+		Report result = service.getSameReport(TimePeriod.WEEK.toString(), endDate);
+		assertEquals(report, result);
+	}
+	
+	@Test
+	public void getSameReportSameParametersDifferentUser() {
+		
+		Date endDate = new Date();
+		
+		builder.buildUser(USERNAME);
+		mockPrincipal(USERNAME);
+		
+		User other = builder.buildUser("other");
+		builder.buildReport(other, State.APPROVED, TimePeriod.WEEK.toString(), endDate);
+		
+		Report result = service.getSameReport(TimePeriod.WEEK.toString(), endDate);
+		assertNull(result);
 	}
 
 }
