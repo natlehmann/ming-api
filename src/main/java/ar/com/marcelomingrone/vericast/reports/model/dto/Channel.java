@@ -32,6 +32,11 @@ public class Channel extends AbstractEntity implements Serializable {
 		this.name = name;
 		this.keyname = keyname;
 	}
+	
+	public Channel(Long id, String name, String keyname) {
+		this(name, keyname);
+		this.setId(id);
+	}
 
 	public String getName() {
 		return name;

@@ -18,6 +18,19 @@ import ar.com.marcelomingrone.vericast.reports.model.dto.Channel;
 public class ReportItem extends AbstractEntity {
 
 	private static final long serialVersionUID = -7785807139950711437L;
+	
+	public ReportItem() {}
+
+	public ReportItem(String trackName, String artistName, String labelName,
+			Long totalPlayCount) {
+		super();
+		this.trackName = trackName;
+		this.artistName = artistName;
+		this.labelName = labelName;
+		this.totalPlayCount = totalPlayCount;
+	}
+
+
 
 	@Column(nullable=false)
 	private String trackName;

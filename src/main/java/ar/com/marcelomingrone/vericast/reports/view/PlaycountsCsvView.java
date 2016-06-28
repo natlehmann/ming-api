@@ -46,14 +46,20 @@ public class PlaycountsCsvView extends AbstractView {
 	public void writeReport(Report report, List<Channel> channels, BufferedWriter writer)
 			throws IOException {
 		
+		writeReportHeader(writer, channels);
+		
+		writeItems(report, channels, writer);
+	}
+
+	protected void writeItems(Report report, List<Channel> channels,
+			BufferedWriter writer) throws IOException {
+		
 		Map<Channel, Integer> channelIndex = new HashMap<Channel, Integer>();
 		int count = 0;
 		
 		for (Channel channel : channels) {
 			channelIndex.put(channel, count++);
 		}
-		
-		writeReportHeader(writer, channels);
 		
 		for (ReportItem item : report.getItems()) {
 			
