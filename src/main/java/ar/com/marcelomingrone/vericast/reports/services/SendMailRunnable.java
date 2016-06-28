@@ -14,6 +14,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
 import ar.com.marcelomingrone.vericast.reports.model.Report;
+import ar.com.marcelomingrone.vericast.reports.view.PlaycountsCsvView;
 import ar.com.marcelomingrone.vericast.reports.view.PlaycountsExcelView;
 import ar.com.marcelomingrone.vericast.reports.view.ReportViewUtils;
 import ar.com.marcelomingrone.vericast.reports.view.ReportViewUtils.Extension;
@@ -23,6 +24,7 @@ public class SendMailRunnable implements Runnable {
 	private static Log log = LogFactory.getLog(SendMailRunnable.class);
 	
 	private PlaycountsExcelView excelView;
+	private PlaycountsCsvView csvView;
 	
 	private Report report;
 	private MimeMessage mimeMessage;
@@ -38,6 +40,7 @@ public class SendMailRunnable implements Runnable {
 		this.javaMailSender = javaMailSender;
 		this.mailBody = mailBody;
 		this.excelView = new PlaycountsExcelView();
+		this.csvView = new PlaycountsCsvView();
 	}
 	
 	

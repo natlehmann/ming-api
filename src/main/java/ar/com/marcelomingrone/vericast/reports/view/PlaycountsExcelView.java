@@ -14,7 +14,6 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.RichTextString;
 import org.springframework.web.servlet.view.document.AbstractExcelView;
 
 import ar.com.marcelomingrone.vericast.reports.model.PlaycountByChannel;
@@ -34,86 +33,7 @@ public class PlaycountsExcelView extends AbstractExcelView {
 	private ChartStyleManager styleManager;
 
 	
-	private static enum ReportColumnHeader {		
-		
-		TRACK_NAME {
-			public String getHeader(){
-				return "Track";
-			}
-			
-			@Override
-			public RichTextString getValue(ReportItem item) {
-				return new HSSFRichTextString(item.getTrackName());
-			}
-			
-			@Override
-			public CellStyle getStyle(ChartStyleManager styleManager) {
-				return styleManager.getLeftCellStyle();
-			}
-		},
-		
-		ARTIST {
-			@Override
-			public String getHeader() {
-				return "Artist";
-			}
-			
-			@Override
-			public RichTextString getValue(ReportItem item) {
-				return new HSSFRichTextString(item.getArtistName());
-			}
-			
-			@Override
-			public CellStyle getStyle(ChartStyleManager styleManager) {
-				return styleManager.getLeftCellStyle();
-			}
-		},
-		
-		LABEL {
-			@Override
-			public String getHeader() {
-				return "Label";
-			}
-			
-			@Override
-			public RichTextString getValue(ReportItem item) {
-				return new HSSFRichTextString(item.getLabelName());
-
-			}
-			
-			@Override
-			public CellStyle getStyle(ChartStyleManager styleManager) {
-				return styleManager.getLeftCellStyle();
-			}
-		},
-		
-		TOTAL {
-			@Override
-			public String getHeader() {
-				return "Total";
-			}
-			
-			@Override
-			public RichTextString getValue(ReportItem item) {
-				return new HSSFRichTextString(String.valueOf(item.getTotalPlayCount()));
-			}
-			
-			@Override
-			public CellStyle getStyle(ChartStyleManager styleManager) {
-				return styleManager.getRightCellStyle();
-			}
-		};
-		
-		
-
-
-		public abstract String getHeader();
-
-		public abstract RichTextString getValue(ReportItem item);
-
-		public abstract CellStyle getStyle(ChartStyleManager styleManager);
-		
-	}
+	
 	
 	
 	public void buildExcelDocument(HSSFWorkbook workbook, Report report)
@@ -166,19 +86,12 @@ public class PlaycountsExcelView extends AbstractExcelView {
 		excelHeader = excelSheet.createRow(COLUMN_HEADER_INDEX);
 		excelHeader.setHeightInPoints(30);
 		
-		for (ReportColumnHeader header : ReportColumnHeader.values()) {
+		for (PlaycountsHeaderColumn header : PlaycountsHeaderColumn.values()) {
 			
 			excelHeader.createCell(header.ordinal()).setCellValue(header.getHeader());
 			excelHeader.getCell(header.ordinal()).setCellStyle(style);
 		}
 	}
-
-
-
-	
-
-
-	
 	
 
 
@@ -187,7 +100,7 @@ public class PlaycountsExcelView extends AbstractExcelView {
 		Map<String, Integer> channelHeaders = new HashMap<String, Integer>();
 		
 		int row = 6;
-		int initialCol = ReportColumnHeader.values().length;
+		int initialCol = PlaycountsHeaderColumn.values().length;
 		
 		CellStyle headerStyle = styleManager.getColumnHeaderStyle(); 
 		
@@ -196,7 +109,7 @@ public class PlaycountsExcelView extends AbstractExcelView {
 			HSSFRow excelRow = excelSheet.createRow(row);
 			excelRow.setHeightInPoints(18);
 			
-			for (ReportColumnHeader header : ReportColumnHeader.values()) {
+			for (PlaycountsHeaderColumn header : PlaycountsHeaderColumn.values()) {
 				
 				// fill in fixed fields
 				excelRow.createCell(header.ordinal()).setCellValue(header.getValue(item));				
