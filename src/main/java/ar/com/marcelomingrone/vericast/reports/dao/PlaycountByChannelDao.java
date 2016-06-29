@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ar.com.marcelomingrone.vericast.reports.model.PlaycountByChannel;
 import ar.com.marcelomingrone.vericast.reports.model.ReportItem;
+import ar.com.marcelomingrone.vericast.reports.model.dto.Channel;
 
 @Repository
 public class PlaycountByChannelDao extends
@@ -33,6 +34,16 @@ public class PlaycountByChannelDao extends
 		return sessionFactory.getCurrentSession().createQuery(
 				"SELECT e FROM PlaycountByChannel e WHERE e.reportItem = :item")
 				.setParameter("item", item).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<Channel> getChannelsForReport(Long id) {
+		
+		return sessionFactory.getCurrentSession().createQuery(
+				"SELECT DISTINCT(p.channel) FROM PlaycountByChannel p "
+				+ "WHERE p.reportItem.report.id = :idReport")
+				.setParameter("idReport", id).list();
 	}
 
 }

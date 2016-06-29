@@ -1,6 +1,10 @@
 package ar.com.marcelomingrone.vericast.reports.services;
 
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.util.List;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
@@ -14,6 +18,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
 import ar.com.marcelomingrone.vericast.reports.model.Report;
+import ar.com.marcelomingrone.vericast.reports.model.dto.Channel;
 import ar.com.marcelomingrone.vericast.reports.view.PlaycountsCsvView;
 import ar.com.marcelomingrone.vericast.reports.view.PlaycountsExcelView;
 import ar.com.marcelomingrone.vericast.reports.view.ReportViewUtils;
@@ -27,15 +32,17 @@ public class SendMailRunnable implements Runnable {
 	private PlaycountsCsvView csvView;
 	
 	private Report report;
+	private List<Channel> channels;
 	private MimeMessage mimeMessage;
 	private JavaMailSender javaMailSender;
 	private String mailBody;
 	
 	
-	public SendMailRunnable(Report report, String mailBody, 
+	public SendMailRunnable(Report report, List<Channel> channels, String mailBody, 
 			MimeMessage mimeMessage, JavaMailSender javaMailSender) {
 		
 		this.report = report;
+		this.channels = channels;
 		this.mimeMessage = mimeMessage;
 		this.javaMailSender = javaMailSender;
 		this.mailBody = mailBody;
@@ -51,20 +58,16 @@ public class SendMailRunnable implements Runnable {
 			
 			log.info("Enviando reporte a " + report.getOwner().getUsername());
 			
-			String reportName = ReportViewUtils.getReportName(report, Extension.XLS);
+			String excelReportName = ReportViewUtils.getReportName(report, Extension.XLS);			
+			ByteArrayOutputStream excelOS = buildExcelReport();
 			
-			log.info("Inicia armado del Excel");
-			
-			HSSFWorkbook workbook = new HSSFWorkbook();
-			excelView.buildExcelDocument(workbook, report);
-			
-			ByteArrayOutputStream os = new ByteArrayOutputStream();
-			workbook.write(os);
-			os.close();
+			String csvReportName = ReportViewUtils.getReportName(report, Extension.CSV);
+			ByteArrayOutputStream csvOS = buildCsvReport();
 			
 			log.info("Configuracion del mail");					
 			buildEmailMessage(mimeMessage, report.getOwner().getEmail(), 
-					os.toByteArray(), reportName);
+					excelOS.toByteArray(), excelReportName,
+					csvOS.toByteArray(), csvReportName);
 			
 			log.info("Enviando mail");
 			javaMailSender.send(mimeMessage);
@@ -78,11 +81,41 @@ public class SendMailRunnable implements Runnable {
 	}
 
 
+	private ByteArrayOutputStream buildCsvReport() throws IOException {
+		
+		log.info("Inicia armado del CSV");
+		
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os));
+		
+		csvView.writeReport(report, channels, writer);
+		
+		os.close();
+		return os;
+	}
+
+
+	private ByteArrayOutputStream buildExcelReport() throws Exception,
+			IOException {
+		
+		log.info("Inicia armado del Excel");
+		
+		HSSFWorkbook workbook = new HSSFWorkbook();
+		excelView.buildExcelDocument(workbook, report);
+		
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		workbook.write(os);
+		os.close();
+		return os;
+	}
+
+
 	
 
 
 	public MimeMessageHelper buildEmailMessage(MimeMessage mimeMessage,
-			String email, byte[] byteArray, String reportName) 
+			String email, byte[] excelByteArray, String excelReportName, 
+			byte[] csvByteArray, String csvReportName) 
 			throws MessagingException {
 		
 		MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);					
@@ -91,7 +124,11 @@ public class SendMailRunnable implements Runnable {
 
 		helper.setTo(new InternetAddress(email));
 		
-		helper.addAttachment(reportName, new ByteArrayResource(byteArray), "application/vnd.ms-excel");
+		helper.addAttachment(excelReportName, new ByteArrayResource(excelByteArray), 
+				"application/vnd.ms-excel");
+		
+		helper.addAttachment(csvReportName, new ByteArrayResource(csvByteArray), 
+				"text/csv");
 		
 		return helper;
 	}

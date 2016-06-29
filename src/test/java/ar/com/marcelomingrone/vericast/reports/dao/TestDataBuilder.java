@@ -145,11 +145,15 @@ public class TestDataBuilder {
 		
 		return channel;
 	}
-
+	
 	public PlaycountByChannel buildPlaycountByChannel(ReportItem item, String channelName) {
+		return buildPlaycountByChannel(item, buildChannel(channelName, channelName));
+	}
+
+	public PlaycountByChannel buildPlaycountByChannel(ReportItem item, Channel channel) {
 		
 		PlaycountByChannel playcount = new PlaycountByChannel();
-		playcount.setChannel(buildChannel(channelName, channelName));
+		playcount.setChannel(channel);
 		playcount.setPlaycount(3);
 		item.addPlaycount(playcount);
 		

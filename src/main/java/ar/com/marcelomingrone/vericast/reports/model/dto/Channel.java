@@ -14,7 +14,7 @@ import ar.com.marcelomingrone.vericast.reports.model.AbstractEntity;
 @Entity
 @XmlRootElement(name="channel")
 @XmlAccessorType(XmlAccessType.NONE)
-public class Channel extends AbstractEntity implements Serializable {
+public class Channel extends AbstractEntity implements Serializable, Comparable<Channel> {
 
 	private static final long serialVersionUID = 4878471656970751702L;
 
@@ -52,6 +52,11 @@ public class Channel extends AbstractEntity implements Serializable {
 
 	public void setKeyname(String keyname) {
 		this.keyname = keyname;
+	}
+
+	@Override
+	public int compareTo(Channel other) {
+		return this.name.compareTo(other.getName());
 	}
 	
 	

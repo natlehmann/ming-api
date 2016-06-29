@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import javax.annotation.Resource;
@@ -21,7 +22,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
+import ar.com.marcelomingrone.vericast.reports.dao.PlaycountByChannelDao;
 import ar.com.marcelomingrone.vericast.reports.model.Report;
+import ar.com.marcelomingrone.vericast.reports.model.dto.Channel;
 
 
 @Service
@@ -47,6 +50,9 @@ public class SendMailService {
 	@Value("${base.url}")
 	private String BASE_URL;
 	
+	@Autowired
+	private PlaycountByChannelDao playcountDao;
+	
 	
 	public void sendReport(Report report) throws MessagingException {
 		
@@ -54,7 +60,10 @@ public class SendMailService {
 		
 		String text = buildMailMessage(report);
 		
-		SendMailRunnable runnable = new SendMailRunnable(report, text, mimeMessage, javaMailSender);
+		List<Channel> channels = playcountDao.getChannelsForReport(report.getId());
+		
+		SendMailRunnable runnable = new SendMailRunnable(
+				report, channels, text, mimeMessage, javaMailSender);
 			
 		taskExecutor.execute(runnable);
 		
