@@ -19,6 +19,9 @@ public class ChannelList implements Serializable {
 
 	@XmlAttribute(name="status")
 	private String status;
+	
+	@XmlElement(name="error")
+	private String error;
 
 	@XmlElementWrapper(name="listchannels")
 	@XmlElement(name="channel")
@@ -45,6 +48,14 @@ public class ChannelList implements Serializable {
 			this.channels = new LinkedList<>();
 		}
 		this.channels.add(channel);		
+	}
+	
+	public String getError() {
+		return error;
+	}
+	
+	public void setError(String error) {
+		this.error = error;
 	}
 	
 }

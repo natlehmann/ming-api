@@ -62,6 +62,7 @@ public class TestDataBuilder {
 	public ChannelList buildChannelList(int elementCount) {
 		
 		ChannelList channelList = new ChannelList();
+		channelList.setStatus("OK");
 		
 		for (int i = 0; i < elementCount; i++) {
 			Channel channel = new Channel();
@@ -70,6 +71,14 @@ public class TestDataBuilder {
 			channelList.addChannel(channel);
 		}
 		
+		return channelList;
+	}
+	
+	public ChannelList buildChannelListWithError() {
+		
+		ChannelList channelList = new ChannelList();
+		channelList.setStatus("error");
+		channelList.setError("Invalid API key - You must be granted a valid key by Vericast");
 		return channelList;
 	}
 	

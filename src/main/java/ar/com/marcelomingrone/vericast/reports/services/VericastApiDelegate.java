@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import ar.com.marcelomingrone.vericast.reports.model.User;
+import ar.com.marcelomingrone.vericast.reports.model.VericastApiException;
 import ar.com.marcelomingrone.vericast.reports.model.dto.Channel;
 import ar.com.marcelomingrone.vericast.reports.model.dto.ChannelList;
 import ar.com.marcelomingrone.vericast.reports.model.dto.Track;
@@ -31,6 +32,8 @@ public class VericastApiDelegate {
 	protected String TRACKS_BY_CHANNEL_URL;
 	
 	private static final int PAGE_LIMIT = 2000;
+
+	private static final String OK = "ok";
 	
 	private enum ApiParams {
 		
@@ -51,11 +54,12 @@ public class VericastApiDelegate {
 		}
 	}
 	
-	public List<Channel> getChannelList(User currentUser) {
+	public List<Channel> getChannelList(User currentUser) throws VericastApiException {
 		return getChannelList(currentUser, new RestTemplate());
 	}
 	
-	protected List<Channel> getChannelList(User currentUser, RestTemplate restTemplate) {
+	protected List<Channel> getChannelList(User currentUser, RestTemplate restTemplate) 
+			throws VericastApiException {
 		
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(CHANNEL_LIST_URL)
@@ -69,6 +73,10 @@ public class VericastApiDelegate {
 		
 		log.debug("Buscando lista de canales PAGINA 1 para usuario " + currentUser);
 		ChannelList channelList = restTemplate.getForObject(buffer.toString(), ChannelList.class);
+		
+		if (!channelList.getStatus().equalsIgnoreCase(OK)) {
+			throw new VericastApiException(channelList.getError());
+		}
 		
 		while (channelList.getChannels() != null && !channelList.getChannels().isEmpty()) {
 			

@@ -37,6 +37,7 @@ import ar.com.marcelomingrone.vericast.reports.model.UserNotAuthorizedException;
 import ar.com.marcelomingrone.vericast.reports.model.ReportItem.TrackIdComparator;
 import ar.com.marcelomingrone.vericast.reports.model.TimePeriod;
 import ar.com.marcelomingrone.vericast.reports.model.User;
+import ar.com.marcelomingrone.vericast.reports.model.VericastApiException;
 import ar.com.marcelomingrone.vericast.reports.model.dto.Channel;
 import ar.com.marcelomingrone.vericast.reports.model.dto.Track;
 
@@ -70,7 +71,7 @@ public class ReportServiceTest extends AbstractTest {
 	private List<Track> tracksChannel2;
 	
 	@Before
-	public void initTest() {
+	public void initTest() throws VericastApiException {
 		
 		service = new ReportService();
 		
@@ -108,7 +109,7 @@ public class ReportServiceTest extends AbstractTest {
 
 	
 	@Test
-	public void buildPlaycountsByChannelVerify() {
+	public void buildPlaycountsByChannelVerify() throws VericastApiException {
 		
 		User user = builder.buildUser(USERNAME);
 		Report report = builder.buildReport(user);

@@ -21,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 import ar.com.marcelomingrone.vericast.reports.AbstractTest;
 import ar.com.marcelomingrone.vericast.reports.model.TimePeriod;
 import ar.com.marcelomingrone.vericast.reports.model.User;
+import ar.com.marcelomingrone.vericast.reports.model.VericastApiException;
 import ar.com.marcelomingrone.vericast.reports.model.dto.Channel;
 import ar.com.marcelomingrone.vericast.reports.model.dto.ChannelList;
 import ar.com.marcelomingrone.vericast.reports.model.dto.Track;
@@ -43,7 +44,7 @@ public class VericastApiDelegateTest extends AbstractTest {
 	}
 
 	@Test
-	public void getChannelListNotNull() {
+	public void getChannelListNotNull() throws VericastApiException {
 		
 		List<Channel> list = api.getChannelList(user);
 		assertNotNull(list);
@@ -58,7 +59,7 @@ public class VericastApiDelegateTest extends AbstractTest {
 	
 	@SuppressWarnings("unchecked")
 	@Test
-	public void getChannelListOnePage() {
+	public void getChannelListOnePage() throws VericastApiException {
 		
 		RestTemplate restTemplate = Mockito.mock(RestTemplate.class);
 		
@@ -94,7 +95,7 @@ public class VericastApiDelegateTest extends AbstractTest {
 	
 	@SuppressWarnings("unchecked")
 	@Test
-	public void getChannelListSecondPageEmpty() {
+	public void getChannelListSecondPageEmpty() throws VericastApiException {
 		
 		RestTemplate restTemplate = Mockito.mock(RestTemplate.class);
 		
@@ -132,7 +133,7 @@ public class VericastApiDelegateTest extends AbstractTest {
 	
 	@SuppressWarnings("unchecked")
 	@Test
-	public void getChannelListTwoPages() {
+	public void getChannelListTwoPages() throws VericastApiException {
 		
 		RestTemplate restTemplate = Mockito.mock(RestTemplate.class);
 		
@@ -172,7 +173,7 @@ public class VericastApiDelegateTest extends AbstractTest {
 	
 	@SuppressWarnings("unchecked")
 	@Test
-	public void getChannelListThreePages() {
+	public void getChannelListThreePages() throws VericastApiException {
 		
 		RestTemplate restTemplate = Mockito.mock(RestTemplate.class);
 		
@@ -188,6 +189,19 @@ public class VericastApiDelegateTest extends AbstractTest {
 		Mockito.verify(restTemplate).getForObject(expectedUrl, ChannelList.class);
 		Mockito.verify(restTemplate).getForObject(expectedUrl + "&page=2", ChannelList.class);
 		Mockito.verify(restTemplate).getForObject(expectedUrl + "&page=3", ChannelList.class);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test(expected=VericastApiException.class)
+	public void getChannelListWithError() throws VericastApiException {
+		
+		RestTemplate restTemplate = Mockito.mock(RestTemplate.class);
+		
+		Mockito.when(restTemplate.getForObject(Mockito.anyString(), Mockito.any(Class.class)))
+			.thenReturn(builder.buildChannelListWithError());
+		
+		api.getChannelList(user, restTemplate);
+		
 	}
 	
 	@SuppressWarnings("unchecked")
