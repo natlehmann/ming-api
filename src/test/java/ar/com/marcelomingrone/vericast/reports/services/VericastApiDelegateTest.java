@@ -75,7 +75,7 @@ public class VericastApiDelegateTest extends AbstractTest {
 	
 	@SuppressWarnings("unchecked")
 	@Test
-	public void getTrackListOnePage() {
+	public void getTrackListOnePage() throws VericastApiException {
 		
 		RestTemplate restTemplate = Mockito.mock(RestTemplate.class);
 		
@@ -112,7 +112,7 @@ public class VericastApiDelegateTest extends AbstractTest {
 	
 	@SuppressWarnings("unchecked")
 	@Test
-	public void getTrackListSecondPageEmpty() {
+	public void getTrackListSecondPageEmpty() throws VericastApiException {
 		
 		RestTemplate restTemplate = Mockito.mock(RestTemplate.class);
 		
@@ -151,7 +151,7 @@ public class VericastApiDelegateTest extends AbstractTest {
 	
 	@SuppressWarnings("unchecked")
 	@Test
-	public void getTrackListTwoPages() {
+	public void getTrackListTwoPages() throws VericastApiException {
 		
 		RestTemplate restTemplate = Mockito.mock(RestTemplate.class);
 		
@@ -200,13 +200,26 @@ public class VericastApiDelegateTest extends AbstractTest {
 		Mockito.when(restTemplate.getForObject(Mockito.anyString(), Mockito.any(Class.class)))
 			.thenReturn(builder.buildChannelListWithError());
 		
-		api.getChannelList(user, restTemplate);
+		api.requestChannels(restTemplate, "");
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test(expected=VericastApiException.class)
+	public void getTrackListWithError() throws VericastApiException {
+		
+		RestTemplate restTemplate = Mockito.mock(RestTemplate.class);
+		
+		Mockito.when(restTemplate.getForObject(Mockito.anyString(), Mockito.any(Class.class)))
+			.thenReturn(builder.buildTrackListWithError());
+		
+		api.requestTracks(restTemplate, "");
 		
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Test
-	public void getTrackListThreePages() {
+	public void getTrackListThreePages() throws VericastApiException {
 		
 		RestTemplate restTemplate = Mockito.mock(RestTemplate.class);
 		
@@ -230,7 +243,7 @@ public class VericastApiDelegateTest extends AbstractTest {
 	
 	
 	@Test
-	public void getTrackListByChannelNotNull() throws ParseException {
+	public void getTrackListByChannelNotNull() throws ParseException, VericastApiException {
 		
 		List<Track> list = api.getTracksByChannel("rockandpop--------------------01", 
 				user, VericastApiDelegate.endDateFormat.parse("20160606"), 

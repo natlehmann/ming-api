@@ -72,11 +72,7 @@ public class VericastApiDelegate {
 		List<Channel> channels = new LinkedList<>();
 		
 		log.debug("Buscando lista de canales PAGINA 1 para usuario " + currentUser);
-		ChannelList channelList = restTemplate.getForObject(buffer.toString(), ChannelList.class);
-		
-		if (!channelList.getStatus().equalsIgnoreCase(OK)) {
-			throw new VericastApiException(channelList.getError());
-		}
+		ChannelList channelList = requestChannels(restTemplate, buffer.toString());
 		
 		while (channelList.getChannels() != null && !channelList.getChannels().isEmpty()) {
 			
@@ -90,7 +86,7 @@ public class VericastApiDelegate {
 			if (channelList.getChannels().size() == PAGE_LIMIT) {
 				
 				log.debug("Buscando lista de canales PAGINA " + page + " para usuario " + currentUser);
-				channelList = restTemplate.getForObject(buffer.toString(), ChannelList.class);
+				channelList = requestChannels(restTemplate, buffer.toString());
 				
 			} else {
 				channelList.setChannels(null);
@@ -100,15 +96,27 @@ public class VericastApiDelegate {
         
         return channels;
 	}
+
+	protected ChannelList requestChannels(RestTemplate restTemplate,
+			String query) throws VericastApiException {
+		
+		ChannelList channelList = restTemplate.getForObject(query, ChannelList.class);
+		
+		if (!channelList.getStatus().equalsIgnoreCase(OK)) {
+			throw new VericastApiException(channelList.getError());
+		}
+		
+		return channelList;
+	}
 	
 	
 	public List<Track> getTracksByChannel(String keyname, User currentUser, 
-			Date endDate, String timePeriod) {
+			Date endDate, String timePeriod) throws VericastApiException {
 		return getTracksByChannel(keyname, currentUser, endDate, timePeriod, new RestTemplate());
 	}
 	
 	protected List<Track> getTracksByChannel(String keyname, User currentUser, 
-			Date endDate, String timePeriod, RestTemplate restTemplate) {
+			Date endDate, String timePeriod, RestTemplate restTemplate) throws VericastApiException {
 		
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(TRACKS_BY_CHANNEL_URL)
@@ -125,7 +133,7 @@ public class VericastApiDelegate {
 		List<Track> tracks = new LinkedList<>();
 		
 		log.debug("Buscando lista de tracks PAGINA 1 para usuario " + currentUser +  " para canal " + keyname);
-		TrackList list = restTemplate.getForObject(buffer.toString(), TrackList.class);
+		TrackList list = requestTracks(restTemplate, buffer.toString());
 		
 		while (list.getTracks() != null && !list.getTracks().isEmpty()) {
 			
@@ -140,7 +148,7 @@ public class VericastApiDelegate {
 				
 				log.debug("Buscando lista de tracks PAGINA " + page + " para usuario " + currentUser 
 						+  " para canal " + keyname);
-				list = restTemplate.getForObject(buffer.toString(), TrackList.class);
+				list = requestTracks(restTemplate, buffer.toString());
 				
 			} else {
 				list.setTracks(null);
@@ -149,6 +157,18 @@ public class VericastApiDelegate {
 		}
         
         return tracks;
+	}
+
+	protected TrackList requestTracks(RestTemplate restTemplate,
+			String query) throws VericastApiException {
+		
+		TrackList list = restTemplate.getForObject(query, TrackList.class);
+		
+		if (!list.getStatus().equalsIgnoreCase(OK)) {
+			throw new VericastApiException(list.getError());
+		}
+		
+		return list;
 	}
 
 }

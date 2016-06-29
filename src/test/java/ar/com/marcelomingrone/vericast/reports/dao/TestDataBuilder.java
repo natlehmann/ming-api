@@ -97,6 +97,7 @@ public class TestDataBuilder {
 	public TrackList buildTrackList(int elementCount) {
 		
 		TrackList trackList = new TrackList();
+		trackList.setStatus("Ok");
 		
 		for (int i = 0; i < elementCount; i++) {
 			Track track = new Track();
@@ -174,6 +175,14 @@ public class TestDataBuilder {
 	public AbstractEntity save(AbstractEntity entity) {
 		currentSession.saveOrUpdate(entity);
 		return entity;
+	}
+
+	public TrackList buildTrackListWithError() {
+		
+		TrackList list = new TrackList();
+		list.setStatus("error");
+		list.setError("Invalid API key - You must be granted a valid key by Vericast");
+		return list;
 	}
 
 }

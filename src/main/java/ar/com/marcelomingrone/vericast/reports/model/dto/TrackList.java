@@ -20,6 +20,9 @@ public class TrackList implements Serializable {
 	@XmlAttribute(name="status")
 	private String status;
 	
+	@XmlElement(name="error")
+	private String error;
+	
 	@XmlElementWrapper(name="toptracks")
 	@XmlElement(name="track")
 	private List<Track> tracks;
@@ -46,6 +49,14 @@ public class TrackList implements Serializable {
 		}
 		
 		this.tracks.add(track);		
+	}
+	
+	public String getError() {
+		return error;
+	}
+	
+	public void setError(String error) {
+		this.error = error;
 	}
 	
 }
