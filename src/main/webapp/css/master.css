@@ -797,6 +797,15 @@ a.duplicar-link {
 	line-height: 16px;
 }
 
+a.aprobar-link {
+	background-image: url(../images/aprobar.png);
+	background-repeat: no-repeat;
+	padding-left: 15px;
+	padding-right: 10px;
+	height: 16px;
+	line-height: 16px;
+}
+
 a.ver-mas-link {
 	background-image: url(../images/sumar.png);
 	background-repeat: no-repeat;

@@ -8,10 +8,13 @@ import javax.persistence.NoResultException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.NonUniqueResultException;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import ar.com.marcelomingrone.vericast.reports.model.Report;
 import ar.com.marcelomingrone.vericast.reports.model.ReportItem;
@@ -100,6 +103,72 @@ public class ReportDao extends AbstractEntityDao<Report> {
 		}
 		
 		return report;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<Report> getReportsForCurrentUser(User currentUser, int start,
+			int count, String filter, String orderField, String orderDirection) {
+		
+		Session session = getSessionFactory().getCurrentSession();
+		
+		Query query = null;
+		
+		if (StringUtils.isEmpty(filter)) {
+			
+			String queryStr = "from Report where owner = :user";
+			
+			if ( !StringUtils.isEmpty(orderField) ) {
+				queryStr += " order by " + orderField + " " + orderDirection;
+			}
+			
+			query = session.createQuery(queryStr);
+			
+		} else {
+			
+			String queryStr = "from Report where owner = :user AND (timePeriod like :filter OR state like :filter)";
+			
+			if ( !StringUtils.isEmpty(orderField) ) {
+				queryStr += " order by " + orderField + " " + orderDirection;
+			}
+			
+			query = session.createQuery(queryStr)
+					.setParameter("filter", "%" + filter + "%");
+		}
+		
+		return query
+				.setParameter("user", currentUser)
+				.setFirstResult(start)
+				.setMaxResults(count).list();
+	}
+
+	@Transactional
+	public long getReportsForCurrentUserCount(User currentUser, String filter) {
+		
+		
+		Session session = getSessionFactory().getCurrentSession();
+		
+		Query query = null;
+
+		if (StringUtils.isEmpty(filter)) {			
+			
+			String queryStr = "select count(e) from Report e where e.owner = :user";
+			
+			query = session.createQuery(queryStr);
+			
+		} else {
+			
+			String queryStr = "select count(e) from Report e where e.owner = :user "
+					+ "AND (timePeriod like :filter OR state like :filter)";
+			
+			query = session.createQuery(queryStr)
+					.setParameter("filter", "%" + filter + "%");
+			
+		}
+		
+		Long resultado = (Long) query.setParameter("user", currentUser).uniqueResult();
+		
+		return resultado != null ? resultado.longValue() : 0;
 	}
 
 }

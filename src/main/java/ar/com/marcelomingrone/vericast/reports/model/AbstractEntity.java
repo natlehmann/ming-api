@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
-import javax.annotation.Resource;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
@@ -24,10 +23,6 @@ public class AbstractEntity implements Serializable, Listable {
 	
 	protected static transient SimpleDateFormat datetimeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 	
-	@Transient
-	@JsonIgnore
-	@Resource(name = "messageSource")
-	private transient MessageSource messageSource;
 	
 	@Id
 	@GeneratedValue
@@ -73,28 +68,28 @@ public class AbstractEntity implements Serializable, Listable {
 
 	@Transient
 	@JsonIgnore
-	public List<String> getFieldsAsList() {
+	public List<String> getFieldsAsList(MessageSource msgSource, Locale locale) {
 		return new LinkedList<String>();
 	}
 
 	@Transient
 	@JsonIgnore
-	public String getUpdateDeleteLinks(Locale locale) {
-		return this.getUpdateLink(locale) + this.getDeleteLink(locale);
+	public String getUpdateDeleteLinks(MessageSource msgSource, Locale locale) {
+		return this.getUpdateLink(msgSource, locale) + this.getDeleteLink(msgSource, locale);
 	}
 	
 	@Transient
 	@JsonIgnore
-	public String getUpdateLink(Locale locale) {
+	public String getUpdateLink(MessageSource msgSource, Locale locale) {
 		return "<a href='update?id=" + this.id + "' class='modificar-link' title='" 
-				+ messageSource.getMessage("update", null, locale) + "'></a> ";
+					+ msgSource.getMessage("update", null, locale) + "'></a> ";
 	}
 	
 	@Transient
 	@JsonIgnore
-	public String getDeleteLink(Locale locale) {
+	public String getDeleteLink(MessageSource msgSource, Locale locale) {
 		return "<a href='#' onclick='confirmarEliminar(" + this.id + ")' class='eliminar-link' title='" 
-				+ messageSource.getMessage("delete", null, locale)  + "'></a>";
+				+ msgSource.getMessage("delete", null, locale) + "'></a>";
 	}
 	
 	

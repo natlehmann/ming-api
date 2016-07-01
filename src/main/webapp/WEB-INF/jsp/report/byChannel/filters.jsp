@@ -68,6 +68,10 @@
 		</div>		
 		
 	</form>
+	
+	<br/>
+	<br/>
+	<jsp:include page="/WEB-INF/jsp/report/byChannel/list.jsp"/>
 		
 	
 	<div id="dialog-report-exists" style="display:none;" title='<spring:message code="confirm"/>'>

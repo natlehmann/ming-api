@@ -2,8 +2,11 @@ package ar.com.marcelomingrone.vericast.reports.controllers;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
@@ -21,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import ar.com.marcelomingrone.vericast.reports.controllers.Utils.Params;
+import ar.com.marcelomingrone.vericast.reports.model.DataTablesResponse;
 import ar.com.marcelomingrone.vericast.reports.model.LocalizedException;
 import ar.com.marcelomingrone.vericast.reports.model.Report;
 import ar.com.marcelomingrone.vericast.reports.model.TimePeriod;
@@ -133,41 +138,40 @@ public class ReportByChannelController {
 		model.put("selectedEndDate", endDate);
 	}
 
-	/*
 	
 	@ResponseBody
-	@RequestMapping("/weekly/list_ajax")
-	public DataTablesResponse listWeekly(HttpServletRequest request) {
+	@RequestMapping("/list_ajax")
+	public DataTablesResponse list(HttpServletRequest request, Locale locale) {
 		
 		
 		Map<Params, Object> params = Utils.getParametrosDatatables(request);
 		
-		String campoOrdenamiento = WeeklyReport.getOrderingField( 
+		String campoOrdenamiento = Report.getOrderingField( 
 				Utils.getInt(request.getParameter("iSortCol_0"), 0) );
 		
 		
-		List<SummaryReport> reports = service.getWeeklyReportsPaginatedAndFiltered(
+		List<Report> reports = service.getReportsForCurrentUser(
 				(int)params.get(Params.INICIO),
 				(int)params.get(Params.CANTIDAD_RESULTADOS),
 				(String)params.get(Params.FILTRO),
 				campoOrdenamiento,
 				(String)params.get(Params.DIRECCION_ORDENAMIENTO));
 		
-		long totalFiltrados = service.getWeeklyReportsCount(
+		long totalFiltrados = service.getReportsForCurrentUserCount(
 				(String)params.get(Params.FILTRO));
 		
 		long total = totalFiltrados;
 		if (!StringUtils.isEmpty((String)params.get(Params.FILTRO))) {
-			total = service.getWeeklyReportsCount(null);
+			total = service.getReportsForCurrentUserCount(null);
 		}
 		
-		DataTablesResponse resultado = new DataTablesResponse(
-				reports, request.getParameter("sEcho"), total, totalFiltrados);
+		DataTablesResponse resultado = new DataTablesResponse(reports, 
+				request.getParameter("sEcho"), total, totalFiltrados, messageSource, locale);
 		
 		return resultado;
 	}
 	
-	
+	/*
 	@RequestMapping(value="/weekly/delete", method={RequestMethod.POST})
 	public ModelAndView deleteWeeklyReport(@RequestParam("id") Long id, ModelMap model) {
 		
@@ -184,53 +188,6 @@ public class ReportByChannelController {
 	}
 	
 	
-	@ResponseBody
-	@RequestMapping("/monthly/list_ajax")
-	public DataTablesResponse listMonthly(HttpServletRequest request) {
-		
-		
-		Map<Params, Object> params = Utils.getParametrosDatatables(request);
-		
-		String campoOrdenamiento = MonthlyReport.getOrderingField( 
-				Utils.getInt(request.getParameter("iSortCol_0"), 0) );
-		
-		
-		List<SummaryReport> reports = service.getMonthlyReportsPaginatedAndFiltered(
-				(int)params.get(Params.INICIO),
-				(int)params.get(Params.CANTIDAD_RESULTADOS),
-				(String)params.get(Params.FILTRO),
-				campoOrdenamiento,
-				(String)params.get(Params.DIRECCION_ORDENAMIENTO));
-		
-		long totalFiltrados = service.getMonthlyReportsCount(
-				(String)params.get(Params.FILTRO));
-		
-		long total = totalFiltrados;
-		if (!StringUtils.isEmpty((String)params.get(Params.FILTRO))) {
-			total = service.getMonthlyReportsCount(null);
-		}
-		
-		DataTablesResponse resultado = new DataTablesResponse(
-				reports, request.getParameter("sEcho"), total, totalFiltrados);
-		
-		return resultado;
-	}
-	
-	
-	@RequestMapping(value="/monthly/delete", method={RequestMethod.POST})
-	public ModelAndView deleteMonthlyReport(@RequestParam("id") Long id, ModelMap model) {
-		
-		try {
-			service.deleteMonthlyReport(id);
-			model.addAttribute("msg", "El reporte mensual se ha eliminado con éxito.");
-			
-		} catch (Exception e) {
-			log.error("Error al eliminar reporte mensual.", e);
-			model.addAttribute("msg", "No se ha podido eliminar el reporte mensual. " 
-					+ "Si el problema persiste consulte al administrador del sistema.");
-		}
-		return initReportFilters(model);
-	}
 	
 	*/
 	

@@ -246,4 +246,21 @@ public class ReportService {
 		this.sendMailService = sendMailService;
 	}
 
+
+
+	public List<Report> getReportsForCurrentUser(int start, int count, String filter,
+			String orderField, String orderDirection) {
+		
+		User currentUser = userDao.getCurrentUser();
+		return reportDao.getReportsForCurrentUser(
+				currentUser, start, count, filter, orderField, orderDirection);
+	}
+
+	
+	public long getReportsForCurrentUserCount(String filter) {
+		
+		User currentUser = userDao.getCurrentUser();
+		return reportDao.getReportsForCurrentUserCount(currentUser, filter);
+	}
+
 }

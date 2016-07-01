@@ -5,8 +5,8 @@ import java.util.Locale;
 
 import org.springframework.context.MessageSource;
 
-public interface Listable {
+public interface DataStrategy {
 	
-	List<String> getFieldsAsList(MessageSource msgSource, Locale locale);
+	List<String> getData(Listable listable, MessageSource msgSource, Locale locale);
 
 }

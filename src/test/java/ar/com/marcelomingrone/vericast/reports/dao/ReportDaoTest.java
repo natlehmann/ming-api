@@ -1,14 +1,18 @@
 package ar.com.marcelomingrone.vericast.reports.dao;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import ar.com.marcelomingrone.vericast.reports.AbstractTest;
-import ar.com.marcelomingrone.vericast.reports.model.PlaycountByChannel;
 import ar.com.marcelomingrone.vericast.reports.model.Report;
+import ar.com.marcelomingrone.vericast.reports.model.Report.State;
 import ar.com.marcelomingrone.vericast.reports.model.ReportItem;
 import ar.com.marcelomingrone.vericast.reports.model.User;
 
@@ -87,6 +91,68 @@ public class ReportDaoTest extends AbstractTest {
 		assertEquals(item3, result.getItems().get(0));
 		assertEquals(item2, result.getItems().get(1));
 		assertEquals(item1, result.getItems().get(2));
+	}
+	
+	@Test
+	public void getReportsForCurrentUserNoResults() {
+		
+		User newUser = builder.buildUser("other");
+		List<Report> result = dao.getReportsForCurrentUser(newUser, 0, 100, null, null, null);
+		assertTrue(result.isEmpty());
+	}
+	
+	@Test
+	public void getReportsForCurrentUserNoFilter() {
+		
+		List<Report> result = dao.getReportsForCurrentUser(user, 0, 100, null, null, null);
+		assertEquals(1, result.size());
+		assertEquals(report, result.get(0));
+	}
+	
+	@Test
+	public void getReportsForCurrentUserWithFilter() {
+		
+		report.setState(State.APPROVED);
+		builder.save(report);
+		
+		List<Report> result = dao.getReportsForCurrentUser(
+				user, 0, 100, State.APPROVED.toString(), null, null);
+		assertEquals(1, result.size());
+		assertEquals(report, result.get(0));
+		
+		result = dao.getReportsForCurrentUser(
+				user, 0, 100, State.FINISHED.toString(), null, null);
+		
+		assertTrue(result.isEmpty());
+	}
+	
+	@Test
+	public void getReportsForCurrentUserCountZero() {
+		
+		User newUser = builder.buildUser("other");
+		long count = dao.getReportsForCurrentUserCount(newUser, null);
+		assertEquals(0, count);
+	}
+	
+	@Test
+	public void getReportsForCurrentUserCountNoFilter() {
+		
+		long count = dao.getReportsForCurrentUserCount(user, null);
+		assertEquals(1, count);
+	}
+	
+	@Test
+	public void getReportsForCurrentUserCountWithFilter() {
+		
+		report.setState(State.APPROVED);
+		builder.save(report);
+		
+		long count = dao.getReportsForCurrentUserCount(user, State.APPROVED.toString());
+		assertEquals(1, count);
+		
+		count = dao.getReportsForCurrentUserCount(user, State.FINISHED.toString());
+		
+		assertEquals(0, count);
 	}
 
 }
