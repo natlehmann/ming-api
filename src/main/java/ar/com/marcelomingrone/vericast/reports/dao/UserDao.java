@@ -63,6 +63,7 @@ public class UserDao extends AbstractEntityDao<User> {
         return null;        
 	}
 	
+	@Transactional
 	@Override
 	public User save(User entidad) {
 		

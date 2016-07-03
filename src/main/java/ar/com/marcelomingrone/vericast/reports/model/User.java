@@ -2,6 +2,7 @@ package ar.com.marcelomingrone.vericast.reports.model;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,11 +10,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.context.MessageSource;
 
 @Entity
 @Table(name="User", uniqueConstraints={@UniqueConstraint(columnNames={"username"})})
@@ -103,4 +106,36 @@ public class User extends AbstractEntity {
 		return this.username;
 	}
 	
+	
+	@Transient
+	public static String getOrderingField(int index) {
+		
+		switch(index) {
+		
+		case 0:
+			return "id";
+		case 1:
+			return "username";
+		case 2:
+			return "email";
+		case 3:
+			return "language";
+
+		default:
+			return null;
+		}
+	}
+	
+	
+	@Override
+	public List<String> getFieldsAsList(MessageSource msgSource, Locale locale) {
+		
+		List<String> fields = new LinkedList<>();
+		fields.add(String.valueOf(this.getId()));
+		fields.add(this.username);
+		fields.add(this.email);
+		fields.add(this.language);
+		fields.add(super.getUpdateDeleteLinks(msgSource, locale));
+		return fields;
+	}
 }

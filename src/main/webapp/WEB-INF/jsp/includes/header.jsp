@@ -1,3 +1,4 @@
+<%@page import="ar.com.marcelomingrone.vericast.reports.model.RoleNames"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -64,6 +65,15 @@
 	           				<spring:message code="menu.report.by.channel"/>
 	           			</a>
 	           		</div>
+	           		
+	           		<sec:authorize ifAllGranted="<%= RoleNames.ADMINISTRATOR.toString() %>">
+	           			<div class="item-menu">
+		           			<a href='<c:url value="/admin/user/list"/>' 
+		           				class='<%= itemMenuSeleccionado.equals("users") ? "activo" : "" %>'>
+		           				<spring:message code="menu.users"/>
+		           			</a>
+		           		</div>
+	           		</sec:authorize>
            		
            		</div>
             		
