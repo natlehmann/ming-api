@@ -276,4 +276,26 @@ public class ReportService {
 		}
 	}
 
+
+
+	public Report getReportForDownload(long id) throws LocalizedException {
+		
+		User user = userDao.getCurrentUser();
+		Report report = reportDao.getById(id);
+		
+		if (report == null) {
+			throw new NoReportException();
+		}
+		
+		if (!report.getOwner().equals(user) && !Utils.isCurrentUserAdministrator()){
+			throw new UserNotAuthorizedException();
+		}
+		
+		if (report.getState() != State.APPROVED) {
+			throw new InvalidStateException("error.cannot.download.unapproved.report");
+		}
+		
+		return getReportOrderedByPlaycounts(id);
+	}
+
 }

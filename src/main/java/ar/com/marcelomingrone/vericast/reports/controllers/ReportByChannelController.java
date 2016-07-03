@@ -25,10 +25,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import ar.com.marcelomingrone.vericast.reports.controllers.Utils.Params;
+import ar.com.marcelomingrone.vericast.reports.dao.PlaycountByChannelDao;
 import ar.com.marcelomingrone.vericast.reports.model.DataTablesResponse;
 import ar.com.marcelomingrone.vericast.reports.model.LocalizedException;
 import ar.com.marcelomingrone.vericast.reports.model.Report;
 import ar.com.marcelomingrone.vericast.reports.model.TimePeriod;
+import ar.com.marcelomingrone.vericast.reports.model.dto.Channel;
 import ar.com.marcelomingrone.vericast.reports.services.ReportService;
 
 @Controller
@@ -43,6 +45,9 @@ public class ReportByChannelController {
 	
 	@Autowired
 	private ReportService service;
+	
+	@Autowired
+	private PlaycountByChannelDao playcountsDao;
 	
 	@InitBinder
 	private void dateBinder(WebDataBinder binder) {
@@ -86,15 +91,42 @@ public class ReportByChannelController {
 
 	}
 	
-	@RequestMapping("/download")
-	public ModelAndView downloadReport(ModelMap model, 
-			HttpSession session, Locale locale) {
+	@RequestMapping("/downloadExcel")
+	public ModelAndView downloadExcelReport(ModelMap model, Locale locale,
+			@RequestParam("id")long id) {
 		
-		Report report = (Report) session.getAttribute(Utils.SessionParams.ACTIVE_REPORT.toString());
-		report = service.getReportOrderedByPlaycounts(report.getId());
+		try {
+			Report report = service.getReportForDownload(id);
 		
-		model.put("report", report);
-		return new ModelAndView("playcountsExcelView", model);
+			model.put("report", report);
+			return new ModelAndView("playcountsExcelView", model);
+			
+		} catch (LocalizedException e) {
+			model.put("msg", messageSource.getMessage(e.getCode(), null, locale));
+		}
+		
+		return initReportFilters(model);
+	
+	}
+	
+	@RequestMapping("/downloadCsv")
+	public ModelAndView downloadCsvReport(ModelMap model, Locale locale,
+			@RequestParam("id")long id) {
+		
+		try {
+			Report report = service.getReportForDownload(id);
+			
+			List<Channel> channels = playcountsDao.getChannelsForReport(report.getId());
+			
+			model.put("report", report);
+			model.put("channels", channels);
+			return new ModelAndView("playcountsCsvView", model);
+			
+		} catch (LocalizedException e) {
+			model.put("msg", messageSource.getMessage(e.getCode(), null, locale));
+		}
+		
+		return initReportFilters(model);
 	
 	}
 	

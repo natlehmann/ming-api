@@ -162,7 +162,8 @@ public class Report extends AbstractEntity {
 		switch(this.state) {
 		
 		case APPROVED:
-			fields.add(getDeleteLink(msgSource, locale));
+			fields.add(getDownloadExcelLink(msgSource, locale) + getDownloadCsvLink(msgSource, locale) 
+					+ getDeleteLink(msgSource, locale));
 			break;
 			
 		case FINISHED:
@@ -176,6 +177,20 @@ public class Report extends AbstractEntity {
 		
 		return fields;
 		
+	}
+
+	@Transient
+	@JsonIgnore
+	private String getDownloadExcelLink(MessageSource msgSource, Locale locale) {
+		return "<a href='downloadExcel?id=" + this.getId() + "' class='excel-link' title='" 
+				+ msgSource.getMessage("download.excel.report", null, locale) + "'></a> ";
+	}
+	
+	@Transient
+	@JsonIgnore
+	private String getDownloadCsvLink(MessageSource msgSource, Locale locale) {
+		return "<a href='downloadCsv?id=" + this.getId() + "' class='csv-link' title='" 
+				+ msgSource.getMessage("download.csv.report", null, locale) + "'></a> ";
 	}
 
 	@Transient

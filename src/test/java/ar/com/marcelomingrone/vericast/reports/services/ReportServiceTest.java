@@ -524,4 +524,60 @@ public class ReportServiceTest extends AbstractTest {
 		
 		assertEquals(2, service.getReportsForCurrentUserCount("O"));
 	}
+	
+	
+	@Test(expected=NoReportException.class)
+	public void getReportForDownloadDoesNotExist() throws LocalizedException {
+		
+		builder.buildUser("username");
+		mockPrincipal("username");
+		service.getReportForDownload(1L);
+	}
+	
+	@Test(expected=InvalidStateException.class)
+	public void getReportForDownloadInvalidState() throws LocalizedException {
+		
+		User user = builder.buildUser("username");
+		Report report = builder.buildReport(user, State.IN_PROCESS);
+		mockPrincipal("username");
+		
+		service.getReportForDownload(report.getId());
+	}
+	
+	@Test(expected=UserNotAuthorizedException.class)
+	public void getReportForDownloadUserIsNotOwner() throws LocalizedException {
+		
+		User user = builder.buildUser("username");
+		Report report = builder.buildReport(user, State.APPROVED);
+		
+		builder.buildUser("other");
+		mockPrincipal("other");
+		
+		service.getReportForDownload(report.getId());
+	}
+	
+	@Test
+	public void getReportForDownloadUserIsNotOwnerButIsAdmin() throws LocalizedException {
+		
+		User user = builder.buildUser("username");
+		Report report = builder.buildReport(user, State.APPROVED);
+		
+		builder.buildAdminUser("other");
+		mockPrincipal("other", true);
+		
+		Report result = service.getReportForDownload(report.getId());
+		assertEquals(report, result);
+	}
+	
+	@Test
+	public void getReportForDownloadUserIsOwner() throws LocalizedException {
+		
+		User user = builder.buildUser("username");
+		Report report = builder.buildReport(user, State.APPROVED);
+		
+		mockPrincipal("username");
+		
+		Report result = service.getReportForDownload(report.getId());
+		assertEquals(report, result);
+	}
 }

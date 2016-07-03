@@ -7,5 +7,9 @@ public class InvalidStateException extends LocalizedException {
 	public InvalidStateException() {
 		super("error.cannot.approve.report.in.progress");
 	}
+	
+	public InvalidStateException(String code) {
+		super(code);
+	}
 
 }

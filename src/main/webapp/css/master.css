@@ -797,6 +797,24 @@ a.duplicar-link {
 	line-height: 16px;
 }
 
+a.excel-link {
+	background-image: url(../images/duplicar-verde.png);
+	background-repeat: no-repeat;
+	padding-left: 15px;
+	padding-right: 10px;
+	height: 16px;
+	line-height: 16px;
+}
+
+a.csv-link {
+	background-image: url(../images/duplicar-violeta.png);
+	background-repeat: no-repeat;
+	padding-left: 15px;
+	padding-right: 10px;
+	height: 16px;
+	line-height: 16px;
+}
+
 a.aprobar-link {
 	background-image: url(../images/aprobar.png);
 	background-repeat: no-repeat;

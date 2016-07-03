@@ -4,7 +4,6 @@
 	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
  
 	<bean id="playcountsExcelView" class="ar.com.marcelomingrone.vericast.reports.view.PlaycountsExcelView"/>
+	<bean id="playcountsCsvView" class="ar.com.marcelomingrone.vericast.reports.view.PlaycountsCsvView"/>
 	
-<!-- 	<bean id="chartSummaryCsvView" class="com.bmat.digitalcharts.admin.view.ChartSummaryCsvView"/> -->
-
 </beans>
