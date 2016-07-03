@@ -2,6 +2,7 @@ package ar.com.marcelomingrone.vericast.reports.dao;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,6 +10,11 @@ import org.springframework.util.StringUtils;
 
 public abstract class AbstractEntityDao<T> {
 	
+	private static final String FILTER = "filter";
+	protected static final String FILTER_PARAM = ":" + FILTER;
+	protected static final String ALIAS = "e";
+	
+
 	@SuppressWarnings("rawtypes")
 	private Class entityClass;
 	
@@ -66,32 +72,71 @@ public abstract class AbstractEntityDao<T> {
 		return (T) session.get(this.entityClass, id);
 	}
 
+	@Transactional(value="transactionManager")
+	public List<T> getAllPaginated(int start,
+			int count, String orderField,
+			String orderDirection) {
+		
+		return getAllPaginatedAndFiltered(start, count, orderField, orderDirection, null);
+	}
+	
+	
 	@SuppressWarnings("unchecked")
 	@Transactional(value="transactionManager")
-	public List<T> getAllPaginated(int inicio,
-			int cantidadResultados, String campoOrdenamiento,
-			String direccionOrdenamiento) {
+	public List<T> getAllPaginatedAndFiltered(int start,
+			int count, String orderField,
+			String orderDirection, String filter) {
 		
 		Session session = getSessionFactory().getCurrentSession();
 		
-		String query = "from " + this.entityName;
+		StringBuffer queryStr = new StringBuffer("SELECT ").append(ALIAS).append(" from ")
+				.append(this.entityName).append(" ").append(ALIAS);
 		
-		if ( !StringUtils.isEmpty(campoOrdenamiento) ) {
-			query += " order by " + campoOrdenamiento + " " + direccionOrdenamiento;
+		if (!StringUtils.isEmpty(filter)) {
+			queryStr.append(" WHERE ").append(getFilterQuery());
 		}
 		
-		return session.createQuery(query)
-				.setFirstResult(inicio).setMaxResults(cantidadResultados).list();
+		if ( !StringUtils.isEmpty(orderField) ) {
+			queryStr.append(" order by ").append(orderField).append(" ").append(orderDirection);
+		}
+		
+		Query query = session.createQuery(queryStr.toString());
+		
+		if (!StringUtils.isEmpty(filter)) {
+			query.setParameter(FILTER, "%" + filter + "%");
+		}
+		
+		return query.setFirstResult(start).setMaxResults(count).list();
 	}
+
+	protected abstract String getFilterQuery();
 
 	@Transactional(value="transactionManager")
 	public long getCount() {
 		
+		return getCount(null);
+	}
+	
+	
+	@Transactional(value="transactionManager")
+	public long getCount(String filter) {
+		
 		Session session = getSessionFactory().getCurrentSession();
 		
-		String query = "select count(e) from " + this.entityName + " e";
+		StringBuffer queryStr = new StringBuffer("select count(").append(ALIAS).append(") from ")
+									.append(this.entityName).append(" ").append(ALIAS);
 		
-		Long resultado = (Long) session.createQuery(query).uniqueResult();
+		if (!StringUtils.isEmpty(filter)) {
+			queryStr.append(" WHERE ").append(getFilterQuery());
+		}
+		
+		Query query = session.createQuery(queryStr.toString());
+		
+		if (!StringUtils.isEmpty(filter)) {
+			query.setParameter(FILTER, "%" + filter + "%");
+		}
+		
+		Long resultado = (Long) query.uniqueResult();
 		
 		return resultado != null ? resultado.longValue() : 0;
 	}

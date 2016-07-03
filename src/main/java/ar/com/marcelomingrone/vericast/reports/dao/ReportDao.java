@@ -116,7 +116,7 @@ public class ReportDao extends AbstractEntityDao<Report> {
 		
 		if (StringUtils.isEmpty(filter)) {
 			
-			String queryStr = "from Report where owner = :user";
+			String queryStr = "select e from Report e where owner = :user";
 			
 			if ( !StringUtils.isEmpty(orderField) ) {
 				queryStr += " order by " + orderField + " " + orderDirection;
@@ -126,7 +126,7 @@ public class ReportDao extends AbstractEntityDao<Report> {
 			
 		} else {
 			
-			String queryStr = "from Report where owner = :user AND (timePeriod like :filter OR state like :filter)";
+			String queryStr = "select e from Report e where owner = :user AND " + getFilterQuery();
 			
 			if ( !StringUtils.isEmpty(orderField) ) {
 				queryStr += " order by " + orderField + " " + orderDirection;
@@ -158,8 +158,8 @@ public class ReportDao extends AbstractEntityDao<Report> {
 			
 		} else {
 			
-			String queryStr = "select count(e) from Report e where e.owner = :user "
-					+ "AND (timePeriod like :filter OR state like :filter)";
+			String queryStr = "select count(e) from Report e where e.owner = :user AND "
+					+ getFilterQuery();
 			
 			query = session.createQuery(queryStr)
 					.setParameter("filter", "%" + filter + "%");
@@ -169,6 +169,11 @@ public class ReportDao extends AbstractEntityDao<Report> {
 		Long resultado = (Long) query.setParameter("user", currentUser).uniqueResult();
 		
 		return resultado != null ? resultado.longValue() : 0;
+	}
+
+	@Override
+	protected String getFilterQuery() {
+		return "(" + ALIAS + ".timePeriod like :filter OR " + ALIAS + ".state like :filter)";
 	}
 
 }

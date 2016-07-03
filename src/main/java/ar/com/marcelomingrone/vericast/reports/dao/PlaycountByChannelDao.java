@@ -46,4 +46,9 @@ public class PlaycountByChannelDao extends
 				.setParameter("idReport", id).list();
 	}
 
+	@Override
+	protected String getFilterQuery() {
+		return ALIAS + ".channel.name like " + FILTER_PARAM;
+	}
+
 }

@@ -2,6 +2,9 @@ package ar.com.marcelomingrone.vericast.reports.dao;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,5 +80,60 @@ public class UserDaoTest extends AbstractTest {
 		User result = dao.getCurrentUser();
 		assertNull(result);
 	}
+	
+	
+	@Test
+	public void getAllFilteredNoResult() {
+		
+		List<User> result = dao.getAllPaginatedAndFiltered(0, 100, null, null, null);
+		assertTrue(result.isEmpty());
+		assertEquals(0, dao.getCount());
+	}
+	
+	@Test
+	public void getAllFilteredNoFilter() {
+		
+		User user1 = builder.buildUser("username1");
+		User user2 = builder.buildUser("username2");
+		
+		List<User> result = dao.getAllPaginatedAndFiltered(0, 100, "username", "DESC", null);
+		
+		assertEquals(2, result.size());
+		assertEquals(user2, result.get(0));
+		assertEquals(user1, result.get(1));
+		
+		assertEquals(2, dao.getCount());
+	}
+	
+	@Test
+	public void getAllFilteredWithFilter() {
+		
+		builder.buildUser("username1");
+		User user2 = builder.buildUser("username2");
+		
+		List<User> result = dao.getAllPaginatedAndFiltered(0, 100, "username", "ASC", "2");
+		
+		assertEquals(1, result.size());
+		assertEquals(user2, result.get(0));
+		
+		assertEquals(1, dao.getCount("2"));
+	}
+	
+	@Test
+	public void getAllFilteredWithFilter2() {
+		
+		User user1 = builder.buildUser("username1");
+		User user2 = builder.buildUser("username2");
+		
+		List<User> result = dao.getAllPaginatedAndFiltered(0, 100, "username", "DESC", "ser");
+		
+		assertEquals(2, result.size());
+		assertEquals(user2, result.get(0));
+		assertEquals(user1, result.get(1));
+		
+		assertEquals(2, dao.getCount("ser"));
+	}
+
+	
 
 }

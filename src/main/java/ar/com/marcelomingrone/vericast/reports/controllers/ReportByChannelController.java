@@ -35,10 +35,8 @@ import ar.com.marcelomingrone.vericast.reports.services.ReportService;
 @RequestMapping("/report/byChannel")
 public class ReportByChannelController {
 	
+	@SuppressWarnings("unused")
 	private static Log log = LogFactory.getLog(ReportByChannelController.class);
-	
-	public static final String EXPORT_ACTION = "Generar reporte";
-	public static final String SAVE_ACTION = "Archivar reporte";
 	
 	@Autowired
 	private MessageSource messageSource;
@@ -117,7 +115,7 @@ public class ReportByChannelController {
 	}
 	
 	
-	@RequestMapping("/reject")
+	@RequestMapping("/delete")
 	public ModelAndView rejectReport(ModelMap model, Locale locale, 
 			@RequestParam("id")long id, @RequestParam("user")String user) {
 		
@@ -170,26 +168,6 @@ public class ReportByChannelController {
 		
 		return resultado;
 	}
-	
-	/*
-	@RequestMapping(value="/weekly/delete", method={RequestMethod.POST})
-	public ModelAndView deleteWeeklyReport(@RequestParam("id") Long id, ModelMap model) {
-		
-		try {
-			service.deleteWeeklyReport(id);
-			model.addAttribute("msg", "El reporte semanal se ha eliminado con éxito.");
-			
-		} catch (Exception e) {
-			log.error("Error al eliminar reporte semanal.", e);
-			model.addAttribute("msg", "No se ha podido eliminar el reporte semanal. " 
-					+ "Si el problema persiste consulte al administrador del sistema.");
-		}
-		return initReportFilters(model);
-	}
-	
-	
-	
-	*/
 	
 	
 	@ResponseBody

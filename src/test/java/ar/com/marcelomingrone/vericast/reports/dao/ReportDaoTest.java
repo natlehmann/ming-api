@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -14,6 +15,7 @@ import ar.com.marcelomingrone.vericast.reports.AbstractTest;
 import ar.com.marcelomingrone.vericast.reports.model.Report;
 import ar.com.marcelomingrone.vericast.reports.model.Report.State;
 import ar.com.marcelomingrone.vericast.reports.model.ReportItem;
+import ar.com.marcelomingrone.vericast.reports.model.TimePeriod;
 import ar.com.marcelomingrone.vericast.reports.model.User;
 
 public class ReportDaoTest extends AbstractTest {
@@ -153,6 +155,58 @@ public class ReportDaoTest extends AbstractTest {
 		count = dao.getReportsForCurrentUserCount(user, State.FINISHED.toString());
 		
 		assertEquals(0, count);
+	}
+	
+	
+	@Test
+	public void getAllFilteredOneResult() {
+		
+		List<Report> result = dao.getAllPaginatedAndFiltered(0, 100, null, null, null);
+		assertEquals(1, result.size());
+		assertEquals(1, dao.getCount());
+	}
+	
+	@Test
+	public void getAllFilteredNoFilter() {
+		
+		Report report2 = builder.buildReport(user, State.FINISHED, TimePeriod.MONTH.toString(), new Date());
+		
+		List<Report> result = dao.getAllPaginatedAndFiltered(0, 100, "state", "ASC", null);
+		
+		assertEquals(2, result.size());
+		assertEquals(report2, result.get(0));
+		assertEquals(report, result.get(1));
+		
+		assertEquals(2, dao.getCount());
+	}
+	
+	@Test
+	public void getAllFilteredWithFilter() {
+		
+		Report report2 = builder.buildReport(user, State.FINISHED, TimePeriod.MONTH.toString(), new Date());
+		
+		List<Report> result = dao.getAllPaginatedAndFiltered(0, 100, "state", "ASC", "mo");
+		
+		assertEquals(1, result.size());
+		assertEquals(report2, result.get(0));
+		
+		assertEquals(1, dao.getCount("mo"));
+	}
+	
+	@Test
+	public void getAllFilteredWithFilter2() {
+		
+		report.setTimePeriod(TimePeriod.DAY.toString());
+		builder.save(report);
+		Report report2 = builder.buildReport(user, State.APPROVED, TimePeriod.DAY.toString(), new Date());
+		
+		List<Report> result = dao.getAllPaginatedAndFiltered(0, 100, "state", "DESC", "a");
+		
+		assertEquals(2, result.size());
+		assertEquals(report, result.get(0));
+		assertEquals(report2, result.get(1));
+		
+		assertEquals(2, dao.getCount("a"));
 	}
 
 }

@@ -55,4 +55,9 @@ public class ChannelDao extends AbstractEntityDao<Channel> {
 		return channel;
 	}
 
+	@Override
+	protected String getFilterQuery() {
+		return ALIAS + ".name like " + FILTER_PARAM;
+	}
+
 }

@@ -87,4 +87,57 @@ public class PlaycountByChannelDaoTest extends AbstractTest {
 		assertEquals(playcount1.getChannel(), result.get(0));
 	}
 
+	
+	@Test
+	public void getAllFilteredNoResult() {
+		
+		List<PlaycountByChannel> result = dao.getAllPaginatedAndFiltered(0, 100, null, null, null);
+		assertTrue(result.isEmpty());
+		assertEquals(0, dao.getCount());
+	}
+	
+	@Test
+	public void getAllFilteredNoFilter() {
+		
+		PlaycountByChannel play1 = builder.buildPlaycountByChannel(item, "channelName1");
+		PlaycountByChannel play2 = builder.buildPlaycountByChannel(item, "channelName2");
+		
+		List<PlaycountByChannel> result = dao.getAllPaginatedAndFiltered(0, 100, "channel.name", "DESC", null);
+		
+		assertEquals(2, result.size());
+		assertEquals(play2, result.get(0));
+		assertEquals(play1, result.get(1));
+		
+		assertEquals(2, dao.getCount());
+	}
+	
+	@Test
+	public void getAllFilteredWithFilter() {
+		
+		builder.buildPlaycountByChannel(item, "channelName1");
+		PlaycountByChannel play2 = builder.buildPlaycountByChannel(item, "channelName2");
+		
+		List<PlaycountByChannel> result = dao.getAllPaginatedAndFiltered(0, 100, "channel.name", "ASC", "2");
+		
+		assertEquals(1, result.size());
+		assertEquals(play2, result.get(0));
+		
+		assertEquals(1, dao.getCount("2"));
+	}
+	
+	@Test
+	public void getAllFilteredWithFilter2() {
+		
+		PlaycountByChannel play1 = builder.buildPlaycountByChannel(item, "channelName1");
+		PlaycountByChannel play2 = builder.buildPlaycountByChannel(item, "channelName2");
+		
+		List<PlaycountByChannel> result = dao.getAllPaginatedAndFiltered(
+				0, 100, "channel.name", "DESC", "annel");
+		
+		assertEquals(2, result.size());
+		assertEquals(play2, result.get(0));
+		assertEquals(play1, result.get(1));
+		
+		assertEquals(2, dao.getCount("annel"));
+	}
 }

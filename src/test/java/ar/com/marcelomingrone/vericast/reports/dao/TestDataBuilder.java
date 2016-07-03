@@ -130,13 +130,17 @@ public class TestDataBuilder {
 	public Report buildReport(User user) {
 		return buildReport(user, State.IN_PROCESS, null, null);
 	}
-
+	
 	public ReportItem buildReportItem(Report report, String bmaitId) {
+		return buildReportItem(report, bmaitId, "trackName", "artistName");
+	}
+
+	public ReportItem buildReportItem(Report report, String bmaitId, String trackName, String artistName) {
 		
 		ReportItem item = new ReportItem();
 		item.setTrackId(bmaitId);
-		item.setArtistName("artistName");
-		item.setTrackName("trackName");
+		item.setArtistName(artistName);
+		item.setTrackName(trackName);
 		item.setLabelName("labelName");
 		
 		report.addItem(item);

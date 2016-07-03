@@ -73,4 +73,13 @@ public class UserDao extends AbstractEntityDao<User> {
 		return super.save(entidad);
 	}
 
+	@Override
+	protected String getFilterQuery() {
+		
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("(").append(ALIAS).append(".username like ").append(FILTER_PARAM)
+				.append(" OR ").append(ALIAS).append(".email like ").append(FILTER_PARAM).append(")");
+		return buffer.toString();
+	}
+
 }

@@ -47,4 +47,15 @@ public class ReportItemDao extends AbstractEntityDao<ReportItem> {
 		return sessionFactory;
 	}
 
+	@Override
+	protected String getFilterQuery() {
+		
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("(").append(ALIAS).append(".trackName like ").append(FILTER_PARAM)
+				.append(" OR ").append(ALIAS).append(".artistName like ").append(FILTER_PARAM)
+				.append(" OR ").append(ALIAS).append(".labelName like ").append(FILTER_PARAM).append(")");
+		
+		return buffer.toString();
+	}
+
 }

@@ -251,16 +251,29 @@ public class ReportService {
 	public List<Report> getReportsForCurrentUser(int start, int count, String filter,
 			String orderField, String orderDirection) {
 		
-		User currentUser = userDao.getCurrentUser();
-		return reportDao.getReportsForCurrentUser(
-				currentUser, start, count, filter, orderField, orderDirection);
+		
+		if (Utils.isCurrentUserAdministrator()) {
+			return reportDao.getAllPaginatedAndFiltered(
+					start, count, orderField, orderDirection, filter);
+			
+		} else {
+			User currentUser = userDao.getCurrentUser();
+			return reportDao.getReportsForCurrentUser(
+					currentUser, start, count, filter, orderField, orderDirection);
+		}
 	}
 
 	
 	public long getReportsForCurrentUserCount(String filter) {
 		
-		User currentUser = userDao.getCurrentUser();
-		return reportDao.getReportsForCurrentUserCount(currentUser, filter);
+		if (Utils.isCurrentUserAdministrator()) {
+			return reportDao.getCount(filter);
+			
+		} else {
+		
+			User currentUser = userDao.getCurrentUser();
+			return reportDao.getReportsForCurrentUserCount(currentUser, filter);
+		}
 	}
 
 }
