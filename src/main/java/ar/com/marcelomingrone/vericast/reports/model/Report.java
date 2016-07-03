@@ -19,6 +19,8 @@ import javax.persistence.Transient;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.context.MessageSource;
 
+import ar.com.marcelomingrone.vericast.reports.controllers.Utils;
+
 @Entity
 public class Report extends AbstractEntity {
 
@@ -105,17 +107,37 @@ public class Report extends AbstractEntity {
 	@Transient
 	public static String getOrderingField(int index) {
 		
+		boolean isAdmin = Utils.isCurrentUserAdministrator();
+		
 		switch(index) {
 		case 0:
 			return "id";
 			
 		case 1:
-			return "timePeriod";
+			if (isAdmin) {
+				return "owner.username";
+			
+			} else {
+				return "timePeriod";
+			}
 			
 		case 2:
-			return "endDate";
+			if (isAdmin) {
+				return "timePeriod";
+				
+			} else {
+				return "endDate";
+			}
 			
 		case 3:
+			if (isAdmin) {
+				return "endDate";
+			
+			} else {
+				return "state";
+			}
+			
+		case 4:
 			return "state";
 		}
 		
@@ -128,6 +150,11 @@ public class Report extends AbstractEntity {
 		
 		List<String> fields = new LinkedList<>();
 		fields.add(String.valueOf(this.getId()));
+		
+		if (Utils.isCurrentUserAdministrator()) {
+			fields.add(this.owner.getUsername());
+		}
+		
 		fields.add(msgSource.getMessage(this.timePeriod, null, locale));
 		fields.add(format.format(endDate));
 		fields.add(msgSource.getMessage(this.state.toString(), null, locale));
@@ -157,6 +184,14 @@ public class Report extends AbstractEntity {
 		return "<a href='approve?id=" + this.getId() + "&user=" + this.getOwner().getUsername() 
 				+ "' class='aprobar-link' title='" 
 				+ msgSource.getMessage("approve", null, locale) + "'></a> ";
+	}
+	
+	@Transient
+	@JsonIgnore
+	public String getDeleteLink(MessageSource msgSource, Locale locale) {
+		return "<a href='#' onclick='confirmarEliminarReporte(" + this.getId() 
+				+ ",\"" + this.owner.getUsername() + "\")' class='eliminar-link' title='" 
+				+ msgSource.getMessage("delete", null, locale) + "'></a>";
 	}
 	
 }

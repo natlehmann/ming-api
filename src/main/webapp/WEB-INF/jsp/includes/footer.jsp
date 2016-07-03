@@ -10,6 +10,7 @@
 			<form action="delete" method="post">
 				
 				<input type="hidden" name="id" id="dialog-eliminar-id" value="" />
+				<input type="hidden" name="user" id="dialog-eliminar-username" value="" />
 				
 				<p>
 					<span id="dialog-eliminar-mensaje">

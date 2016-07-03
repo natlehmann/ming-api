@@ -77,7 +77,7 @@ public class SendMailService {
 			.append(report.getOwner().getUsername()).append("&id=").append(report.getId());
 		
 		StringBuffer rejectUrl = new StringBuffer();
-		rejectUrl.append(BASE_URL).append("/report/byChannel/reject?user=")
+		rejectUrl.append(BASE_URL).append("/report/byChannel/delete?user=")
 			.append(report.getOwner().getUsername()).append("&id=").append(report.getId());
 		
 		return messageSource.getMessage("report.bychannel.email.body", 

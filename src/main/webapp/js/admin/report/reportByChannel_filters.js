@@ -54,39 +54,10 @@ function buildReport() {
 	
 }
 
-/*
-function clearSelection() {
-	clearTimeout(timer);
-	$("#archivar_reporte").hide();
-	$("#crear_reporte").show();
-}
-
-function enableSaveButton() {
-
-	$.get( $("#enable_save_url").val() , function(data) {
-		if (data == true) {
-			$("#save_button").removeAttr("disabled");
-			
-		} else {
-			timer = setTimeout(enableSaveButton, 1000);
-		}
-	});
-	
-}
-
-
-function confirmDeleteWeeklyReport(id) {
+function confirmarEliminarReporte(id, username) {
 	
 	$("#dialog-eliminar-id").val(id);
-	$("#dialog-eliminar form").attr("action", $("#contexto").val() + "report/weekly/delete");
+	$("#dialog-eliminar-username").val(username);
 	$("#dialog-eliminar").dialog("open");
 }
-
-function confirmDeleteMonthlyReport(id) {
-	
-	$("#dialog-eliminar-id").val(id);
-	$("#dialog-eliminar form").attr("action", $("#contexto").val() + "report/monthly/delete");
-	$("#dialog-eliminar").dialog("open");
-}
-*/
 
