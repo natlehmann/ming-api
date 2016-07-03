@@ -440,5 +440,88 @@ public class ReportServiceTest extends AbstractTest {
 		Report result = service.getSameReport(TimePeriod.WEEK.toString(), endDate);
 		assertNull(result);
 	}
+	
+	
+	@Test
+	public void getReportsForMyUserNoFilter() {
+		
+		User user = builder.buildUser("username");
+		mockPrincipal("username");
+		Report report = builder.buildReport(user, State.FINISHED);
+		Report report2 = builder.buildReport(user, State.IN_PROCESS);
+		
+		User otherUser = builder.buildUser("otherUser");
+		builder.buildReport(otherUser);
+		
+		List<Report> result = service.getReportsForCurrentUser(0, 100, null, null, null);
+		
+		assertEquals(2, result.size());
+		assertTrue(result.contains(report));
+		assertTrue(result.contains(report2));
+		
+		assertEquals(2, service.getReportsForCurrentUserCount(null));
+	}
+	
+	@Test
+	public void getReportsForMyUserWithFilter() {
+		
+		User user = builder.buildUser("username");
+		mockPrincipal("username");
+		Report report = builder.buildReport(user, State.FINISHED);
+		builder.buildReport(user, State.IN_PROCESS);
+		
+		User otherUser = builder.buildUser("otherUser");
+		builder.buildReport(otherUser);
+		
+		List<Report> result = service.getReportsForCurrentUser(0, 100, "FIN", null, null);
+		
+		assertEquals(1, result.size());
+		assertEquals(report, result.get(0));
+		
+		assertEquals(1, service.getReportsForCurrentUserCount("FIN"));
+	}
+	
+	@Test
+	public void getReportsForAdminUserNoFilter() {
+		
+		User user = builder.buildUser("username");
+		Report report = builder.buildReport(user, State.FINISHED);
+		Report report2 = builder.buildReport(user, State.IN_PROCESS);
+		
+		User otherUser = builder.buildAdminUser("admin");
+		Report report3 = builder.buildReport(otherUser, State.APPROVED);
+		
+		mockPrincipal("admin", true);
+		
+		List<Report> result = service.getReportsForCurrentUser(0, 100, null, "state", "ASC");
+		
+		assertEquals(3, result.size());
+		assertEquals(report3, result.get(0));
+		assertEquals(report, result.get(1));
+		assertEquals(report2, result.get(2));
+		
+		assertEquals(3, service.getReportsForCurrentUserCount(null));
+	}
 
+	
+	@Test
+	public void getReportsForAdminUserWithFilter() {
+		
+		User user = builder.buildUser("username");
+		builder.buildReport(user, State.FINISHED);
+		Report report2 = builder.buildReport(user, State.IN_PROCESS);
+		
+		User otherUser = builder.buildAdminUser("admin");
+		Report report3 = builder.buildReport(otherUser, State.APPROVED);
+		
+		mockPrincipal("admin", true);
+		
+		List<Report> result = service.getReportsForCurrentUser(0, 100, "O", "state", "DESC");
+		
+		assertEquals(2, result.size());
+		assertEquals(report2, result.get(0));
+		assertEquals(report3, result.get(1));
+		
+		assertEquals(2, service.getReportsForCurrentUserCount("O"));
+	}
 }
