@@ -17,6 +17,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.context.MessageSource;
 
@@ -34,7 +35,7 @@ public class User extends AbstractEntity {
 	@Column(nullable=false)
 	private String password;
 	
-	@NotNull @NotBlank 
+	@NotNull @NotBlank @Email
 	@Column(nullable=false)
 	private String email;
 	

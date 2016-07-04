@@ -45,38 +45,38 @@ public class UserServiceTest extends AbstractTest {
 	
 	@Test(expected=DuplicateUserException.class)
 	public void saveUserWithDuplicateUsernameCaseInsensitive() throws LocalizedException {
-		dao.save(new User("USERNAME", "email", "pass"));
-		service.save(new User("username", "emailll", "pass"), false);
+		dao.save(new User("USERNAME", "email@test.com", "pass"));
+		service.save(new User("username", "emailll@test.com", "pass"), false);
 	}
 	
 	@Test(expected=DuplicateUserException.class)
 	public void saveUserWithDuplicateUsernameCaseInsensitive2() throws LocalizedException {
-		dao.save(new User("username", "email", "pass"));
-		service.save(new User("USERname", "emailll", "pass"), false);
+		dao.save(new User("username", "email@test.com", "pass"));
+		service.save(new User("USERname", "emailll@test.com", "pass"), false);
 	}
 	
 	@Test(expected=DuplicateUserException.class)
 	public void saveUserWithDuplicateEmail() throws LocalizedException {
-		dao.save(new User("username", "email", "pass"));
-		service.save(new User("other", "email", "pass"), false);
+		dao.save(new User("username", "email@test.com", "pass"));
+		service.save(new User("other", "email@test.com", "pass"), false);
 	}
 	
 	@Test(expected=DuplicateUserException.class)
 	public void saveUserWithDuplicateEmailCaseInsensitive() throws LocalizedException {
-		dao.save(new User("username", "EMAIL", "pass"));
-		service.save(new User("other", "email", "pass"), false);
+		dao.save(new User("username", "EMAIL@test.com", "pass"));
+		service.save(new User("other", "email@test.com", "pass"), false);
 	}
 	
 	@Test(expected=DuplicateUserException.class)
 	public void saveUserWithDuplicateEmailCaseInsensitive2() throws LocalizedException {
-		dao.save(new User("username", "email", "pass"));
-		service.save(new User("other", "EMAIL", "pass"), false);
+		dao.save(new User("username", "email@test.com", "pass"));
+		service.save(new User("other", "EMAIL@test.com", "pass"), false);
 	}
 	
 	@Test
 	public void saveNewNormalUser() throws LocalizedException {
 		
-		User user = new User("username", "email", "pass");
+		User user = new User("username", "email@test.com", "pass");
 		user = service.save(user, false);
 		
 		assertNotNull(user.getId());
@@ -90,7 +90,7 @@ public class UserServiceTest extends AbstractTest {
 	@Test
 	public void saveNewAdminUser() throws LocalizedException {
 		
-		User user = new User("username", "email", "pass");
+		User user = new User("username", "email@test.com", "pass");
 		user = service.save(user, true);
 		
 		assertNotNull(user.getId());
@@ -106,7 +106,7 @@ public class UserServiceTest extends AbstractTest {
 	public void updateNormalUser() throws LocalizedException {
 		
 		//before starting
-		User existent = dao.save(new User("username", "email", "password"));
+		User existent = dao.save(new User("username", "email@test.com", "password"));
 		existent.addRole(userRole);
 		dao.save(existent);
 		
@@ -126,7 +126,7 @@ public class UserServiceTest extends AbstractTest {
 	public void downgradeToNormalUser() throws LocalizedException {
 		
 		//before starting
-		User existent = dao.save(new User("username", "email", "password"));
+		User existent = dao.save(new User("username", "email@test.com", "password"));
 		existent.addRole(userRole);
 		existent.addRole(adminRole);
 		dao.save(existent);
@@ -147,7 +147,7 @@ public class UserServiceTest extends AbstractTest {
 	public void updateAdminUser() throws LocalizedException {
 		
 		//before starting
-		User existent = dao.save(new User("username", "email", "password"));
+		User existent = dao.save(new User("username", "email@test.com", "password"));
 		existent.addRole(userRole);
 		existent.addRole(adminRole);
 		dao.save(existent);
@@ -169,7 +169,7 @@ public class UserServiceTest extends AbstractTest {
 	public void upgradeToAdmin() throws LocalizedException {
 		
 		//before starting
-		User existent = dao.save(new User("username", "email", "password"));
+		User existent = dao.save(new User("username", "email@test.com", "password"));
 		existent.addRole(userRole);
 		dao.save(existent);
 		

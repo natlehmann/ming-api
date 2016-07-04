@@ -37,7 +37,7 @@ public class UserDaoTest extends AbstractTest {
 		User user = new User();
 		user.setPassword("password");
 		user.setUsername("username");
-		user.setEmail("email");
+		user.setEmail("email@test.com");
 		user = dao.save(user);
 		
 		User result = dao.getByUsername("USERNAME");
@@ -49,10 +49,10 @@ public class UserDaoTest extends AbstractTest {
 		User user = new User();
 		user.setPassword("password");
 		user.setUsername("username");
-		user.setEmail("email");
+		user.setEmail("email@test.com");
 		user = dao.save(user);
 		
-		User result = dao.getByEmail("EMAIL");
+		User result = dao.getByEmail("EMAIL@TEST.COM");
 		assertEquals(result, user);
 	}
 	
@@ -71,7 +71,7 @@ public class UserDaoTest extends AbstractTest {
 		User user = new User();
 		user.setPassword("password");
 		user.setUsername("userNAME");
-		user.setEmail("email");
+		user.setEmail("email@test.com");
 		user = dao.save(user);
 		
 		User result = dao.getByUsername("Username");
@@ -83,10 +83,10 @@ public class UserDaoTest extends AbstractTest {
 		User user = new User();
 		user.setPassword("password");
 		user.setUsername("userNAME");
-		user.setEmail("EMAIL");
+		user.setEmail("EMAIL@test.com");
 		user = dao.save(user);
 		
-		User result = dao.getByEmail("Email");
+		User result = dao.getByEmail("Email@TEST.com");
 		assertEquals(result, user);
 	}
 	
@@ -177,11 +177,11 @@ public class UserDaoTest extends AbstractTest {
 		Role adminRole = builder.buildRole(RoleNames.ADMINISTRATOR.toString());
 		Role userRole = builder.buildRole(RoleNames.REPORT.toString());
 		
-		User user1 = new User("username1", "email1", "pass");
+		User user1 = new User("username1", "email1@test.com", "pass");
 		user1.addRole(userRole);
 		user1 = dao.save(user1);
 		
-		User user2 = new User("username2", "email2", "pass");
+		User user2 = new User("username2", "email2@test.com", "pass");
 		user2.addRole(userRole);
 		user2.addRole(adminRole);
 		user2 = dao.save(user2);

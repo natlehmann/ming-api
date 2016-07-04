@@ -79,6 +79,17 @@
 	
 	</form:form>
 	
+	
+	<br/>
+	<hr/>
+	<br/>
+	
+	<form action="/changePassword">
+	
+		<h2><spring:message code="change.password"/></h2>
+	
+	</form>
+	
 </div>
 
 
