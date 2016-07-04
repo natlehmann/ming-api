@@ -103,12 +103,25 @@ public class UserController {
 			BindingResult result, ModelMap model, Locale locale, 
 			@RequestParam(value="isAdmin", required=false, defaultValue="false") boolean isAdmin){
 		
-		System.out.println("-------------------------------------------------------- " + isAdmin);
 		if (!result.hasErrors()) {
 			
 			try {
+				
+				String passMessage = "";
+				
+				if (user.getId() == null) {
+					String password = Utils.createRandomString(8);
+					user.setPassword(Utils.encryptPassword(password));
+					passMessage = "<br/>" + msgSource.getMessage(
+							"new.password.set", new String[]{password}, locale);
+					
+				} else {
+					User existing = dao.getById(user.getId());
+					user.setPassword(existing.getPassword());
+				}
+				
 				dao.save(user);
-				model.addAttribute("msg", msgSource.getMessage("user.saved", null, locale));
+				model.addAttribute("msg", msgSource.getMessage("user.saved", null, locale) + passMessage);
 				
 			} catch (Exception e) {
 				log.error("Se produjo un error guardando el usuario.", e);

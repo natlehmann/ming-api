@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.util.StringUtils;
 
 import ar.com.marcelomingrone.vericast.reports.model.RoleNames;
@@ -118,5 +119,36 @@ public class Utils {
 
         return false;
     }
+
+	public static String createRandomString(int charCount) {
+		
+		StringBuffer buffer = new StringBuffer();
+		
+		for (int i = 0; i < charCount; i++) {
+			buffer.append((char)getRandomAsciiNumber());
+		}
+		
+		return buffer.toString();
+	}
+
+	private static int getRandomAsciiNumber() {
+		Integer number = null;
+		while (number == null) {
+			
+			number = (int)(Math.round(Math.random() * 57) + 65);
+			
+			if (number.intValue() >= 91 && number.intValue() <= 96) {
+				number = null;
+			}
+		}
+		
+		return number;
+	}
+
+	public static String encryptPassword(String password) {
+		
+		StandardPasswordEncoder encoder = new StandardPasswordEncoder();
+		return encoder.encode(password);
+	}
 
 }

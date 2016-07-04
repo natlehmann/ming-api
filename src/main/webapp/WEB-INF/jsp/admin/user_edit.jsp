@@ -39,12 +39,6 @@
 		</div>
 		
 		<div class="campo">
-			<form:label path="password"><spring:message code="password"/></form:label>
-			<form:errors path="password" cssClass="error"/>
-			<form:password path="password" cssErrorClass="error"/>
-		</div>
-		
-		<div class="campo">
 			<form:label path="apiKey"><spring:message code="user.apiKey"/></form:label>
 			<form:errors path="apiKey" cssClass="error"/>
 			<form:input path="apiKey" cssErrorClass="error"/>
