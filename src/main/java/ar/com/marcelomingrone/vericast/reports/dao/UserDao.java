@@ -69,6 +69,7 @@ public class UserDao extends AbstractEntityDao<User> {
 		
 		if (entidad.getUsername() != null) {
 			entidad.setUsername(entidad.getUsername().toLowerCase());
+			entidad.setEmail(entidad.getEmail().toLowerCase());
 		}
 		
 		return super.save(entidad);
@@ -81,6 +82,26 @@ public class UserDao extends AbstractEntityDao<User> {
 		buffer.append("(").append(ALIAS).append(".username like ").append(FILTER_PARAM)
 				.append(" OR ").append(ALIAS).append(".email like ").append(FILTER_PARAM).append(")");
 		return buffer.toString();
+	}
+
+	@Transactional
+	public User getByEmail(String email) {
+		
+		User user = null;
+		
+		try {
+			user = (User)sessionFactory.getCurrentSession().createQuery(
+					"SELECT u FROM User u WHERE u.email = :email")
+					.setParameter("email", email.toLowerCase()).uniqueResult();
+			
+		} catch (NonUniqueResultException e) {
+			log.error("Se encontro mas de un usuario con email " + email);
+			
+		} catch (NoResultException e) {
+			// nothing to do
+		}
+		
+		return user;
 	}
 
 }

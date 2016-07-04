@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -41,10 +42,22 @@ public class User extends AbstractEntity {
 	
 	private String apiKey;
 	
-	@ManyToMany
+	@ManyToMany(cascade={CascadeType.MERGE, CascadeType.PERSIST})
 	@JoinTable(name="User_Role", joinColumns={@JoinColumn(name="user_id")}, 
 		inverseJoinColumns={@JoinColumn(name="role_id")})
 	private List<Role> roles;
+	
+	public User(){}
+
+	public User(String username) {
+		this.username = username;
+	}
+	
+	public User(String username, String email, String password) {
+		this.username = username;
+		this.email = email;
+		this.password = password;
+	}
 
 	public String getUsername() {
 		return username;

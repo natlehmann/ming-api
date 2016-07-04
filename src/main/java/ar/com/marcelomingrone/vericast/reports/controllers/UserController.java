@@ -22,9 +22,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ar.com.marcelomingrone.vericast.reports.controllers.Utils.Params;
-import ar.com.marcelomingrone.vericast.reports.dao.UserDao;
 import ar.com.marcelomingrone.vericast.reports.model.DataTablesResponse;
+import ar.com.marcelomingrone.vericast.reports.model.LocalizedException;
 import ar.com.marcelomingrone.vericast.reports.model.User;
+import ar.com.marcelomingrone.vericast.reports.services.UserService;
 
 
 @Controller
@@ -34,7 +35,7 @@ public class UserController {
 	private static Log log = LogFactory.getLog(UserController.class);
 	
 	@Autowired
-	private UserDao dao;
+	private UserService service;
 	
 	@Resource
 	private MessageSource msgSource;
@@ -55,19 +56,19 @@ public class UserController {
 				Utils.getInt(request.getParameter("iSortCol_0"), 0) );
 		
 		
-		List<User> users = dao.getAllPaginatedAndFiltered(
+		List<User> users = service.getAllPaginatedAndFiltered(
 				(int)params.get(Params.INICIO),
 				(int)params.get(Params.CANTIDAD_RESULTADOS),
 				orderField,
 				(String)params.get(Params.DIRECCION_ORDENAMIENTO),
 				(String)params.get(Params.FILTRO));
 		
-		long count = dao.getCount(
+		long count = service.getCount(
 				(String)params.get(Params.FILTRO));
 		
 		long total = count;
 		if (!StringUtils.isEmpty((String)params.get(Params.FILTRO))) {
-			total = dao.getCount(null);
+			total = service.getCount(null);
 		}
 		
 		DataTablesResponse resultado = new DataTablesResponse(
@@ -86,7 +87,7 @@ public class UserController {
 	@RequestMapping("/update")
 	public String update(@RequestParam("id") Long id, ModelMap model) {
 		
-		User user = dao.getById(id);
+		User user = service.getById(id);
 		return prepareForm(user, model);
 	}
 
@@ -116,12 +117,16 @@ public class UserController {
 							"new.password.set", new String[]{password}, locale);
 					
 				} else {
-					User existing = dao.getById(user.getId());
+					User existing = service.getById(user.getId());
 					user.setPassword(existing.getPassword());
 				}
 				
-				dao.save(user);
+				service.save(user, isAdmin);
 				model.addAttribute("msg", msgSource.getMessage("user.saved", null, locale) + passMessage);
+				
+			} catch (LocalizedException e) {
+				model.addAttribute("msg", msgSource.getMessage(e.getCode(), null, locale));
+				return prepareForm(user, model);
 				
 			} catch (Exception e) {
 				log.error("Se produjo un error guardando el usuario.", e);
@@ -139,7 +144,7 @@ public class UserController {
 	public String delete(@RequestParam("id") Long id, ModelMap model, Locale locale) {
 		
 		try {
-			dao.delete(id);
+			service.delete(id);
 			model.addAttribute("msg", msgSource.getMessage("user.deleted", null, locale));
 			
 		} catch (Exception e) {

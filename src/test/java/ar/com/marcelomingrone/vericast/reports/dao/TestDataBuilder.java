@@ -28,13 +28,21 @@ public class TestDataBuilder {
 	}
 	
 	public User buildUser(String username, String apiKey) {
+		return buildUser(username, apiKey, "email");
+	}
+	
+	public User buildUser(String username, String apiKey, String email) {
 		
 		User user = new User();
 		user.setUsername(username);
 		user.setApiKey(apiKey);
-		user.setEmail("email");
+		user.setEmail(email);
 		user.setLanguage("es");
 		user.setPassword("password");
+		
+		Role role = buildRole(RoleNames.REPORT.toString());
+		user.addRole(role);
+		
 		currentSession.saveOrUpdate(user);
 		
 		return user;
@@ -46,8 +54,12 @@ public class TestDataBuilder {
 	
 	public User buildAdminUser(String username) {
 		User user = buildUser(username);
+		
 		Role role = buildRole(RoleNames.ADMINISTRATOR.toString());
 		user.addRole(role);
+		role = buildRole(RoleNames.REPORT.toString());
+		user.addRole(role);
+		
 		currentSession.saveOrUpdate(user);
 		return user;
 	}

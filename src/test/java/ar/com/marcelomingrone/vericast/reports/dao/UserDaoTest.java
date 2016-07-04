@@ -43,6 +43,28 @@ public class UserDaoTest extends AbstractTest {
 	}
 	
 	@Test
+	public void getByEmailCaseInsensitive() {
+		User user = new User();
+		user.setPassword("password");
+		user.setUsername("username");
+		user.setEmail("email");
+		user = dao.save(user);
+		
+		User result = dao.getByEmail("EMAIL");
+		assertEquals(result, user);
+	}
+	
+	@Test
+	public void getByEmailNoResult() {
+		assertNull(dao.getByEmail("EMAIL"));
+	}
+	
+	@Test
+	public void getByUsernameNoResult() {
+		assertNull(dao.getByUsername("userName"));
+	}
+	
+	@Test
 	public void getByUsernameCaseInsensitive2() {
 		User user = new User();
 		user.setPassword("password");
@@ -51,6 +73,18 @@ public class UserDaoTest extends AbstractTest {
 		user = dao.save(user);
 		
 		User result = dao.getByUsername("Username");
+		assertEquals(result, user);
+	}
+	
+	@Test
+	public void getByEmailCaseInsensitive2() {
+		User user = new User();
+		user.setPassword("password");
+		user.setUsername("userNAME");
+		user.setEmail("EMAIL");
+		user = dao.save(user);
+		
+		User result = dao.getByEmail("Email");
 		assertEquals(result, user);
 	}
 	

@@ -8,6 +8,10 @@
 	<jsp:param value="users" name="itemMenuSeleccionado"/>
 </jsp:include>
 
+<c:if test="${msg != null}">
+	<div class="msg">${msg}</div>
+</c:if>
+
 
 <div id="adminInt" class="email">
 
