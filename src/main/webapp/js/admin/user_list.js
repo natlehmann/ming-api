@@ -8,14 +8,15 @@ $(document).ready(function() {
         "oLanguage": {
             "sUrl": $("#contexto").val() + "js/datatables_ES.txt"
         },
-        "columnDefs": [ { "targets": 4, "orderable": false } ],
+        "columnDefs": [ { "targets": 4, "orderable": false }, { "targets": 5, "orderable": false } ],
         "bAutoWidth" : false,
         "aoColumns": [
-                      {"sWidth" : "7%"},
-                      {"sWidth" : "39%" },
-                      {"sWidth" : "39%" },
-                      {"sWidth" : "7%" },
-                      {"sWidth" : "8%" }
+                      {"sWidth" : "10%"},
+                      {"sWidth" : "30%" },
+                      {"sWidth" : "30%" },
+                      {"sWidth" : "10%" },
+                      {"sWidth" : "10%" },
+                      {"sWidth" : "10%" }
                     ]
     } );
 } );

@@ -22,8 +22,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ar.com.marcelomingrone.vericast.reports.controllers.Utils.Params;
+import ar.com.marcelomingrone.vericast.reports.dao.RoleDao;
 import ar.com.marcelomingrone.vericast.reports.model.DataTablesResponse;
 import ar.com.marcelomingrone.vericast.reports.model.LocalizedException;
+import ar.com.marcelomingrone.vericast.reports.model.Role;
+import ar.com.marcelomingrone.vericast.reports.model.RoleNames;
 import ar.com.marcelomingrone.vericast.reports.model.User;
 import ar.com.marcelomingrone.vericast.reports.services.UserService;
 
@@ -39,6 +42,9 @@ public class UserController {
 	
 	@Resource
 	private MessageSource msgSource;
+	
+	@Autowired
+	private RoleDao roleDao;
 	
 	
 	@RequestMapping("/list") 
@@ -94,6 +100,14 @@ public class UserController {
 	private String prepareForm(User user, ModelMap model) {
 		
 		model.addAttribute("selectedLanguage", user != null ? user.getLanguage() : null);
+		
+		model.addAttribute("isAdmin", false);
+		if (user.getId() != null) {
+			List<Role> roles = roleDao.getForUser(user);
+			if (roles.contains(roleDao.getByName(RoleNames.ADMINISTRATOR.toString()))){
+				model.addAttribute("isAdmin", true);
+			}
+		}
 		
 		model.addAttribute("user", user);
 		return "admin/user_edit";

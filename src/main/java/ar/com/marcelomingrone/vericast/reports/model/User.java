@@ -16,6 +16,7 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.context.MessageSource;
 
@@ -147,7 +148,24 @@ public class User extends AbstractEntity {
 		fields.add(this.username);
 		fields.add(this.email);
 		fields.add(this.language);
+		fields.add(isAdmin() ? msgSource.getMessage("yes", null, locale) : "<br/>");
 		fields.add(super.getUpdateDeleteLinks(msgSource, locale));
 		return fields;
+	}
+	
+	@JsonIgnore
+	@Transient
+	public boolean isAdmin() {
+		
+		boolean isAdmin = false;
+		if (this.roles != null) {
+			for (Role role : this.roles) {
+				if (role.getName().equalsIgnoreCase(RoleNames.ADMINISTRATOR.toString())) {
+					isAdmin = true;
+				}
+			}
+		}
+		
+		return isAdmin;
 	}
 }

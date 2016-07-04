@@ -30,6 +30,7 @@
 					<th><spring:message code="username"/></th>
 					<th><spring:message code="user.email"/></th>
 					<th><spring:message code="language"/></th>
+					<th><spring:message code="header.is.admin"/></th>
 					<th><spring:message code="actions"/></th>
 				</tr>
 			</thead>

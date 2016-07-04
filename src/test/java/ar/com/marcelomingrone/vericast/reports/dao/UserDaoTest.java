@@ -10,6 +10,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import ar.com.marcelomingrone.vericast.reports.AbstractTest;
+import ar.com.marcelomingrone.vericast.reports.model.Role;
+import ar.com.marcelomingrone.vericast.reports.model.RoleNames;
 import ar.com.marcelomingrone.vericast.reports.model.User;
 
 public class UserDaoTest extends AbstractTest {
@@ -168,6 +170,31 @@ public class UserDaoTest extends AbstractTest {
 		assertEquals(2, dao.getCount("ser"));
 	}
 
+	
+	@Test
+	public void getAllPaginatedAndFilteredNonLazyRoles() {
+		
+		Role adminRole = builder.buildRole(RoleNames.ADMINISTRATOR.toString());
+		Role userRole = builder.buildRole(RoleNames.REPORT.toString());
+		
+		User user1 = new User("username1", "email1", "pass");
+		user1.addRole(userRole);
+		user1 = dao.save(user1);
+		
+		User user2 = new User("username2", "email2", "pass");
+		user2.addRole(userRole);
+		user2.addRole(adminRole);
+		user2 = dao.save(user2);
+		
+		List<User> result = dao.getAllPaginatedAndFiltered(0, 100, "username", "DESC", "ser");
+		
+		assertEquals(user2, result.get(0));
+		assertEquals(2, user2.getRoles().size());
+		
+		assertEquals(user1, result.get(1));
+		assertEquals(1, user1.getRoles().size());
+		
+	}
 	
 
 }

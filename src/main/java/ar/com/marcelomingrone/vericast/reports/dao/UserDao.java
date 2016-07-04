@@ -1,5 +1,7 @@
 package ar.com.marcelomingrone.vericast.reports.dao;
 
+import java.util.List;
+
 import javax.persistence.NoResultException;
 
 import org.apache.commons.logging.Log;
@@ -102,6 +104,22 @@ public class UserDao extends AbstractEntityDao<User> {
 		}
 		
 		return user;
+	}
+	
+	
+	@Transactional
+	@Override
+	public List<User> getAllPaginatedAndFiltered(int start, int count,
+			String orderField, String orderDirection, String filter) {
+
+		List<User> users = super.getAllPaginatedAndFiltered(start, count, orderField,
+				orderDirection, filter);
+		
+		for (User user : users) {
+			user.getRoles().size();
+		}
+		
+		return users;
 	}
 
 }

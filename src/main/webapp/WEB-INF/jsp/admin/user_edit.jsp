@@ -67,7 +67,7 @@
 		
 		<div class="campo">
 			<label><spring:message code="is.admin"/></label>
-			<input type="checkbox" value="${userIsAdmin}" name="isAdmin"/>
+			<input type="checkbox" name="isAdmin" ${isAdmin ? "checked='checked'" : ""}/>
 		</div>
 
 		
