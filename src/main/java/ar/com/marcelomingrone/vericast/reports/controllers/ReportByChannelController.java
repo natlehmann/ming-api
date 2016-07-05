@@ -227,26 +227,4 @@ public class ReportByChannelController {
 	}
 	
 	
-	/*
-	@Transactional
-	@RequestMapping(value="/csv")
-	public ModelAndView getWeeklyCsvReport(@RequestParam("id") Long id, ModelMap model) {
-		
-		SummaryReport report = null;
-		
-		try {
-			report = service.getWeeklyCsvReport(id);
-			model.put("summaryReport", report);
-			
-		} catch (BmatSourceUriException e) {
-			model.addAttribute("msg",e.getMessage());
-			return initReportFilters(model);
-		}
-		
-		return new ModelAndView("chartSummaryCsvView", model);
-	}
-	
-
-	
-	*/
 }

@@ -167,4 +167,24 @@ public class UserController {
 		}
 		return list(model);
 	}
+	
+	
+	@RequestMapping("/changePassword")
+	public String changePassword(ModelMap model, Locale locale, 
+			@RequestParam("id")long id, 
+			@RequestParam(value="newPassword", required=false)String newPassword,
+			@RequestParam(value="confirmNewPassword", required=false)String confirmNewPassword) {
+		
+		User user = service.getById(id);
+		
+		try {
+			service.updatePassword(user, newPassword, confirmNewPassword);
+			
+		} catch (LocalizedException e) {
+			model.put("msg", msgSource.getMessage(e.getCode(), null, locale));
+			return prepareForm(user, model);
+		}
+		
+		return list(model);
+	}
 }

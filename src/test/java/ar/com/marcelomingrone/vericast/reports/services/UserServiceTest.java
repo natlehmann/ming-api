@@ -1,6 +1,9 @@
 package ar.com.marcelomingrone.vericast.reports.services;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -184,6 +187,38 @@ public class UserServiceTest extends AbstractTest {
 		assertEquals(2, roles.size());
 		assertTrue(roles.contains(adminRole));
 		assertTrue(roles.contains(userRole));
+	}
+	
+	
+	@Test(expected=LocalizedException.class)
+	public void updatePasswordWithoutPassword() throws LocalizedException {
+		
+		User user = builder.buildUser("username");
+		service.updatePassword(user, null, "confirmNewPassword");
+	}
+	
+	@Test(expected=LocalizedException.class)
+	public void updatePasswordWithoutConfirmation() throws LocalizedException {
+		
+		User user = builder.buildUser("username");
+		service.updatePassword(user, "pass", null);
+	}
+	
+	@Test(expected=LocalizedException.class)
+	public void updatePasswordDoNotMatch() throws LocalizedException {
+		
+		User user = builder.buildUser("username");
+		service.updatePassword(user, "pass", "other");
+	}
+	
+	@Test
+	public void updatePasswordOk() throws LocalizedException {
+		
+		User user = builder.buildUser("username");
+		service.updatePassword(user, "passNew", "passNew");
+		
+		User result = service.getById(user.getId());
+		assertNotEquals("passNew", result.getPassword());
 	}
 
 }

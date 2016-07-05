@@ -78,19 +78,39 @@
 		</div>
 	
 	</form:form>
-	
-	
-	<br/>
-	<hr/>
-	<br/>
-	
-	<form action="/changePassword">
-	
-		<h2><spring:message code="change.password"/></h2>
-	
-	</form>
-	
 </div>
 
+<br/>
+<br/>
+
+
+<c:if test="${user.id != null}">
+	<div id="adminInt" class="email">
+	
+		<h1><spring:message code="change.password"/></h1>
+		
+		<form action="changePassword" method="POST">
+		
+			<input type="hidden" name="id" value="${user.id}"/>
+			
+			<div class="campo">
+				<label><spring:message code="new.password"/></label>
+				<input type="password" name="newPassword"/>
+			</div>
+			
+			<div class="campo">
+				<label><spring:message code="new.password.confirm"/></label>
+				<input type="password" name="confirmNewPassword"/>
+			</div>
+			
+			<div class="acciones">
+				<button type="submit" value="Aceptar"><spring:message code="accept"/></button>
+				<button type="button" onclick="ir('list')"><spring:message code="cancel"/></button>
+			</div>
+		
+		</form>
+		
+	</div>
+</c:if>
 
 <jsp:include page="/WEB-INF/jsp/includes/footer.jsp" />

@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import ar.com.marcelomingrone.vericast.reports.controllers.Utils;
 import ar.com.marcelomingrone.vericast.reports.dao.RoleDao;
 import ar.com.marcelomingrone.vericast.reports.dao.UserDao;
 import ar.com.marcelomingrone.vericast.reports.model.DuplicateUserException;
@@ -63,6 +65,23 @@ public class UserService {
 
 	public void delete(Long id) {
 		dao.delete(id);		
+	}
+
+	public void updatePassword(User user, String newPassword,
+			String confirmNewPassword) throws LocalizedException {		
+		
+		if (StringUtils.isEmpty(newPassword) || StringUtils.isEmpty(confirmNewPassword)) {
+			throw new LocalizedException("please.fill.in.password");
+		}
+		
+		if (!newPassword.equals(confirmNewPassword)) {
+			throw new LocalizedException("passwords.do.not.match");
+		}
+		
+		user.setPassword(Utils.encryptPassword(newPassword));
+		
+		dao.save(user);
+		
 	}
 
 }
